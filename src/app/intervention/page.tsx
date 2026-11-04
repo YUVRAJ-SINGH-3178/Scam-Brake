@@ -1,20 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  ShieldAlert,
-  CheckCircle2,
-  XCircle,
   Clock,
   PhoneCall,
   UserCheck,
   Send,
-  HelpCircle,
-  Lock,
-  ArrowRight,
-  AlertTriangle,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
@@ -27,7 +21,7 @@ export default function CustomerInterventionPage() {
   const router = useRouter();
 
   // Retrieve seed payment pay_sb_881901 (Martha Stephenson $1,500 gift card hold)
-  const [payment, setPayment] = useState(() => mockStore.getPaymentById('pay_sb_881901')!);
+  const [payment] = useState(() => mockStore.getPaymentById('pay_sb_881901')!);
   const [session, setSession] = useState(() => mockStore.getInterventionById('int_sess_881901')!);
   const [inputValue, setInputValue] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
@@ -88,51 +82,51 @@ export default function CustomerInterventionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col antialiased selection:bg-[#2D5BFF]/10 selection:text-[#2D5BFF]">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased selection:bg-[#1A7A64]/15">
       {/* Calm, High-Trust Header */}
-      <header className="h-16 bg-white border-b border-[#E5E7EB] px-6 flex items-center justify-between">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <ScamBrakeMark size={32} />
+          <ScamBrakeMark size={28} />
           <div>
-            <div className="font-semibold text-[15px] leading-tight text-[#1E1E2A]">
+            <div className="font-semibold text-[14px] leading-tight text-[#171A1F]">
               Scam Brake Protection Check-in
             </div>
-            <div className="text-[11px] text-[#6B7280]">
-              Authorized Pre-Capture Safety Protocol
+            <div className="text-[12px] text-[#525860]">
+              Pre-Capture Safety Protocol
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-[12px] font-mono text-[#F59E0B] bg-[#F59E0B]/10 border border-[#F59E0B]/20 px-3 py-1 rounded-md">
+        <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#784D00] bg-[#FAF2E4] border border-[#784D00]/25 px-2.5 py-1 rounded-[4px]">
           <Clock size={13} />
-          <span>HOLD WINDOW ACTIVE</span>
+          <span>Hold Active</span>
         </div>
       </header>
 
       {/* Main Intervention Layout */}
       <main className="flex-1 max-w-5xl mx-auto w-full p-4 sm:p-6 py-8 space-y-6">
         {/* Calm Hero Reassurance Banner */}
-        <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        <div className="p-6 rounded-[6px] bg-[#FFFFFF] border border-[#DFE2DF] space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
             <div>
-              <span className="text-[11px] font-mono font-bold text-[#2D5BFF] uppercase tracking-wider">
-                SAFETY INTERVENTION IN PROGRESS
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-serif text-[#1E1E2A] mt-1">
+              <div className="text-[13px] font-medium text-[#525860]">
+                Safety Check-in in Progress
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-semibold text-[#171A1F] mt-1 tracking-tight">
                 Your payment is temporarily protected.
               </h1>
-              <p className="text-[14px] text-[#6B7280] mt-1 max-w-2xl leading-relaxed">
+              <p className="text-[14px] text-[#525860] mt-1.5 max-w-2xl leading-relaxed">
                 PayPal has approved the payment authorization, but{' '}
-                <strong className="text-[#1E1E2A]">no funds have been transferred</strong> to Apex Digital yet. Your money remains safe in your account while you take a calm moment to verify.
+                <strong className="text-[#171A1F] font-semibold">no funds have been transferred</strong> to Apex Digital yet. Your money remains safe in your account while you take a calm moment to verify.
               </p>
             </div>
 
-            <div className="text-right sm:border-l sm:border-[#E5E7EB] sm:pl-6 shrink-0">
-              <div className="text-[12px] text-[#6B7280]">Authorized Amount</div>
-              <div className="text-[28px] font-mono font-bold text-[#1E1E2A]">
-                ${payment.amount.toFixed(2)}
+            <div className="text-right sm:border-l sm:border-[#DFE2DF] sm:pl-6 shrink-0">
+              <div className="text-[12px] text-[#525860]">Authorized Amount</div>
+              <div className="text-[26px] font-semibold text-[#171A1F] tabular-nums">
+                <code>${payment.amount.toFixed(2)}</code>
               </div>
-              <div className="text-[11px] text-[#6B7280]">Apex Digital & Hardware</div>
+              <div className="text-[12px] text-[#525860]">Apex Digital &amp; Hardware</div>
             </div>
           </div>
 
@@ -145,26 +139,26 @@ export default function CustomerInterventionPage() {
         </div>
 
         {/* Two-Column Working Area: Chat on Left, Verification Tools on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Left Column (7 cols): Calm Conversational Check-In */}
-          <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-xs space-y-4 flex flex-col h-[520px]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB] text-[12px]">
+          <div className="lg:col-span-7 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4 flex flex-col h-[520px]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF] text-[13px]">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#10B981]" />
-                <span className="font-semibold text-[#1E1E2A]">
-                  AI Safety Assistant
+                <span className="w-2 h-2 rounded-full bg-[#1A7A64]" />
+                <span className="font-semibold text-[#171A1F]">
+                  Safety Assistant
                 </span>
-                <span className="text-[11px] text-[#6B7280]">
+                <span className="text-[12px] text-[#525860]">
                   (Calm, non-judgmental guidance)
                 </span>
               </div>
-              <span className="font-mono text-[11px] text-[#9CA3AF]">
-                CONFIDENTIAL
+              <span className="text-[12px] text-[#525860] font-medium">
+                Confidential
               </span>
             </div>
 
             {/* Messages Scroll View */}
-            <div className="flex-1 overflow-y-auto space-y-3.5 pr-2">
+            <div className="flex-1 overflow-y-auto space-y-3 pr-2">
               {session.messages.map((m) => {
                 const isAI = m.sender === 'AI_ASSISTANT';
 
@@ -176,15 +170,15 @@ export default function CustomerInterventionPage() {
                     }`}
                   >
                     <div
-                      className={`max-w-[85%] p-3.5 rounded-xl text-[13px] leading-relaxed ${
+                      className={`max-w-[85%] p-3.5 rounded-[6px] text-[14px] leading-relaxed ${
                         isAI
-                          ? 'bg-[#F8F9FB] border border-[#E5E7EB] text-[#1E1E2A]'
-                          : 'bg-[#2D5BFF] text-white shadow-xs'
+                          ? 'bg-[#F6F6F3] border border-[#DFE2DF] text-[#171A1F]'
+                          : 'bg-[#171A1F] text-white'
                       }`}
                     >
                       {m.content}
                     </div>
-                    <span className="text-[10px] text-[#9CA3AF] px-1 mt-1 font-mono">
+                    <span className="text-[11px] text-[#525860] px-1 mt-1">
                       {new Date(m.timestamp).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -198,7 +192,7 @@ export default function CustomerInterventionPage() {
                           <button
                             key={idx}
                             onClick={() => handleSendMessage(reply)}
-                            className="px-2.5 py-1 rounded-md bg-white border border-[#D1D5DB] hover:border-[#2D5BFF] hover:text-[#2D5BFF] text-[12px] font-medium text-[#4B5563] transition-colors cursor-pointer shadow-2xs"
+                            className="px-2.5 py-1 rounded-[4px] bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F] text-[13px] font-medium text-[#171A1F] transition-colors cursor-pointer"
                           >
                             {reply}
                           </button>
@@ -216,48 +210,48 @@ export default function CustomerInterventionPage() {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="pt-3 border-t border-[#E5E7EB] flex items-center gap-2"
+              className="pt-3 border-t border-[#DFE2DF] flex items-center gap-2"
             >
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type your answer or describe the situation calmly..."
-                className="flex-1 h-10 px-3.5 text-[13px] bg-[#FAFAFC] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D5BFF] focus:bg-white text-[#1E1E2A] placeholder-[#9CA3AF]"
+                className="flex-1 h-10 px-3.5 text-[14px] bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] focus:outline-none focus:border-[#171A1F] focus:bg-[#FFFFFF] text-[#171A1F] placeholder-[#525860]"
               />
               <Button type="submit" size="md" variant="primary">
-                <Send size={14} />
+                <Send size={13} />
                 <span>Send</span>
               </Button>
             </form>
           </div>
 
           {/* Right Column (5 cols): Verification Actions & Resolution */}
-          <div className="lg:col-span-5 space-y-4">
-            {/* Independent Directory Verification (Kernel) */}
-            <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-3">
+          <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
+            {/* Independent Directory Verification */}
+            <div className="p-5 rounded-[6px] bg-[#FFFFFF] border border-[#DFE2DF] space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <PhoneCall size={16} className="text-[#2D5BFF]" />
-                  <span className="text-[13px] font-semibold text-[#1E1E2A]">
+                  <PhoneCall size={15} className="text-[#171A1F]" />
+                  <span className="text-[14px] font-semibold text-[#171A1F]">
                     Independent Directory Check
                   </span>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#2D5BFF]/10 text-[#2D5BFF]">
-                  KERNEL VERIFIED
+                <span className="text-[12px] font-medium px-2 py-0.5 rounded-[4px] bg-[#EAF4F1] text-[#1A7A64] border border-[#1A7A64]/25">
+                  Verified
                 </span>
               </div>
-              <p className="text-[12px] text-[#6B7280] leading-relaxed">
+              <p className="text-[13px] text-[#525860] leading-relaxed">
                 If the caller claims to represent the IRS or a bank, do not use the number they gave you. Kernel provides verified official agency contacts.
               </p>
 
               {session.independentVerification.status === 'PASSED' ? (
-                <div className="p-3 rounded-lg bg-[#10B981]/10 border border-[#10B981]/25 text-[12px] text-[#059669] space-y-1">
+                <div className="p-3 rounded-[4px] bg-[#EAF4F1] border border-[#1A7A64]/20 text-[13px] text-[#1A7A64] space-y-1">
                   <div className="font-semibold flex items-center gap-1.5">
                     <CheckCircle2 size={14} />
                     <span>Official Directory Checked ({session.independentVerification.verificationRef})</span>
                   </div>
-                  <p className="text-[11px] leading-relaxed text-[#047857]">
+                  <p className="text-[12px] leading-relaxed">
                     {session.independentVerification.notes}
                   </p>
                 </div>
@@ -268,36 +262,36 @@ export default function CustomerInterventionPage() {
                   onClick={() => setShowVerifyModal(true)}
                   className="w-full text-[13px]"
                 >
-                  <PhoneCall size={14} className="text-[#2D5BFF]" />
+                  <PhoneCall size={13} />
                   <span>Check Official Directory</span>
                 </Button>
               )}
             </div>
 
             {/* Trusted Contact Notification */}
-            <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] space-y-3">
+            <div className="p-5 rounded-[6px] bg-[#FFFFFF] border border-[#DFE2DF] space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <UserCheck size={16} className="text-[#059669]" />
-                  <span className="text-[13px] font-semibold text-[#1E1E2A]">
+                  <UserCheck size={15} className="text-[#1A7A64]" />
+                  <span className="text-[14px] font-semibold text-[#171A1F]">
                     Trusted Contact Advocate
                   </span>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10B981]/10 text-[#059669]">
-                  EXPLICIT CONSENT
+                <span className="text-[12px] font-medium px-2 py-0.5 rounded-[4px] bg-[#EAF4F1] text-[#1A7A64] border border-[#1A7A64]/25">
+                  Explicit Consent
                 </span>
               </div>
-              <p className="text-[12px] text-[#6B7280] leading-relaxed">
-                You have designated <strong className="text-[#1E1E2A]">David Stephenson</strong> as your trusted contact. We can send a private SMS alert so they can review this purchase with you.
+              <p className="text-[13px] text-[#525860] leading-relaxed">
+                You have designated <strong className="text-[#171A1F]">David Stephenson</strong> as your trusted contact. We can send a private alert so they can review this purchase with you.
               </p>
 
               {session.trustedContact.notificationSent ? (
-                <div className="p-3 rounded-lg bg-[#10B981]/10 border border-[#10B981]/25 text-[12px] text-[#059669] space-y-1">
+                <div className="p-3 rounded-[4px] bg-[#EAF4F1] border border-[#1A7A64]/20 text-[13px] text-[#1A7A64] space-y-1">
                   <div className="font-semibold flex items-center gap-1.5">
                     <CheckCircle2 size={14} />
-                    <span>SMS Dispatched to David Stephenson</span>
+                    <span>Alert Dispatched to David Stephenson</span>
                   </div>
-                  <p className="text-[11px] text-[#047857]">
+                  <p className="text-[12px]">
                     Alert sent to {session.trustedContact.maskedPhone}. Awaiting check-in.
                   </p>
                 </div>
@@ -308,18 +302,18 @@ export default function CustomerInterventionPage() {
                   onClick={() => setShowContactModal(true)}
                   className="w-full text-[13px]"
                 >
-                  <UserCheck size={14} className="text-[#059669]" />
+                  <UserCheck size={13} />
                   <span>Notify David Stephenson</span>
                 </Button>
               )}
             </div>
 
             {/* Final Decision Action Controls */}
-            <div className="p-5 rounded-2xl bg-[#F8F9FB] border border-[#E5E7EB] shadow-xs space-y-3">
-              <div className="text-[13px] font-semibold text-[#1E1E2A]">
+            <div className="p-5 rounded-[6px] bg-[#FFFFFF] border border-[#DFE2DF] space-y-3">
+              <div className="text-[14px] font-semibold text-[#171A1F]">
                 Your Decision
               </div>
-              <p className="text-[12px] text-[#6B7280] leading-relaxed">
+              <p className="text-[13px] text-[#525860] leading-relaxed">
                 You are completely in control. You may cancel this hold right now with zero dispute wait time, or confirm that you are uncoerced.
               </p>
 
@@ -331,7 +325,7 @@ export default function CustomerInterventionPage() {
                   onClick={handleVoidPayment}
                   className="w-full text-[14px]"
                 >
-                  <XCircle size={16} />
+                  <XCircle size={15} />
                   <span>Void Authorization (Cancel Payment)</span>
                 </Button>
 
@@ -340,9 +334,9 @@ export default function CustomerInterventionPage() {
                   size="md"
                   isLoading={isResolving}
                   onClick={handleProceedPayment}
-                  className="w-full text-[13px] text-[#6B7280] hover:text-[#1E1E2A]"
+                  className="w-full text-[13px] text-[#525860] hover:text-[#171A1F]"
                 >
-                  <CheckCircle2 size={15} className="text-[#10B981]" />
+                  <CheckCircle2 size={14} className="text-[#1A7A64]" />
                   <span>I Am Safe — Capture Payment</span>
                 </Button>
               </div>
@@ -356,26 +350,26 @@ export default function CustomerInterventionPage() {
         isOpen={showVerifyModal}
         onClose={() => setShowVerifyModal(false)}
         title="Official Agency Directory Verification"
-        subtitle="Powered by Kernel out-of-band verification"
+        subtitle="Independent out-of-band verification"
       >
-        <div className="space-y-4 text-[13px] text-[#4B5563]">
+        <div className="space-y-4 text-[14px] text-[#525860]">
           <p>
             Scam callers frequently give victims spoofed telephone numbers or warn them that calling local offices will &quot;violate federal gag orders&quot;. This is always a lie.
           </p>
 
-          <div className="p-4 rounded-xl bg-[#F8F9FB] border border-[#E5E7EB] space-y-2 text-[12px]">
-            <div className="font-semibold text-[#1E1E2A]">
-              Internal Revenue Service (IRS) Official Contact:
+          <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] space-y-2 text-[13px]">
+            <div className="font-semibold text-[#171A1F]">
+              Internal Revenue Service (IRS) Official Switchboard:
             </div>
-            <div className="text-[16px] font-mono font-bold text-[#2D5BFF]">
-              1-800-829-1040
+            <div className="text-[18px] font-bold text-[#171A1F]">
+              <code>1-800-829-1040</code>
             </div>
-            <div className="text-[#6B7280]">
+            <div className="text-[#525860]">
               Official public line. Operating hours: Monday – Friday 7:00 a.m. to 7:00 p.m. local time.
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-[#E5E7EB]">
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#DFE2DF]">
             <Button variant="outline" size="sm" onClick={() => setShowVerifyModal(false)}>
               Cancel
             </Button>
@@ -398,19 +392,19 @@ export default function CustomerInterventionPage() {
         title="Consent to Alert Trusted Contact"
         subtitle="Emergency intervention support"
       >
-        <div className="space-y-4 text-[13px] text-[#4B5563]">
+        <div className="space-y-4 text-[14px] text-[#525860]">
           <p>
-            By confirming below, Scam Brake will dispatch an SMS notification to your registered advocate, <strong className="text-[#1E1E2A]">David Stephenson (Son)</strong>:
+            By confirming below, Scam Brake will dispatch an alert notification to your registered advocate, <strong className="text-[#171A1F]">David Stephenson (Son)</strong>:
           </p>
 
-          <div className="p-4 rounded-xl bg-[#F8F9FB] border border-[#E5E7EB] text-[12px] font-mono text-[#1E1E2A] space-y-1">
-            <div className="text-[11px] text-[#6B7280]">SMS PREVIEW:</div>
-            <p className="font-sans leading-relaxed">
+          <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-[13px] text-[#171A1F] space-y-1">
+            <div className="text-[12px] text-[#525860] font-medium">SMS Preview:</div>
+            <p className="font-sans leading-relaxed text-[#171A1F]">
               &quot;Alert from Scam Brake: A $1,500.00 gift card payment for Martha Stephenson has been paused under safety review. Please connect with Martha to ensure she is uncoerced.&quot;
             </p>
           </div>
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-[#E5E7EB]">
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#DFE2DF]">
             <Button variant="outline" size="sm" onClick={() => setShowContactModal(false)}>
               Cancel
             </Button>
@@ -420,7 +414,7 @@ export default function CustomerInterventionPage() {
               isLoading={isNotifyingContact}
               onClick={handleTrustedContactNotify}
             >
-              Grant Consent & Send SMS
+              Grant Consent &amp; Dispatch
             </Button>
           </div>
         </div>

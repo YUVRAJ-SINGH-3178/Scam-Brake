@@ -42,117 +42,117 @@ export const CommandPalette: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-[#171A1F]/40 backdrop-blur-[1px]"
       onClick={() => setOpen(false)}
     >
       <div
-        className="w-full max-w-xl bg-white border border-[#E5E7EB] rounded-xl shadow-2xl overflow-hidden"
+        className="w-full max-w-xl bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] shadow-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <Command label="Scam Brake Global Command Palette">
-          <div className="flex items-center px-4 border-b border-[#E5E7EB]">
-            <Search className="w-4 h-4 text-[#6B7280] mr-2.5 shrink-0" />
+        <Command label="Scam Brake Command Palette">
+          <div className="flex items-center px-4 border-b border-[#DFE2DF]">
+            <Search className="w-4 h-4 text-[#697078] mr-2.5 shrink-0" />
             <Command.Input
               autoFocus
-              placeholder="Type a command, page, payment reference, or customer..."
-              className="w-full h-12 text-[14px] bg-transparent outline-none text-[#1E1E2A] placeholder-[#9CA3AF]"
+              placeholder="Search authorizations, customer records, navigation..."
+              className="w-full h-12 text-[13px] bg-transparent outline-none text-[#171A1F] placeholder-[#697078]"
             />
-            <span className="text-[11px] font-mono text-[#9CA3AF] px-1.5 py-0.5 rounded border border-[#E5E7EB]">
+            <span className="text-[10px] font-mono text-[#697078] px-1.5 py-0.5 rounded-[3px] border border-[#DFE2DF]">
               ESC
             </span>
           </div>
 
           <Command.List className="max-h-80 overflow-y-auto p-2 text-[13px]">
-            <Command.Empty className="py-6 text-center text-[#6B7280]">
+            <Command.Empty className="py-6 text-center text-[12px] text-[#697078]">
               No matching records or actions found.
             </Command.Empty>
 
-            <Command.Group heading="Merchant Operations" className="text-[11px] font-semibold text-[#9CA3AF] px-2 py-1.5">
+            <Command.Group heading="Merchant Operations" className="text-[10px] font-mono uppercase tracking-wider text-[#697078] px-2 py-1.5">
               <Command.Item
                 onSelect={() => navigate('/merchant')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Home size={15} className="text-[#2D5BFF]" />
-                <span>Main Operations Dashboard</span>
+                <Home size={15} className="text-[#171A1F]" />
+                <span>Main Operations Overview</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/payments')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <CreditCard size={15} className="text-[#2D5BFF]" />
-                <span>Protected Payments Ledger (AG Grid)</span>
+                <CreditCard size={15} className="text-[#171A1F]" />
+                <span>Protected Payments Ledger</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/interventions')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <AlertTriangle size={15} className="text-[#F59E0B]" />
+                <AlertTriangle size={15} className="text-[#9A6700]" />
                 <span>Active Interventions Queue</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/risk-intelligence')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Shield size={15} className="text-[#2D5BFF]" />
-                <span>Risk Intelligence & Scam Taxonomy</span>
+                <Shield size={15} className="text-[#171A1F]" />
+                <span>Risk Intelligence & Threat Signals</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/simulator')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Cpu size={15} className="text-[#10B981]" />
-                <span>Risk Simulation Center</span>
+                <Cpu size={15} className="text-[#1A7A64]" />
+                <span>Simulation Center</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/analytics')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <BarChart3 size={15} className="text-[#2D5BFF]" />
-                <span>Analytics & Protection Efficacy</span>
+                <BarChart3 size={15} className="text-[#171A1F]" />
+                <span>Analytics & Efficacy</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/audit-log')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <FileText size={15} className="text-[#6B7280]" />
-                <span>Cryptographic Audit Trail</span>
+                <FileText size={15} className="text-[#697078]" />
+                <span>Audit Trail</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/merchant/policies')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Sliders size={15} className="text-[#6B7280]" />
+                <Sliders size={15} className="text-[#697078]" />
                 <span>Risk Policies & Hold Thresholds</span>
               </Command.Item>
             </Command.Group>
 
-            <Command.Group heading="Live Payments & Interventions" className="text-[11px] font-semibold text-[#9CA3AF] px-2 py-1.5 mt-2">
+            <Command.Group heading="Live Authorizations" className="text-[10px] font-mono uppercase tracking-wider text-[#697078] px-2 py-1.5 mt-2">
               {SEED_PAYMENTS.map((payment) => (
                 <Command.Item
                   key={payment.id}
                   onSelect={() => navigate(`/merchant/payments/${payment.id}`)}
-                  className="flex items-center justify-between px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                  className="flex items-center justify-between px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[12px] font-medium text-[#2D5BFF]">
+                    <span className="font-mono text-[12px] font-medium text-[#171A1F]">
                       {payment.paymentReference}
                     </span>
-                    <span className="text-[12px] text-[#4B5563]">
+                    <span className="text-[12px] text-[#171A1F]">
                       {payment.customer.name}
                     </span>
-                    <span className="text-[11px] text-[#9CA3AF]">
+                    <span className="text-[11px] text-[#697078]">
                       ({payment.productName})
                     </span>
                   </div>
                   <div className="flex items-center gap-2 font-mono text-[12px]">
-                    <span>${payment.amount.toFixed(2)}</span>
+                    <span className="tabular-nums">${payment.amount.toFixed(2)}</span>
                     <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-sans font-medium ${
+                      className={`text-[10px] px-1.5 py-0.2 rounded-[3px] font-mono ${
                         payment.riskLevel === 'CRITICAL'
-                          ? 'bg-[#EF4444]/10 text-[#DC2626]'
+                          ? 'bg-[#FDE8E8] text-[#C53030] border border-[#C53030]/20'
                           : payment.riskLevel === 'HIGH'
-                          ? 'bg-[#F59E0B]/10 text-[#D97706]'
-                          : 'bg-[#10B981]/10 text-[#059669]'
+                          ? 'bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20'
+                          : 'bg-[#EAF4F1] text-[#1A7A64] border border-[#1A7A64]/20'
                       }`}
                     >
                       {payment.riskLevel}
@@ -162,41 +162,48 @@ export const CommandPalette: React.FC = () => {
               ))}
             </Command.Group>
 
-            <Command.Group heading="Customer & Public Experience" className="text-[11px] font-semibold text-[#9CA3AF] px-2 py-1.5 mt-2">
+            <Command.Group heading="Customer & Public" className="text-[10px] font-mono uppercase tracking-wider text-[#697078] px-2 py-1.5 mt-2">
               <Command.Item
                 onSelect={() => navigate('/')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Home size={15} className="text-[#6B7280]" />
-                <span>Public Marketing Homepage</span>
+                <Home size={15} className="text-[#697078]" />
+                <span>Public Homepage</span>
               </Command.Item>
               <Command.Item
-                onSelect={() => navigate('/demo')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                onSelect={() => navigate('/how-it-works')}
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Cpu size={15} className="text-[#2D5BFF]" />
-                <span>Interactive Payment Protection Demo</span>
+                <FileText size={15} className="text-[#697078]" />
+                <span>How It Works</span>
+              </Command.Item>
+              <Command.Item
+                onSelect={() => navigate('/merchant-integration')}
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
+              >
+                <FileText size={15} className="text-[#697078]" />
+                <span>Merchant Integration Architecture</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/checkout')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <CreditCard size={15} className="text-[#6B7280]" />
-                <span>Customer Protected Checkout (Simulated)</span>
+                <CreditCard size={15} className="text-[#697078]" />
+                <span>Customer Checkout Sandbox</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/intervention')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Shield size={15} className="text-[#EF4444]" />
-                <span>Customer Scam Brake Intervention Screen</span>
+                <Shield size={15} className="text-[#9A6700]" />
+                <span>Customer Protection Check-in</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => navigate('/system-states')}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer hover:bg-[#F8F9FB] text-[#1E1E2A]"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[4px] cursor-pointer hover:bg-[#F6F6F3] text-[#171A1F]"
               >
-                <Lock size={15} className="text-[#8B5CF6]" />
-                <span>System States & Error Handling Gallery (12 States)</span>
+                <Lock size={15} className="text-[#697078]" />
+                <span>System States Matrix</span>
               </Command.Item>
             </Command.Group>
           </Command.List>

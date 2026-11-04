@@ -10,7 +10,7 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 export default function DemoPage() {
   return (
-    <div className="min-h-screen bg-[#0C0C14] text-[#EDEDF3] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased selection:bg-[#1A7A64]/15">
       <MarketingNav />
 
       <main className="flex-1 py-12 px-6 max-w-6xl mx-auto w-full space-y-8">
@@ -18,25 +18,25 @@ export default function DemoPage() {
           <div className="space-y-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-[12px] text-[rgba(237,237,243,0.6)] hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12px] text-[#697078] hover:text-[#171A1F] transition-colors"
             >
               <ArrowLeft size={13} />
               <span>Back to Overview</span>
             </Link>
-            <h1 className="text-3xl sm:text-4xl font-serif text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-[#171A1F] tracking-tight">
               Interactive Protection Simulator
             </h1>
-            <p className="text-[14px] text-[rgba(237,237,243,0.7)]">
-              Simulate customer checkout, PayPal authorization hold, AI-assisted verification, and deterministic void/capture resolution.
+            <p className="text-[14px] text-[#697078]">
+              Simulate customer checkout, PayPal authorization hold, verification check-in, and deterministic void/capture resolution.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <Link href="/checkout">
               <Button
-                variant="secondary"
+                variant="outline"
                 size="sm"
-                className="bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.14)] text-white border-[rgba(255,255,255,0.12)] text-[12px]"
+                className="text-[12px]"
               >
                 <span>Live Customer Checkout</span>
                 <ExternalLink size={12} />

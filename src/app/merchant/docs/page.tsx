@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AppShell } from '@/components/merchant/AppShell';
-import { Code2, Copy, Check, ExternalLink, Terminal, BookOpen, Layers } from 'lucide-react';
+import { Copy, Check, BookOpen } from 'lucide-react';
 
 interface Endpoint {
   method: 'POST' | 'GET' | 'DELETE';
@@ -101,47 +101,50 @@ export default function MerchantDocsPage() {
     <AppShell activeItem="/merchant/docs">
       <div className="space-y-6 max-w-5xl">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
-              Developer & API Documentation
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Integration
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+              API Specifications
             </h1>
-            <p className="text-sm text-[#6B7280] mt-1">
+            <p className="text-[13px] text-[#697078] mt-1">
               Technical integration contracts, REST endpoints, and PayPal authorization lifecycle hooks.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#6B7280] bg-[#FAFAFC] px-2.5 py-1 rounded border border-[#E5E7EB]">
-              OpenAPI 3.1 Spec (v1.4)
+            <span className="text-[11px] font-mono text-[#697078] bg-[#F6F6F3] px-2.5 py-1 rounded-[4px] border border-[#DFE2DF]">
+              OpenAPI 3.1 Spec
             </span>
           </div>
         </div>
 
         {/* Integration Architecture Overview */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-4">
-          <h2 className="text-base font-semibold text-[#1E1E2A] flex items-center gap-2">
-            <BookOpen size={16} className="text-[#2D5BFF]" />
-            How to Integrate with PayPal Checkout
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
+          <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
+            <BookOpen size={15} className="text-[#171A1F]" />
+            <span>How to Integrate with PayPal Checkout</span>
           </h2>
-          <p className="text-xs text-[#6B7280] leading-relaxed">
+          <p className="text-[12px] text-[#697078] leading-relaxed">
             In standard PayPal implementations, merchants create orders with `intent: CAPTURE`, which settles funds immediately.
-            To integrate Scam Brake, initialize your order with <strong className="text-[#1E1E2A] font-mono">intent: &apos;AUTHORIZE&apos;</strong>. When the customer approves the payment, call Scam Brake&apos;s evaluation endpoint before executing final capture.
+            To integrate Scam Brake, initialize your order with <strong className="text-[#171A1F] font-mono">intent: &apos;AUTHORIZE&apos;</strong>. When the customer approves the payment, call Scam Brake&apos;s evaluation endpoint before executing final capture.
           </p>
 
-          <div className="bg-[#1E1E2A] text-[#FAFAFC] p-4 rounded font-mono text-xs overflow-x-auto">
-            <span className="text-[#6B7280] block">// PayPal JS SDK Button Implementation</span>
+          <div className="bg-[#171A1F] text-[#F6F6F3] p-4 rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
+            <span className="text-[#697078] block">// PayPal JS SDK Button Implementation</span>
             <span className="text-[#93C5FD]">paypal.Buttons</span>(&#123;{'\n'}
             {'  '}<span className="text-[#6EE7B7]">createOrder</span>: (data, actions) =&gt; &#123;{'\n'}
             {'    '}return actions.order.create(&#123;{'\n'}
-            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#6B7280]">// Essential: enables pre-capture safety hold</span>{'\n'}
+            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#697078]">// Enables pre-capture hold</span>{'\n'}
             {'      '}purchase_units: [&#123; amount: &#123; value: cart.total &#125; &#125;]{'\n'}
             {'    '}&#125;);{'\n'}
             {'  '}&#125;,{'\n'}
             {'  '}<span className="text-[#6EE7B7]">onApprove</span>: async (data, actions) =&gt; &#123;{'\n'}
-            {'    '}<span className="text-[#6B7280]">// 1. Customer authorized hold in PayPal popup</span>{'\n'}
+            {'    '}<span className="text-[#697078]">// 1. Customer authorized hold in PayPal popup</span>{'\n'}
             {'    '}const authorization = await actions.order.authorize();{'\n'}
-            {'    '}<span className="text-[#6B7280]">// 2. Post authorization to Scam Brake for risk evaluation</span>{'\n'}
+            {'    '}<span className="text-[#697078]">// 2. Post authorization to Scam Brake for risk evaluation</span>{'\n'}
             {'    '}const check = await fetch(&apos;/api/scambrake/evaluate&apos;, &#123; ... &#125;);{'\n'}
             {'  '}&#125;{'\n'}
             &#125;);
@@ -150,17 +153,17 @@ export default function MerchantDocsPage() {
 
         {/* REST API Endpoints Explorer */}
         <div className="space-y-4">
-          <h2 className="text-base font-semibold text-[#1E1E2A]">REST API Endpoints</h2>
+          <h2 className="text-[14px] font-semibold text-[#171A1F]">REST API Endpoints</h2>
 
-          <div className="flex flex-col sm:flex-row gap-2 border-b border-[#E5E7EB] pb-2">
+          <div className="flex flex-col sm:flex-row gap-2 border-b border-[#DFE2DF] pb-2">
             {ENDPOINTS.map((ep) => (
               <button
                 key={ep.path}
                 onClick={() => setSelectedEndpoint(ep)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded text-xs transition-colors ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-[6px] text-[12px] transition-colors cursor-pointer ${
                   selectedEndpoint.path === ep.path
-                    ? 'bg-[#2D5BFF] text-white font-medium'
-                    : 'bg-[#FFFFFF] border border-[#E5E7EB] text-[#1E1E2A] hover:bg-[#FAFAFC]'
+                    ? 'bg-[#171A1F] text-white font-medium'
+                    : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] hover:bg-[#F6F6F3]'
                 }`}
               >
                 <span className="font-mono text-[10px] font-bold opacity-80">{ep.method}</span>
@@ -170,42 +173,42 @@ export default function MerchantDocsPage() {
           </div>
 
           {/* Endpoint Details */}
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+          <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF]">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-[#2D5BFF]/10 text-[#2D5BFF]">
+                  <span className="px-2 py-0.5 rounded-[3px] text-[10px] font-mono font-bold bg-[#F6F6F3] border border-[#DFE2DF] text-[#171A1F]">
                     {selectedEndpoint.method}
                   </span>
-                  <span className="font-mono text-sm font-semibold text-[#1E1E2A]">
+                  <span className="font-mono text-[13px] font-semibold text-[#171A1F]">
                     {selectedEndpoint.path}
                   </span>
                 </div>
-                <p className="text-xs text-[#6B7280] mt-1">{selectedEndpoint.description}</p>
+                <p className="text-[12px] text-[#697078] mt-1">{selectedEndpoint.description}</p>
               </div>
             </div>
 
             {selectedEndpoint.requestBody && (
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#6B7280]">
-                  <span>Request JSON Payload</span>
+                <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+                  <span>Request Payload</span>
                   <button
                     onClick={() => copyCode(selectedEndpoint.requestBody!)}
-                    className="inline-flex items-center gap-1 text-[11px] text-[#2D5BFF] hover:underline"
+                    className="inline-flex items-center gap-1 text-[11px] text-[#171A1F] hover:underline cursor-pointer"
                   >
-                    {copied ? <Check size={12} /> : <Copy size={12} />}
+                    {copied ? <Check size={11} /> : <Copy size={11} />}
                     <span>{copied ? 'Copied' : 'Copy'}</span>
                   </button>
                 </div>
-                <pre className="p-3 bg-[#1E1E2A] text-[#FAFAFC] rounded font-mono text-xs overflow-x-auto">
+                <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[11px] overflow-x-auto leading-relaxed">
                   {selectedEndpoint.requestBody}
                 </pre>
               </div>
             )}
 
             <div className="space-y-2">
-              <div className="text-xs font-semibold text-[#6B7280]">Response JSON Schema (200 OK)</div>
-              <pre className="p-3 bg-[#1E1E2A] text-[#FAFAFC] rounded font-mono text-xs overflow-x-auto">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">Response Schema (200 OK)</div>
+              <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[11px] overflow-x-auto leading-relaxed">
                 {selectedEndpoint.responseBody}
               </pre>
             </div>

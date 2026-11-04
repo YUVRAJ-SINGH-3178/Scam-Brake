@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, XCircle, AlertCircle, Clock, ShieldAlert } from 'lucide-react';
+import { Clock, Check } from 'lucide-react';
 import { AuthorizationStatus, InterventionStatus } from '@/types';
 
 export type PathStage =
@@ -44,28 +44,26 @@ export const AuthorizationPath: React.FC<AuthorizationPathProps> = ({
     else resolvedStage = 'AUTHORIZED';
   }
   const effectiveStage = resolvedStage || 'REVIEW';
-  const isMarketing = variant === 'marketing';
-  const isCustomer = variant === 'customer';
 
   const stages: {
     key: PathStage;
+    step: string;
     label: string;
     sublabel: string;
     state: 'completed' | 'active' | 'upcoming' | 'resolved';
   }[] = [
     {
       key: 'CHECKOUT',
-      label: 'Merchant Checkout',
-      sublabel: 'Customer initiates PayPal',
-      state:
-        effectiveStage === 'CHECKOUT'
-          ? 'active'
-          : 'completed',
+      step: '1',
+      label: 'Checkout',
+      sublabel: 'Customer initiates PayPal order',
+      state: effectiveStage === 'CHECKOUT' ? 'active' : 'completed',
     },
     {
       key: 'AUTHORIZED',
-      label: 'PayPal Authorization',
-      sublabel: 'Funds held, uncaptured',
+      step: '2',
+      label: 'Authorized',
+      sublabel: 'Temporary hold placed, uncaptured',
       state:
         effectiveStage === 'CHECKOUT'
           ? 'upcoming'
@@ -75,24 +73,27 @@ export const AuthorizationPath: React.FC<AuthorizationPathProps> = ({
     },
     {
       key: 'REVIEW',
-      label: 'Scam Brake Verification',
-      sublabel: 'AI context evaluation',
+      step: '3',
+      label: 'Verify',
+      sublabel: 'AI-guided coercion assessment',
       state:
         effectiveStage === 'CHECKOUT' || effectiveStage === 'AUTHORIZED'
           ? 'upcoming'
-          : effectiveStage === 'REVIEW'
+          : effectiveStage === 'REVIEW' || effectiveStage === 'CUSTOMER_DECISION'
           ? 'active'
           : 'completed',
     },
     {
-      key: 'CUSTOMER_DECISION',
-      label: 'Customer Decision',
-      sublabel: 'Independent validation',
+      key: effectiveStage === 'VOID' ? 'VOID' : 'CAPTURE',
+      step: '4',
+      label: effectiveStage === 'VOID' ? 'Pre-Capture Void' : 'Final Capture',
+      sublabel:
+        effectiveStage === 'VOID'
+          ? 'Hold terminated, $0 dispute fee'
+          : 'Funds captured to merchant settlement',
       state:
-        effectiveStage === 'CUSTOMER_DECISION'
-          ? 'active'
-          : effectiveStage === 'CAPTURE' || effectiveStage === 'VOID'
-          ? 'completed'
+        effectiveStage === 'CAPTURE' || effectiveStage === 'VOID'
+          ? 'resolved'
           : 'upcoming',
     },
   ];
@@ -102,155 +103,109 @@ export const AuthorizationPath: React.FC<AuthorizationPathProps> = ({
 
   return (
     <div
-      className={`rounded-xl border ${
-        isMarketing
-          ? 'bg-[#11121C] border-[rgba(255,255,255,0.12)] text-[#EDEDF3]'
-          : 'bg-[#FFFFFF] border-[#E5E7EB] text-[#1E1E2A]'
-      } p-5 ${className}`}
-      aria-label="The Authorization Path Lifecycle Diagram"
+      data-ui="true"
+      className={`bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 text-[#171A1F] ${className}`}
+      aria-label="Payment Authorization Lifecycle Protocol"
     >
-      {/* Header bar of the motif */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E5E7EB] dark:border-[rgba(255,255,255,0.08)] mb-5">
+      {/* Protocol Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#DFE2DF] mb-5 text-[13px]">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-semibold tracking-wider uppercase text-[#2D5BFF]">
-            The Authorization Path
+          <span className="font-semibold text-[#171A1F] tracking-tight">
+            Authorization Protocol
           </span>
-          <span className="text-[#6B7280] text-[12px]">•</span>
-          <span className="text-[13px] text-[#6B7280]">
-            Pre-capture verification protocol
+          <span className="text-[#525860]">•</span>
+          <span className="text-[#525860] text-[13px]">
+            Pre-capture hold &amp; verification window
           </span>
         </div>
 
-        {amount && (
-          <div className="flex items-center gap-3">
-            <span className="text-[13px] font-medium text-[#6B7280]">Target Hold:</span>
-            <span className="font-mono text-[14px] font-semibold text-[#1E1E2A] dark:text-[#EDEDF3]">
-              ${amount.toFixed(2)} {currency}
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {amount && (
+            <div className="flex items-center gap-1.5 text-[13px]">
+              <span className="text-[#525860]">Held Amount:</span>
+              <span className="font-semibold text-[#171A1F] tabular-nums">
+                <code>${amount.toFixed(2)}</code> {currency}
+              </span>
+            </div>
+          )}
 
-        {holdSecondsRemaining !== undefined && holdSecondsRemaining > 0 && (
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-[#F59E0B]/10 border border-[#F59E0B]/20 text-[#F59E0B] text-[12px] font-medium">
-            <Clock size={13} />
-            <span>Hold Window: {Math.floor(holdSecondsRemaining / 3600)}h {Math.floor((holdSecondsRemaining % 3600) / 60)}m remaining</span>
-          </div>
-        )}
+          {holdSecondsRemaining !== undefined && holdSecondsRemaining > 0 && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#FAF2E4] border border-[#784D00]/25 text-[#784D00] text-[12px] font-medium">
+              <Clock size={13} />
+              <span>
+                <code>{Math.floor(holdSecondsRemaining / 60)}m</code> window remaining
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* The Linear Progression */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 relative mb-6">
+      {/* Horizontal Flow Line */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 relative mb-5">
         {stages.map((st, idx) => {
           const isActive = st.state === 'active';
           const isDone = st.state === 'completed';
+          const isResolved = st.state === 'resolved';
+
+          let borderClass = 'border-[#DFE2DF] bg-[#FFFFFF]';
+          let indicatorClass = 'bg-[#DFE2DF] text-[#525860]';
+
+          if (isActive) {
+            borderClass = 'border-[#171A1F] bg-[#F6F6F3]';
+            indicatorClass = 'bg-[#171A1F] text-[#FFFFFF]';
+          } else if (isDone) {
+            borderClass = 'border-[#DFE2DF] bg-[#FFFFFF]';
+            indicatorClass = 'bg-[#EAF4F1] text-[#1A7A64] border border-[#1A7A64]/30';
+          } else if (isResolved) {
+            if (isVoid) {
+              borderClass = 'border-[#C53030]/40 bg-[#FDE8E8]/40';
+              indicatorClass = 'bg-[#C53030] text-[#FFFFFF]';
+            } else {
+              borderClass = 'border-[#1A7A64]/40 bg-[#EAF4F1]/40';
+              indicatorClass = 'bg-[#1A7A64] text-[#FFFFFF]';
+            }
+          }
 
           return (
             <div
               key={st.key}
               onClick={() => interactive && onSelectStage?.(st.key)}
-              className={`relative p-3.5 rounded-lg border transition-all ${
-                interactive ? 'cursor-pointer hover:border-[#2D5BFF]' : ''
-              } ${
-                isActive
-                  ? 'bg-[#2D5BFF]/5 border-[#2D5BFF] ring-1 ring-[#2D5BFF]/30'
-                  : isDone
-                  ? isMarketing
-                    ? 'bg-[#191A26] border-[rgba(255,255,255,0.1)]'
-                    : 'bg-[#F8F9FB] border-[#E5E7EB]'
-                  : isMarketing
-                  ? 'bg-[#11121C] border-[rgba(255,255,255,0.06)] opacity-60'
-                  : 'bg-[#FFFFFF] border-[#E5E7EB] opacity-60'
+              className={`p-3.5 rounded-[6px] border transition-colors ${borderClass} ${
+                interactive ? 'cursor-pointer hover:border-[#171A1F]' : ''
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-mono font-medium text-[#6B7280]">
-                  0{idx + 1}
+                <span
+                  className={`w-5 h-5 rounded-[3px] text-[11px] font-semibold flex items-center justify-center ${indicatorClass}`}
+                >
+                  {isDone ? <Check size={11} strokeWidth={2.5} /> : <code>{st.step}</code>}
                 </span>
-                {isDone ? (
-                  <CheckCircle2 size={16} className="text-[#10B981]" />
-                ) : isActive ? (
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#2D5BFF] animate-pulse" />
-                ) : (
-                  <div className="w-2 h-2 rounded-full bg-[#E5E7EB] dark:bg-[rgba(255,255,255,0.2)]" />
-                )}
+
+                <span className="text-[11px] font-medium text-[#525860]">
+                  {isActive ? 'ACTIVE STAGE' : isDone ? 'VERIFIED' : isResolved ? 'TERMINAL' : 'PENDING'}
+                </span>
               </div>
-              <div className="font-medium text-[13px] leading-tight mb-1">
-                {st.label}
-              </div>
-              <div className="text-[11px] text-[#6B7280] leading-normal">
-                {st.sublabel}
-              </div>
+
+              <div className="text-[13px] font-semibold text-[#171A1F]">{st.label}</div>
+              <div className="text-[12px] text-[#525860] leading-normal mt-0.5">{st.sublabel}</div>
             </div>
           );
         })}
       </div>
 
-      {/* Outcome Resolution Fork (Capture vs Void) */}
-      <div className="pt-4 border-t border-[#E5E7EB] dark:border-[rgba(255,255,255,0.08)]">
-        <div className="text-[12px] text-[#6B7280] mb-3 font-medium">
-          Verified Resolution Stage (One of Two Deterministic Outcomes):
+      {/* Terminal Outcome Specification Footer */}
+      <div className="pt-3.5 border-t border-[#DFE2DF] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px] text-[#525860]">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#1A7A64]" />
+          <span>
+            Intent: <strong className="text-[#171A1F]"><code>AUTHORIZE</code></strong> (no funds captured prior to verified customer volition)
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Outcome 1: Safe Void (Cancellation) */}
-          <div
-            className={`p-3.5 rounded-lg border flex items-start gap-3 ${
-              isVoid
-                ? 'bg-[#EF4444]/10 border-[#EF4444] ring-1 ring-[#EF4444]/40'
-                : isMarketing
-                ? 'bg-[#11121C] border-[rgba(255,255,255,0.08)] opacity-70'
-                : 'bg-[#FAFAFC] border-[#E5E7EB] opacity-70'
-            }`}
-          >
-            <div className="w-7 h-7 rounded-md bg-[#EF4444]/15 flex items-center justify-center text-[#EF4444] shrink-0 mt-0.5">
-              <XCircle size={17} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[13px] font-semibold text-[#EF4444]">
-                  VOID AUTHORIZATION
-                </span>
-                {isVoid && (
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#EF4444] text-white">
-                    RESOLVED
-                  </span>
-                )}
-              </div>
-              <p className="text-[12px] text-[#6B7280] mt-1 leading-relaxed">
-                Coercion or impersonation identified. Authorization is canceled. Zero funds captured. Buyer credit restored instantly.
-              </p>
-            </div>
-          </div>
-
-          {/* Outcome 2: Legitimate Capture */}
-          <div
-            className={`p-3.5 rounded-lg border flex items-start gap-3 ${
-              isCapture
-                ? 'bg-[#10B981]/10 border-[#10B981] ring-1 ring-[#10B981]/40'
-                : isMarketing
-                ? 'bg-[#11121C] border-[rgba(255,255,255,0.08)] opacity-70'
-                : 'bg-[#FAFAFC] border-[#E5E7EB] opacity-70'
-            }`}
-          >
-            <div className="w-7 h-7 rounded-md bg-[#10B981]/15 flex items-center justify-center text-[#10B981] shrink-0 mt-0.5">
-              <CheckCircle2 size={17} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[13px] font-semibold text-[#10B981]">
-                  CAPTURE AUTHORIZATION
-                </span>
-                {isCapture && (
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#10B981] text-white">
-                    RESOLVED
-                  </span>
-                )}
-              </div>
-              <p className="text-[12px] text-[#6B7280] mt-1 leading-relaxed">
-                Independent check verified legitimate purchase intent. Merchant executes PayPal Capture call. Order fulfilled securely.
-              </p>
-            </div>
-          </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[#1A7A64]">Dispute Exposure: $0.00</span>
+          <span>•</span>
+          <span>Chargeback Mark: None</span>
         </div>
       </div>
     </div>

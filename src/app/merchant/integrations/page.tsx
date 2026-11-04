@@ -8,13 +8,7 @@ import {
   Plug,
   CheckCircle2,
   ExternalLink,
-  Activity,
   Send,
-  RefreshCw,
-  Cpu,
-  Layers,
-  Shield,
-  Search,
 } from 'lucide-react';
 
 export default function MerchantIntegrationsPage() {
@@ -35,27 +29,30 @@ export default function MerchantIntegrationsPage() {
     <AppShell activeItem="/merchant/integrations">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
-              Partner & Sponsor Integrations
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Ecosystem
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+              Partner & Sponsor Connectors
             </h1>
-            <p className="text-sm text-[#6B7280] mt-1">
-              Active technology connectors powering Scam Brake's pre-capture authorization protection architecture.
+            <p className="text-[13px] text-[#697078] mt-1">
+              Active technology connectors powering Scam Brake&apos;s pre-capture authorization protection architecture.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#059669] bg-[#10B981]/10 px-2.5 py-1 rounded border border-[#10B981]/20 flex items-center gap-1.5 font-medium">
+            <span className="text-[11px] font-mono text-[#1A7A64] bg-[#EAF4F1] px-2.5 py-1 rounded-[4px] border border-[#1A7A64]/20 flex items-center gap-1.5 font-medium">
               <CheckCircle2 size={13} />
-              11 / 11 Services Operational
+              <span>11 / 11 Services Operational</span>
             </span>
           </div>
         </div>
 
         {testSuccess && (
-          <div className="bg-[#10B981]/10 border border-[#10B981]/30 text-[#059669] px-4 py-2.5 rounded text-sm flex items-center gap-2">
-            <CheckCircle2 size={16} />
+          <div className="bg-[#EAF4F1] border border-[#1A7A64]/30 text-[#1A7A64] px-4 py-2.5 rounded-[6px] text-[13px] flex items-center gap-2">
+            <CheckCircle2 size={15} />
             <span>{testSuccess}</span>
           </div>
         )}
@@ -65,30 +62,30 @@ export default function MerchantIntegrationsPage() {
           {sponsors.map((s) => (
             <div
               key={s.id}
-              className="bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] rounded p-5 flex flex-col justify-between transition-colors space-y-4"
+              className="bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F]/30 rounded-[6px] p-5 flex flex-col justify-between transition-colors space-y-4"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-sm text-[#1E1E2A]">{s.name}</span>
+                  <span className="font-semibold text-[13px] text-[#171A1F]">{s.name}</span>
                   <span
-                    className={`font-mono text-[10px] px-2 py-0.5 rounded font-medium ${
+                    className={`font-mono text-[10px] px-1.5 py-0.2 rounded-[3px] font-medium ${
                       s.status === 'CONNECTED'
-                        ? 'bg-[#10B981]/10 text-[#059669] border border-[#10B981]/20'
-                        : 'bg-[#FEF3C7] text-[#92400E] border border-[#F59E0B]/30'
+                        ? 'bg-[#EAF4F1] text-[#1A7A64] border border-[#1A7A64]/20'
+                        : 'bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20'
                     }`}
                   >
                     {s.status}
                   </span>
                 </div>
 
-                <div className="font-mono text-[11px] text-[#2D5BFF]">{s.role || s.category}</div>
-                <p className="text-xs text-[#6B7280] leading-relaxed">{s.description || s.purpose}</p>
+                <div className="font-mono text-[10px] uppercase tracking-wider text-[#697078]">{s.role || s.category}</div>
+                <p className="text-[12px] text-[#697078] leading-relaxed">{s.description || s.purpose}</p>
               </div>
 
-              <div className="space-y-3 pt-3 border-t border-[#E5E7EB]">
-                <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
+              <div className="space-y-3 pt-3 border-t border-[#DFE2DF]">
+                <div className="flex items-center justify-between text-[11px] text-[#697078]">
                   <span>Telemetry Latency</span>
-                  <span className="font-mono text-[#1E1E2A] font-medium">{s.latencyMs || 18}ms</span>
+                  <span className="font-mono text-[#171A1F] font-medium tabular-nums">{s.latencyMs || 18}ms</span>
                 </div>
 
                 <div className="flex items-center justify-between gap-2 pt-1">
@@ -96,7 +93,7 @@ export default function MerchantIntegrationsPage() {
                     href={s.docsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] text-[#6B7280] hover:text-[#1E1E2A]"
+                    className="inline-flex items-center gap-1 text-[11px] text-[#697078] hover:text-[#171A1F]"
                   >
                     <span>Developer Docs</span>
                     <ExternalLink size={11} />
@@ -105,11 +102,11 @@ export default function MerchantIntegrationsPage() {
                   <button
                     onClick={() => handleTestWebhook(s.id, s.name)}
                     disabled={testingId === s.id}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#FAFAFC] border border-[#E5E7EB] hover:bg-[#FFFFFF] text-[11px] font-medium text-[#1E1E2A] rounded transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#F6F6F3] border border-[#DFE2DF] hover:bg-[#FFFFFF] text-[11px] font-medium text-[#171A1F] rounded-[4px] transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {testingId === s.id ? (
                       <>
-                        <div className="w-2.5 h-2.5 border border-[#2D5BFF] border-t-transparent rounded-full animate-spin" />
+                        <div className="w-2.5 h-2.5 border border-[#171A1F] border-t-transparent rounded-full animate-spin" />
                         <span>Pinging...</span>
                       </>
                     ) : (

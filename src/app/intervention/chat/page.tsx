@@ -9,15 +9,10 @@ import {
   ArrowLeft,
   PhoneCall,
   UserCheck,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
   Clock,
 } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
-import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 import { mockStore } from '@/services';
-import { toast } from 'sonner';
 
 function CustomerInterventionChatContent() {
   const router = useRouter();
@@ -63,30 +58,30 @@ function CustomerInterventionChatContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased">
       {/* Top Header */}
-      <header className="h-14 bg-[#FFFFFF] border-b border-[#E5E7EB] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <Link href="/intervention" className="text-[#6B7280] hover:text-[#1E1E2A] p-1">
+          <Link href="/intervention" className="text-[#697078] hover:text-[#171A1F] p-1">
             <ArrowLeft size={16} />
           </Link>
           <div className="flex items-center gap-2">
             <ScamBrakeMark size={24} />
-            <span className="font-semibold text-sm tracking-tight">
-              SCAM<span className="text-[#2D5BFF]">BRAKE</span>
+            <span className="font-semibold text-[14px] tracking-tight text-[#171A1F]">
+              SCAM BRAKE
             </span>
-            <span className="text-xs text-[#6B7280] border-l border-[#E5E7EB] pl-2 font-mono">
-              CONFIDENTIAL SAFETY INQUIRY
+            <span className="text-[11px] text-[#697078] border-l border-[#DFE2DF] pl-2 font-mono">
+              SAFETY INQUIRY
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-xs">
-          <span className="font-mono text-[#6B7280]">
-            Order Ref: {payment.paymentReference}
+        <div className="flex items-center gap-3 text-[12px]">
+          <span className="font-mono text-[11px] text-[#697078]">
+            Ref: {payment.paymentReference}
           </span>
-          <span className="bg-[#FEF3C7] text-[#92400E] border border-[#F59E0B]/30 font-mono px-2 py-0.5 rounded text-[11px] font-semibold flex items-center gap-1">
-            <Clock size={12} />
+          <span className="bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20 font-mono px-2 py-0.5 rounded-[4px] text-[11px] font-semibold flex items-center gap-1">
+            <Clock size={11} />
             Funds Held
           </span>
         </div>
@@ -95,10 +90,10 @@ function CustomerInterventionChatContent() {
       {/* Main Chat Flow */}
       <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 flex flex-col justify-between space-y-4">
         {/* Reassurance Banner */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-4 text-xs text-[#6B7280] space-y-1">
-          <div className="font-semibold text-[#1E1E2A] flex items-center gap-1.5">
-            <ShieldAlert size={14} className="text-[#2D5BFF]" />
-            Your ${payment.amount.toFixed(2)} payment has not been captured yet.
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-4 text-[12px] text-[#697078] space-y-1">
+          <div className="font-semibold text-[#171A1F] flex items-center gap-1.5 text-[13px]">
+            <ShieldAlert size={14} className="text-[#9A6700]" />
+            <span>Your ${payment.amount.toFixed(2)} payment has not been transferred.</span>
           </div>
           <p className="leading-relaxed">
             PayPal has temporarily authorized this hold so that you can verify this transaction in complete privacy. No money will leave your account without your explicit confirmation.
@@ -114,15 +109,15 @@ function CustomerInterventionChatContent() {
                 msg.sender === 'CUSTOMER' ? 'items-end' : 'items-start'
               }`}
             >
-              <div className="text-[11px] text-[#6B7280] mb-1 font-mono">
-                {msg.sender === 'CUSTOMER' ? 'You' : 'Scam Brake Safety AI'} •{' '}
+              <div className="text-[10px] text-[#697078] mb-1 font-mono">
+                {msg.sender === 'CUSTOMER' ? 'You' : 'Scam Brake Assistant'} •{' '}
                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
               <div
-                className={`max-w-lg p-4 rounded text-xs leading-relaxed ${
+                className={`max-w-lg p-3.5 rounded-[6px] text-[13px] leading-relaxed ${
                   msg.sender === 'CUSTOMER'
-                    ? 'bg-[#2D5BFF] text-white shadow-xs'
-                    : 'bg-[#FFFFFF] border border-[#E5E7EB] text-[#1E1E2A]'
+                    ? 'bg-[#171A1F] text-white'
+                    : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F]'
                 }`}
               >
                 {msg.content}
@@ -134,7 +129,7 @@ function CustomerInterventionChatContent() {
                     <button
                       key={i}
                       onClick={() => handleSendMessage(reply)}
-                      className="text-xs bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#2D5BFF] hover:text-[#2D5BFF] text-[#1E1E2A] px-3 py-1.5 rounded transition-colors"
+                      className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F] text-[#171A1F] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer"
                     >
                       {reply}
                     </button>
@@ -146,23 +141,23 @@ function CustomerInterventionChatContent() {
         </div>
 
         {/* Chat Input & External Tools */}
-        <div className="space-y-3 pt-2 border-t border-[#E5E7EB]">
+        <div className="space-y-3 pt-2 border-t border-[#DFE2DF]">
           {/* Quick Verification Actions */}
-          <div className="flex flex-wrap gap-2 text-xs">
+          <div className="flex flex-wrap gap-2 text-[12px]">
             <Link
               href={`/intervention/verify?paymentId=${payment.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] hover:bg-[#FAFAFC] text-[#1E1E2A] rounded transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[#171A1F] rounded-[4px] transition-colors"
             >
-              <PhoneCall size={13} className="text-[#2D5BFF]" />
-              <span>Independent Directory Verification</span>
+              <PhoneCall size={13} className="text-[#171A1F]" />
+              <span>Independent Directory Check</span>
             </Link>
 
             <Link
               href={`/intervention/trusted-contact?paymentId=${payment.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] hover:bg-[#FAFAFC] text-[#1E1E2A] rounded transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[#171A1F] rounded-[4px] transition-colors"
             >
-              <UserCheck size={13} className="text-[#059669]" />
-              <span>Consult Registered Trusted Contact</span>
+              <UserCheck size={13} className="text-[#1A7A64]" />
+              <span>Consult Registered Contact</span>
             </Link>
           </div>
 
@@ -176,20 +171,20 @@ function CustomerInterventionChatContent() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleSendMessage();
               }}
-              className="flex-1 bg-[#FFFFFF] border border-[#E5E7EB] rounded px-3.5 py-2.5 text-xs text-[#1E1E2A] focus:outline-hidden focus:border-[#2D5BFF]"
+              className="flex-1 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] px-3.5 py-2.5 text-[13px] text-[#171A1F] focus:outline-none focus:border-[#171A1F]"
             />
             <button
               onClick={() => handleSendMessage()}
               disabled={!inputValue.trim()}
-              className="p-2.5 bg-[#2D5BFF] text-white rounded hover:bg-[#2044C8] transition-colors disabled:opacity-40"
+              className="p-2.5 bg-[#171A1F] text-white rounded-[6px] hover:bg-[#2B303A] transition-colors disabled:opacity-40 cursor-pointer"
             >
-              <Send size={15} />
+              <Send size={14} />
             </button>
           </div>
 
           {/* Resolution Decisions */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-[11px] text-[#6B7280]">
+            <span className="text-[11px] text-[#697078]">
               Ready to decide? You have total control over this authorization hold.
             </span>
 
@@ -197,14 +192,14 @@ function CustomerInterventionChatContent() {
               <button
                 onClick={handleVoidPayment}
                 disabled={isResolving}
-                className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#DC2626]/40 text-[#DC2626] hover:bg-[#FEF2F2] text-xs font-medium rounded transition-colors"
+                className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] hover:bg-[#FDE8E8] text-[12px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
                 Cancel & Void Payment ($0 fee)
               </button>
               <button
                 onClick={handleProceedPayment}
                 disabled={isResolving}
-                className="flex-1 sm:flex-none px-4 py-2 bg-[#2D5BFF] text-white hover:bg-[#2044C8] text-xs font-medium rounded transition-colors"
+                className="flex-1 sm:flex-none px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[12px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
                 Confirm & Capture Payment
               </button>
@@ -220,8 +215,8 @@ export default function CustomerInterventionChatPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFC] flex items-center justify-center p-6">
-          <div className="text-xs text-[#6B7280]">Connecting secure safety dialogue...</div>
+        <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
+          <div className="text-xs font-mono text-[#697078]">Connecting safety check-in...</div>
         </div>
       }
     >

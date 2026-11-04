@@ -55,3 +55,4 @@ This matrix enumerates all application routes, user states, loading states, empt
 10. **Empty Ledger Data:** Rendered in `PaymentTable` with a clean prompt to adjust filters.
 11. **Telemetry Loading State:** High-precision pulse bar during risk scan (<800ms).
 12. **Service Maintenance (503):** Status page link with fail-safe PayPal authorization hold preserving funds.
+

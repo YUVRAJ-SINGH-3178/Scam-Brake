@@ -1,53 +1,53 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle2, XCircle, ArrowRight, Home, FileText, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, FileText } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { Button } from '@/components/ui/Button';
 import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 
 function InterventionResolvedContent() {
   const searchParams = useSearchParams();
-  const outcome = searchParams.get('outcome') || 'void';
-  const isVoid = outcome === 'void';
+  const outcome = searchParams.get('outcome') || searchParams.get('action') || 'void';
+  const isVoid = outcome === 'void' || outcome === 'voided';
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col antialiased">
-      <header className="h-16 bg-white border-b border-[#E5E7EB] px-6 flex items-center justify-between">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <ScamBrakeMark size={30} />
-          <span className="font-semibold text-[15px] tracking-tight">
-            SCAM<span className="text-[#2D5BFF] ml-0.5">BRAKE</span>
+          <ScamBrakeMark size={24} />
+          <span className="font-semibold text-[14px] tracking-tight text-[#171A1F]">
+            SCAM BRAKE
           </span>
         </div>
-        <div className="text-[12px] text-[#6B7280]">
-          Resolution Outcome Confirmation
+        <div className="text-[11px] font-mono text-[#697078]">
+          OUTCOME CONFIRMATION
         </div>
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto w-full p-6 py-12 space-y-6">
-        <div className="bg-white border border-[#E5E7EB] rounded-2xl p-8 space-y-6 text-center">
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 space-y-6 text-center">
           <div className="flex justify-center">
             {isVoid ? (
-              <div className="w-14 h-14 rounded-full bg-[#EF4444]/15 text-[#EF4444] flex items-center justify-center">
-                <XCircle size={32} />
+              <div className="w-12 h-12 rounded-full bg-[#FDE8E8] text-[#C53030] flex items-center justify-center border border-[#C53030]/20">
+                <XCircle size={24} />
               </div>
             ) : (
-              <div className="w-14 h-14 rounded-full bg-[#10B981]/15 text-[#10B981] flex items-center justify-center">
-                <CheckCircle2 size={32} />
+              <div className="w-12 h-12 rounded-full bg-[#EAF4F1] text-[#1A7A64] flex items-center justify-center border border-[#1A7A64]/20">
+                <CheckCircle2 size={24} />
               </div>
             )}
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-semibold text-[#1E1E2A]">
+            <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
               {isVoid
                 ? 'Payment Safely Canceled'
                 : 'Payment Verified & Captured'}
             </h1>
-            <p className="text-[14px] text-[#6B7280] leading-relaxed max-w-md mx-auto">
+            <p className="text-[13px] text-[#697078] leading-relaxed max-w-md mx-auto">
               {isVoid
                 ? 'The PayPal authorization hold has been voided. Zero funds were captured or transferred. Your account balance remains completely intact.'
                 : 'Your confirmation has been recorded. Merchant capture has completed and your order is proceeding normally.'}
@@ -63,18 +63,18 @@ function InterventionResolvedContent() {
             />
           </div>
 
-          <div className="p-4 rounded-xl bg-[#FAFAFC] border border-[#E5E7EB] text-left text-[12px] space-y-2">
+          <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-left text-[12px] space-y-2">
             <div className="flex justify-between">
-              <span className="text-[#6B7280]">PayPal Authorization Reference:</span>
-              <span className="font-mono text-[#1E1E2A]">AUTH-HLD-99120</span>
+              <span className="text-[#697078]">PayPal Authorization Reference:</span>
+              <span className="font-mono text-[#171A1F]">AUTH-HLD-99120</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6B7280]">Resolution Timestamp:</span>
-              <span className="text-[#1E1E2A]">{new Date().toLocaleString()}</span>
+              <span className="text-[#697078]">Resolution Timestamp:</span>
+              <span className="text-[#171A1F]">{new Date().toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6B7280]">Final Financial Debit:</span>
-              <span className="font-mono font-bold text-[#1E1E2A]">
+              <span className="text-[#697078]">Final Financial Debit:</span>
+              <span className="font-mono font-semibold text-[#171A1F] tabular-nums">
                 {isVoid ? '$0.00 USD' : '$1,500.00 USD'}
               </span>
             </div>
@@ -82,15 +82,15 @@ function InterventionResolvedContent() {
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <Link href="/intervention/summary">
-              <Button variant="primary" size="lg">
-                <FileText size={15} />
-                <span>View Full Protection Summary</span>
+              <Button variant="primary" size="md">
+                <FileText size={14} />
+                <span>Protection Summary</span>
               </Button>
             </Link>
             <Link href="/merchant">
-              <Button variant="outline" size="lg">
-                <span>View in Merchant Console</span>
-                <ArrowRight size={14} />
+              <Button variant="outline" size="md">
+                <span>Merchant Console</span>
+                <ArrowRight size={13} />
               </Button>
             </Link>
           </div>
@@ -102,14 +102,14 @@ function InterventionResolvedContent() {
 
 export default function InterventionResolvedPage() {
   return (
-    <React.Suspense
+    <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFC] flex items-center justify-center p-6">
-          <div className="text-xs text-[#6B7280]">Loading resolution confirmation...</div>
+        <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
+          <div className="text-xs font-mono text-[#697078]">Loading outcome...</div>
         </div>
       }
     >
       <InterventionResolvedContent />
-    </React.Suspense>
+    </Suspense>
   );
 }

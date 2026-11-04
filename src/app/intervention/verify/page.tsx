@@ -8,14 +8,18 @@ import {
   ArrowLeft,
   CheckCircle2,
   AlertTriangle,
-  ExternalLink,
-  ShieldAlert,
   Search,
-  Building2,
-  Clock,
 } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { mockStore } from '@/services';
+
+interface DirectoryResult {
+  status: string;
+  officialPhone: string;
+  auditRef: string;
+  timestamp: string;
+  advisory: string;
+}
 
 function CustomerKernelVerifyContent() {
   const router = useRouter();
@@ -25,14 +29,13 @@ function CustomerKernelVerifyContent() {
   const [payment] = useState(() => mockStore.getPaymentById(paymentId) || mockStore.getPaymentById('pay_sb_881901')!);
   const [selectedOrg, setSelectedOrg] = useState<'IRS' | 'BANK' | 'TECH' | 'SSA'>('IRS');
   const [isVerifying, setIsVerifying] = useState(false);
-  const [verifiedResult, setVerifiedResult] = useState<any | null>(null);
+  const [verifiedResult, setVerifiedResult] = useState<DirectoryResult | null>(null);
 
   const orgDirectory = {
     IRS: {
       name: 'Internal Revenue Service (IRS)',
       category: 'Federal Tax Authority',
       officialSwitchboard: '1-800-829-1040',
-      officialDomain: 'irs.gov',
       warning:
         'The IRS will NEVER call demanding immediate payment via gift cards, PayPal, or cryptocurrency, and will NEVER threaten law enforcement arrest over the phone.',
     },
@@ -40,7 +43,6 @@ function CustomerKernelVerifyContent() {
       name: 'National Financial Institution & Card Services',
       category: 'Banking / Card Issuer',
       officialSwitchboard: 'Call the number on the back of your physical card',
-      officialDomain: 'consumerfinance.gov',
       warning:
         'Your bank fraud department will NEVER ask you to move your money to a "safety account" or purchase merchant vouchers to reverse a charge.',
     },
@@ -48,7 +50,6 @@ function CustomerKernelVerifyContent() {
       name: 'Microsoft / Apple Customer Support',
       category: 'Technology Provider',
       officialSwitchboard: '1-800-642-7676 (Microsoft) / 1-800-275-2273 (Apple)',
-      officialDomain: 'microsoft.com / apple.com',
       warning:
         'Neither Microsoft nor Apple sends unclosable browser pop-ups with telephone numbers, and neither company requests remote control to issue refunds.',
     },
@@ -56,7 +57,6 @@ function CustomerKernelVerifyContent() {
       name: 'Social Security Administration (SSA)',
       category: 'Federal Benefits Administration',
       officialSwitchboard: '1-800-772-1213',
-      officialDomain: 'ssa.gov',
       warning:
         'The SSA will NEVER threaten to suspend your Social Security Number or demand money to prevent legal proceedings.',
     },
@@ -84,54 +84,54 @@ function CustomerKernelVerifyContent() {
   const handleCancelPayment = () => {
     mockStore.voidPayment(
       payment.id,
-      'Customer verified official phone directory via Kernel and cancelled fraudulent transaction.'
+      'Customer verified official phone directory and cancelled fraudulent transaction.'
     );
     router.push(`/intervention/resolved?action=voided&paymentId=${payment.id}`);
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased">
       {/* Top Header */}
-      <header className="h-14 bg-[#FFFFFF] border-b border-[#E5E7EB] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <Link href={`/intervention?paymentId=${payment.id}`} className="text-[#6B7280] hover:text-[#1E1E2A] p-1">
+          <Link href={`/intervention?paymentId=${payment.id}`} className="text-[#697078] hover:text-[#171A1F] p-1">
             <ArrowLeft size={16} />
           </Link>
           <div className="flex items-center gap-2">
             <ScamBrakeMark size={24} />
-            <span className="font-semibold text-sm tracking-tight">
-              SCAM<span className="text-[#2D5BFF]">BRAKE</span>
+            <span className="font-semibold text-[14px] tracking-tight text-[#171A1F]">
+              SCAM BRAKE
             </span>
-            <span className="text-xs text-[#6B7280] border-l border-[#E5E7EB] pl-2 font-mono">
-              INDEPENDENT DIRECTORY VERIFICATION
+            <span className="text-[11px] text-[#697078] border-l border-[#DFE2DF] pl-2 font-mono">
+              DIRECTORY VERIFICATION
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
-          <span className="font-mono text-[#6B7280]">Hold: ${payment.amount.toFixed(2)} USD</span>
+        <div className="flex items-center gap-2 text-[12px]">
+          <span className="font-mono text-[#697078]">Hold: ${payment.amount.toFixed(2)} USD</span>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 space-y-6">
         {/* Anti-Spoofing Education Header */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-[#1E1E2A]">
-            <PhoneCall size={18} className="text-[#2D5BFF]" />
-            Why Caller ID Cannot Be Trusted
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-3">
+          <div className="flex items-center gap-2 text-[14px] font-semibold text-[#171A1F]">
+            <PhoneCall size={16} className="text-[#171A1F]" />
+            <span>Why Caller ID Cannot Be Trusted</span>
           </div>
-          <p className="text-xs text-[#6B7280] leading-relaxed">
-            Scammers routinely use inexpensive software to display the exact phone number and name of official government agencies or banks on your caller ID. This is called <strong className="text-[#1E1E2A]">Caller ID Spoofing</strong>.
+          <p className="text-[12px] text-[#697078] leading-relaxed">
+            Scammers routinely use inexpensive software to display the exact phone number and name of official government agencies or banks on your caller ID. This is called <strong className="text-[#171A1F]">Caller ID Spoofing</strong>.
           </p>
-          <p className="text-xs text-[#6B7280] leading-relaxed">
-            To protect you, Scam Brake provides verified public directories powered by Kernel out-of-band verification so you can independently verify who you are dealing with.
+          <p className="text-[12px] text-[#697078] leading-relaxed">
+            To protect you, Scam Brake provides verified public directories so you can independently verify who you are dealing with.
           </p>
         </div>
 
         {/* Agency Selection Tabs */}
         <div className="space-y-3">
-          <label className="text-xs font-semibold text-[#6B7280]">
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
             Select who the caller claimed to represent:
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -142,10 +142,10 @@ function CustomerKernelVerifyContent() {
                   setSelectedOrg(key);
                   setVerifiedResult(null);
                 }}
-                className={`p-3 rounded border text-xs font-medium transition-colors text-left ${
+                className={`p-3 rounded-[6px] border text-[12px] font-medium transition-colors text-left cursor-pointer ${
                   selectedOrg === key
-                    ? 'bg-[#2D5BFF] text-white border-[#2D5BFF]'
-                    : 'bg-[#FFFFFF] border-[#E5E7EB] text-[#1E1E2A] hover:bg-[#FAFAFC]'
+                    ? 'bg-[#171A1F] text-white border-[#171A1F]'
+                    : 'bg-[#FFFFFF] border-[#DFE2DF] text-[#171A1F] hover:bg-[#F6F6F3]'
                 }`}
               >
                 {key === 'IRS' && 'IRS / Tax Dept'}
@@ -158,31 +158,31 @@ function CustomerKernelVerifyContent() {
         </div>
 
         {/* Directory Card */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF]">
             <div>
-              <div className="text-[11px] font-mono text-[#6B7280]">{currentOrg.category}</div>
-              <h2 className="text-base font-semibold text-[#1E1E2A]">{currentOrg.name}</h2>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-[#697078]">{currentOrg.category}</div>
+              <h2 className="text-[15px] font-semibold text-[#171A1F]">{currentOrg.name}</h2>
             </div>
-            <span className="font-mono text-xs text-[#059669] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20 font-medium">
-              Verified Public Registry
+            <span className="font-mono text-[10px] text-[#1A7A64] bg-[#EAF4F1] px-2 py-0.5 rounded-[4px] border border-[#1A7A64]/20 font-medium">
+              Verified Directory
             </span>
           </div>
 
-          <div className="space-y-3 text-xs">
-            <div className="p-3.5 bg-[#FAFAFC] border border-[#E5E7EB] rounded space-y-1">
-              <span className="text-[#6B7280] block text-[11px]">Official Certified Switchboard:</span>
-              <span className="font-mono text-base font-semibold text-[#1E1E2A]">
+          <div className="space-y-3 text-[12px]">
+            <div className="p-3.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px] space-y-1">
+              <span className="text-[#697078] block text-[11px]">Official Certified Switchboard:</span>
+              <span className="font-mono text-[16px] font-semibold text-[#171A1F]">
                 {currentOrg.officialSwitchboard}
               </span>
             </div>
 
-            <div className="p-3.5 bg-[#FEF2F2] border border-[#DC2626]/20 rounded text-[#991B1B] space-y-1">
+            <div className="p-3.5 bg-[#FDE8E8] border border-[#C53030]/20 rounded-[4px] text-[#C53030] space-y-1">
               <div className="font-semibold flex items-center gap-1.5">
-                <AlertTriangle size={14} className="text-[#DC2626]" />
-                Critical Official Advisory
+                <AlertTriangle size={14} className="text-[#C53030]" />
+                <span>Critical Official Advisory</span>
               </div>
-              <p className="leading-relaxed">{currentOrg.warning}</p>
+              <p className="leading-relaxed text-[12px]">{currentOrg.warning}</p>
             </div>
           </div>
 
@@ -190,7 +190,7 @@ function CustomerKernelVerifyContent() {
             <button
               onClick={handleRunKernelCheck}
               disabled={isVerifying}
-              className="w-full py-2.5 bg-[#2D5BFF] text-white text-xs font-medium rounded hover:bg-[#2044C8] transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {isVerifying ? (
                 <>
@@ -200,7 +200,7 @@ function CustomerKernelVerifyContent() {
               ) : (
                 <>
                   <Search size={14} />
-                  <span>Run Kernel Independent Directory Verification</span>
+                  <span>Run Independent Directory Verification</span>
                 </>
               )}
             </button>
@@ -208,18 +208,18 @@ function CustomerKernelVerifyContent() {
 
           {/* Verification Results */}
           {verifiedResult && (
-            <div className="mt-4 p-4 bg-[#10B981]/10 border border-[#10B981]/30 rounded space-y-2 text-xs">
+            <div className="mt-4 p-4 bg-[#EAF4F1] border border-[#1A7A64]/30 rounded-[4px] space-y-2 text-[12px]">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#059669] flex items-center gap-1.5">
-                  <CheckCircle2 size={16} />
-                  Verification Directory Analysis Completed
+                <span className="font-semibold text-[#1A7A64] flex items-center gap-1.5">
+                  <CheckCircle2 size={15} />
+                  <span>Verification Directory Analysis Completed</span>
                 </span>
-                <span className="font-mono text-[10px] text-[#6B7280]">
+                <span className="font-mono text-[10px] text-[#697078]">
                   Ref: {verifiedResult.auditRef}
                 </span>
               </div>
-              <p className="text-[#1E1E2A] leading-relaxed">{verifiedResult.advisory}</p>
-              <div className="text-[11px] text-[#6B7280] pt-1">
+              <p className="text-[#171A1F] leading-relaxed">{verifiedResult.advisory}</p>
+              <div className="text-[11px] text-[#697078] pt-1 border-t border-[#1A7A64]/20 mt-1">
                 Recommendation: If someone is on your phone instructing you to complete this PayPal checkout, hang up immediately. You can cancel this order safely below.
               </div>
             </div>
@@ -230,7 +230,7 @@ function CustomerKernelVerifyContent() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
           <Link
             href={`/intervention?paymentId=${payment.id}`}
-            className="text-xs text-[#6B7280] hover:text-[#1E1E2A] flex items-center gap-1"
+            className="text-[12px] text-[#697078] hover:text-[#171A1F] flex items-center gap-1 font-medium"
           >
             <ArrowLeft size={13} />
             <span>Return to Safety Conversation</span>
@@ -239,7 +239,7 @@ function CustomerKernelVerifyContent() {
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={handleCancelPayment}
-              className="flex-1 sm:flex-none px-4 py-2 bg-[#DC2626] text-white text-xs font-medium rounded hover:bg-[#B91C1C] transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] text-[12px] font-medium rounded-[6px] hover:bg-[#FDE8E8] transition-colors cursor-pointer"
             >
               Cancel & Void Authorization Hold
             </button>
@@ -254,8 +254,8 @@ export default function CustomerKernelVerifyPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFC] flex items-center justify-center p-6">
-          <div className="text-xs text-[#6B7280]">Loading independent directory registry...</div>
+        <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
+          <div className="text-xs font-mono text-[#697078]">Loading directory registry...</div>
         </div>
       }
     >

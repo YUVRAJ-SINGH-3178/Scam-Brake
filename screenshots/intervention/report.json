@@ -1,0 +1,1453 @@
+{
+ "url": "http://localhost:3000/intervention",
+ "at": "2026-11-04T19:00:40.468Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.59,
+    0.46
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1247,
+     "screens": 1.4,
+     "words": 362,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 12,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 1,
+     "size": 30,
+     "vw": 2.1,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 129,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "lines": 1,
+     "size": 30,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "words": 5,
+      "chars": 38,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 129,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.01,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      26,
+      30
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 62,
+     "max": {
+      "size": 30,
+      "vw": 2.1,
+      "font": "Switzer",
+      "text": "Your payment is temporarily protected."
+     },
+     "monoShare": 0.01,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.1,
+     "smallText": 6
+    },
+    "eyebrows": [
+     {
+      "text": "Safety Check-in in Progress",
+      "above": "Your payment is temporarily protected.",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 105
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 80,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.46
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.44
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      },
+      {
+       "color": "#784d00",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#171a1f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 2,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Yes, someone claiming to be from the IRS",
+      "Check Official Directory"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header.h-14.bg-[#FFFFFF] 1440px",
+      "div.flex.flex-col 926px",
+      "div.flex.items-center 517px",
+      "form.pt-3.border-t 517px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 13,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 335
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 574
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 56,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1247,
+    "margins": {
+     "left": 64,
+     "right": 253
+    },
+    "sections": [
+     {
+      "sel": "div.p-6.rounded-[6px]",
+      "tag": "div",
+      "top": 80,
+      "height": 470,
+      "words": 99,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Your payment is temporarily protected.",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 257,
+      "right": 257,
+      "textLeft": 257,
+      "textRight": 257,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.grid.grid-cols-1",
+      "tag": "div",
+      "top": 574,
+      "height": 649,
+      "words": 203,
+      "media": 0,
+      "middle": 66,
+      "heading": null,
+      "left": 253,
+      "right": 253,
+      "textLeft": 257,
+      "textRight": 257,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "size": 30,
+      "top": 129,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 257,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.14,
+    "voidBox": {
+     "x": 0,
+     "y": 120,
+     "w": 240,
+     "h": 780
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 64,
+     "right": 104
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 1,
+     "size": 30,
+     "vw": 2.1,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 129,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 5,
+     "firstScreen": 4,
+     "ragged": [
+      {
+       "diff": 129,
+       "top": 574
+      }
+     ],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 14,
+     "radii": [
+      [
+       6,
+       14
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0.5,
+     "kpiMax": 26
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.21,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      26,
+      30
+     ]
+    },
+    "title": {
+     "text": "Your payment is temporarily protected.",
+     "size": 30,
+     "top": 129
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": [
+    "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at r1 (http://localhost:3000/_next/static/chunks/2-3bcc782c_pu.js:1:58538)\n    at r2 (http://loca"
+   ]
+  },
+  {
+   "width": 1024,
+   "height": 768,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.83,
+    0.73
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "page": {
+     "height": 1247,
+     "screens": 1.6,
+     "words": 362,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 12,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 1,
+     "size": 30,
+     "vw": 2.9,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 129,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "lines": 1,
+     "size": 30,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "words": 5,
+      "chars": 38,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.9,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.66,
+      "top": 129,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.01,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      26,
+      30
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 62,
+     "max": {
+      "size": 30,
+      "vw": 2.9,
+      "font": "Switzer",
+      "text": "Your payment is temporarily protected."
+     },
+     "monoShare": 0.01,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.1,
+     "smallText": 6
+    },
+    "eyebrows": [
+     {
+      "text": "Safety Check-in in Progress",
+      "above": "Your payment is temporarily protected.",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 105
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 80,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.46
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.44
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      },
+      {
+       "color": "#784d00",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#171a1f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 1,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Check Official Directory"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header.h-14.bg-[#FFFFFF] 1024px",
+      "div.flex.flex-col 926px",
+      "div.flex.items-center 517px",
+      "form.pt-3.border-t 517px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 13,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 335
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 574
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 56,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "pageH": 1247,
+    "margins": {
+     "left": 45,
+     "right": 45
+    },
+    "sections": [
+     {
+      "sel": "div.p-6.rounded-[6px]",
+      "tag": "div",
+      "top": 80,
+      "height": 470,
+      "words": 99,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Your payment is temporarily protected.",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 49,
+      "right": 49,
+      "textLeft": 49,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.grid.grid-cols-1",
+      "tag": "div",
+      "top": 574,
+      "height": 649,
+      "words": 203,
+      "media": 0,
+      "middle": 66,
+      "heading": null,
+      "left": 45,
+      "right": 45,
+      "textLeft": 49,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "size": 30,
+      "top": 129,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 49,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.07,
+    "voidBox": {
+     "x": 0,
+     "y": 512,
+     "w": 1024,
+     "h": 51
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 45,
+     "right": 45
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 1,
+     "size": 30,
+     "vw": 2.9,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 129,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 5,
+     "firstScreen": 3,
+     "ragged": [
+      {
+       "diff": 129,
+       "top": 574
+      }
+     ],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 14,
+     "radii": [
+      [
+       6,
+       14
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0.5,
+     "kpiMax": 26
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.21,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      26,
+      30
+     ]
+    },
+    "title": {
+     "text": "Your payment is temporarily protected.",
+     "size": 30,
+     "top": 129
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": [
+    "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at r1 (http://localhost:3000/_next/static/chunks/2-3bcc782c_pu.js:1:58538)\n    at r2 (http://loca"
+   ]
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.82,
+    0.71,
+    0.75
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2399,
+     "screens": 2.8,
+     "words": 362,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 12,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 2,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 137,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "lines": 2,
+     "size": 24,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "words": 5,
+      "chars": 38,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 137,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.01,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      24,
+      26
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.2
+     },
+     "measureChars": 37,
+     "max": {
+      "size": 26,
+      "vw": 6.7,
+      "font": "CommitMono",
+      "text": "$1500.00"
+     },
+     "monoShare": 0.01,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.1,
+     "smallText": 6
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 88,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.46
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.44
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      },
+      {
+       "color": "#784d00",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#171a1f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 0,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header.h-14.bg-[#FFFFFF] 390px",
+      "div.flex.flex-col 308px",
+      "div.flex.items-center 316px",
+      "form.pt-3.border-t 316px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 14,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 559
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 56,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2399,
+    "margins": {
+     "left": 37,
+     "right": 37
+    },
+    "sections": [
+     {
+      "sel": "div.p-6.rounded-[6px]",
+      "tag": "div",
+      "top": 88,
+      "height": 1062,
+      "words": 99,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "1500.00",
+       "size": 26,
+       "tag": "code"
+      },
+      "left": 41,
+      "right": 41,
+      "textLeft": 41,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.grid.grid-cols-1",
+      "tag": "div",
+      "top": 1174,
+      "height": 1193,
+      "words": 161,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 37,
+      "right": 37,
+      "textLeft": 37,
+      "textRight": 37,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your payment is temporarily protected.",
+      "size": 24,
+      "top": 137,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 41,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 37,
+     "right": 37
+    },
+    "hero": {
+     "text": "Your payment is temporarily protected.",
+     "words": 5,
+     "chars": 38,
+     "lines": 2,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 137,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 5,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 15,
+     "radii": [
+      [
+       6,
+       14
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0.5,
+     "kpiMax": 26
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.21,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      24,
+      26
+     ]
+    },
+    "title": {
+     "text": "Your payment is temporarily protected.",
+     "size": 24,
+     "top": 137
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": [
+    "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at r1 (http://localhost:3000/_next/static/chunks/2-3bcc782c_pu.js:1:58538)\n    at r2 (http://loca"
+   ]
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "ragged-row",
+   "width": 1440,
+   "message": "1 pair(s) of cards in one row end at different heights (by 129px).",
+   "fix": "Cards that share a row share a bottom edge: balance them by their content (the same number of rows, a block of similar height beside it), or stack them. In testing, ragged rows were marked down every time.",
+   "alsoAt": [
+    1024
+   ]
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 1024,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\intervention\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

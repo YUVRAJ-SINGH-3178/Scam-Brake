@@ -11,62 +11,56 @@ export const ScamBrakeMark: React.FC<ScamBrakeMarkProps> = ({
   size = 32,
   variant = 'light',
 }) => {
-  // Original Scam Brake Symbol:
-  // "The Interrupted Payment Pathway"
-  // Horizontal stream (checkout -> authorization) that enters a vertical caliper/brake gate.
-  // The gate holds the token, showing the branching safe resolution paths (forward capture vs release).
+  // Original Scam Brake Symbol: The Interrupted Authorization Gate
+  // Left: Incoming payment trajectory
+  // Center: Pre-capture verification caliper / hold gate
+  // Right: Dual deterministic resolution paths (Capture & Void)
   const isDark = variant === 'dark';
-  const railColor = isDark ? '#EDEDF3' : '#1E1E2A';
-  const brakeColor = '#2D5BFF'; // Scam Brake brand accent
-  const voidColor = '#EF4444'; // Void safe release
-  const captureColor = '#10B981'; // Capture path
+  const railColor = isDark ? '#FFFFFF' : '#171A1F';
+  const brakeColor = isDark ? '#FFFFFF' : '#171A1F';
+  const tealAccent = '#1A7A64';
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 40 40"
+      viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="Scam Brake - Interrupted Authorization Pathway Mark"
+      aria-label="Scam Brake Emblem"
     >
-      {/* Background container if needed */}
-      <rect width="40" height="40" rx="10" fill={isDark ? '#11121C' : '#FFFFFF'} />
-      <rect width="40" height="40" rx="10" stroke={isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB'} strokeWidth="1" />
+      {/* Precision square badge with subtle 6px corner radius */}
+      <rect width="32" height="32" rx="6" fill={isDark ? '#171A1F' : '#FFFFFF'} />
+      <rect width="32" height="32" rx="6" stroke="#DFE2DF" strokeWidth="1" />
 
-      {/* 1. Origin payment trajectory from left */}
-      <line x1="8" y1="20" x2="17" y2="20" stroke={railColor} strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="10" cy="20" r="2" fill={railColor} />
+      {/* Trajectory entry from merchant */}
+      <line x1="7" y1="16" x2="13" y2="16" stroke={railColor} strokeWidth="1.75" strokeLinecap="round" />
 
-      {/* 2. The Verification Brake / Interruption Caliper */}
-      {/* Upper brake arm */}
-      <path d="M19 12V18" stroke={brakeColor} strokeWidth="3" strokeLinecap="round" />
-      {/* Lower brake arm */}
-      <path d="M19 22V28" stroke={brakeColor} strokeWidth="3" strokeLinecap="round" />
-      {/* Center Hold Token: The active authorization hold node */}
-      <circle cx="20" cy="20" r="3.5" fill={brakeColor} />
-      <circle cx="20" cy="20" r="1.5" fill="#FFFFFF" />
+      {/* The Authorization Caliper / Brake Gate */}
+      <line x1="14.5" y1="9.5" x2="14.5" y2="22.5" stroke={brakeColor} strokeWidth="2" strokeLinecap="round" />
 
-      {/* 3. The Two Verified Outcomes */}
-      {/* Upper Path: Void / Cancellation Release (deflected safely upward) */}
+      {/* Center verification hold node */}
+      <circle cx="14.5" cy="16" r="2.75" fill={isDark ? '#171A1F' : '#FFFFFF'} stroke={brakeColor} strokeWidth="1.5" />
+      <circle cx="14.5" cy="16" r="1.25" fill={tealAccent} />
+
+      {/* Verified Forward Capture Path */}
       <path
-        d="M23 18C25 15 28 14 32 14"
-        stroke={voidColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeDasharray="2 2"
-      />
-      <circle cx="32" cy="14" r="1.75" fill={voidColor} />
-
-      {/* Lower Path: Legitimate Capture (verified forward authorization) */}
-      <path
-        d="M23 22C25 25 28 26 32 26"
-        stroke={captureColor}
-        strokeWidth="2"
+        d="M17.5 16H24"
+        stroke={tealAccent}
+        strokeWidth="1.75"
         strokeLinecap="round"
       />
-      <circle cx="32" cy="26" r="1.75" fill={captureColor} />
+      <circle cx="24.5" cy="16" r="1.5" fill={tealAccent} />
+
+      {/* Upper Pre-Capture Void Escape Path */}
+      <path
+        d="M17.5 14C19.5 12 21 11 24 11"
+        stroke="#697078"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeDasharray="1.5 1.5"
+      />
     </svg>
   );
 };
@@ -79,19 +73,19 @@ export const ScamBrakeLogo: React.FC<{
   const isDark = variant === 'dark';
 
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`}>
-      <ScamBrakeMark size={36} variant={variant} />
+    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+      <ScamBrakeMark size={28} variant={variant} />
       <div className="flex flex-col">
         <span
-          className={`font-semibold tracking-tight text-[17px] leading-tight ${
-            isDark ? 'text-[#EDEDF3]' : 'text-[#1E1E2A]'
+          className={`font-semibold tracking-tight text-[15px] leading-none ${
+            isDark ? 'text-white' : 'text-[#171A1F]'
           }`}
         >
-          SCAM<span className="text-[#2D5BFF] ml-1">BRAKE</span>
+          SCAM <span className="font-normal text-[#697078]">BRAKE</span>
         </span>
         {showTagline && (
-          <span className="text-[11px] text-[#6B7280] font-normal tracking-normal uppercase">
-            Stop. Verify. Protect.
+          <span className="text-[10px] text-[#697078] font-normal tracking-wide mt-0.5">
+            Stop. Verify. Stay protected.
           </span>
         )}
       </div>

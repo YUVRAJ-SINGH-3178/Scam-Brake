@@ -33,32 +33,32 @@ export default function FAQPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0C0C14] text-[#EDEDF3] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased selection:bg-[#1A7A64]/15">
       <MarketingNav />
 
       <main className="flex-1 py-16 px-6 max-w-4xl mx-auto w-full space-y-12">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(45,91,255,0.12)] border border-[#2D5BFF]/30 text-[#2D5BFF] text-[12px] font-mono">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-[4px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] text-[11px] font-mono">
             <span>KNOWLEDGE BASE</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-serif text-white leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-semibold text-[#171A1F] leading-tight tracking-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-[16px] text-[rgba(237,237,243,0.7)] leading-relaxed">
+          <p className="text-[15px] text-[#697078] leading-relaxed">
             Detailed answers regarding payment authorization holds, AI safety boundaries, and merchant integration.
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="divide-y divide-[#DFE2DF] border-y border-[#DFE2DF] bg-[#FFFFFF] rounded-[6px] overflow-hidden">
           {faqs.map((f, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#11121C] space-y-2"
+              className="p-6 space-y-2 hover:bg-[#F6F6F3]/50 transition-colors"
             >
-              <h2 className="text-[16px] font-semibold text-white">
+              <h2 className="text-[16px] font-semibold text-[#171A1F]">
                 {f.q}
               </h2>
-              <p className="text-[14px] text-[rgba(237,237,243,0.7)] leading-relaxed">
+              <p className="text-[14px] text-[#697078] leading-relaxed">
                 {f.a}
               </p>
             </div>

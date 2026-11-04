@@ -15,8 +15,6 @@ import {
   Inbox,
   Loader2,
   Wrench,
-  ArrowRight,
-  RefreshCw,
   Home,
 } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
@@ -40,7 +38,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     category: 'HTTP_ERROR',
     description: 'Triggered when an invalid payment reference, order ID, or investigation case is requested.',
     icon: FileQuestion,
-    suggestedAction: 'Return to Operations Dashboard',
+    suggestedAction: 'Return to Operations Overview',
     userMessage: 'The requested payment or investigation record does not exist or may have been archived.',
   },
   {
@@ -50,7 +48,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     category: 'HTTP_ERROR',
     description: 'Triggered when an unauthenticated merchant user attempts to inspect sensitive customer telemetry.',
     icon: Lock,
-    suggestedAction: 'Request Elevated Organization Permission',
+    suggestedAction: 'Request Elevated Permission',
     userMessage: 'You do not have authorization to view unmasked customer directory records or override risk holds.',
   },
   {
@@ -60,7 +58,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     category: 'HTTP_ERROR',
     description: 'Occurs if an unexpected exception interrupts risk pipeline evaluation.',
     icon: ServerCrash,
-    suggestedAction: 'Retry Authorization Hold Check',
+    suggestedAction: 'Retry Authorization Check',
     userMessage: 'An internal error occurred while processing telemetry. Customer funds remain held safely in PayPal.',
   },
   {
@@ -80,7 +78,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     category: 'CONNECTIVITY',
     description: 'PayPal Orders API exceeds 10,000ms latency during pre-capture authorization hook.',
     icon: AlertCircle,
-    suggestedAction: 'Query PayPal Webhook Status',
+    suggestedAction: 'Query PayPal Status',
     userMessage: 'PayPal upstream response timed out. A background worker is verifying authorization status.',
   },
   {
@@ -100,7 +98,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     category: 'CHECKOUT_EDGE_CASE',
     description: 'Merchant checkout passed intent: CAPTURE instead of required intent: AUTHORIZE.',
     icon: Ban,
-    suggestedAction: 'Review Developer Integration Docs',
+    suggestedAction: 'Review Integration Docs',
     userMessage: 'Scam Brake protection requires PayPal orders to be initialized with intent: "AUTHORIZE".',
   },
   {
@@ -138,7 +136,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     code: 'PROCESSING',
     title: 'Telemetry Scan in Progress',
     category: 'LIFECYCLE',
-    description: 'Channel3 threat enrichment and Elastic vector pattern matching underway (&lt;800ms).',
+    description: 'Channel3 threat enrichment and pattern matching underway (<800ms).',
     icon: Loader2,
     suggestedAction: 'Awaiting Analysis...',
     userMessage: 'Analyzing payment risk signals against known social-engineering schemes...',
@@ -160,24 +158,24 @@ export default function SystemStatesGalleryPage() {
   const StateIcon = selectedState.icon;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased">
       {/* Top Header */}
-      <header className="h-14 bg-[#FFFFFF] border-b border-[#E5E7EB] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <Link href="/merchant" className="flex items-center gap-2">
             <ScamBrakeMark size={24} />
-            <span className="font-semibold text-sm tracking-tight">
-              SCAM<span className="text-[#2D5BFF]">BRAKE</span>
+            <span className="font-semibold text-[14px] tracking-tight text-[#171A1F]">
+              SCAM BRAKE
             </span>
           </Link>
-          <span className="text-xs text-[#6B7280] border-l border-[#E5E7EB] pl-2 font-mono">
+          <span className="text-[11px] text-[#697078] border-l border-[#DFE2DF] pl-2 font-mono">
             SYSTEM STATE CATALOG (12 EDGE CASES)
           </span>
         </div>
 
         <Link
           href="/merchant"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAFAFC] border border-[#E5E7EB] hover:bg-[#FFFFFF] text-xs font-medium text-[#1E1E2A] rounded transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#171A1F] rounded-[6px] transition-colors"
         >
           <Home size={13} />
           <span>Return to Dashboard</span>
@@ -187,41 +185,41 @@ export default function SystemStatesGalleryPage() {
       {/* Main Content */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
             Edge Case & Error State Design System
           </h1>
-          <p className="text-sm text-[#6B7280] mt-1">
+          <p className="text-[13px] text-[#697078] mt-1">
             Standardized UX treatments for HTTP codes, network disconnections, timeout windows, and payment exceptions.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* State Selector Sidebar */}
-          <div className="space-y-2 md:col-span-1 max-h-[75vh] overflow-y-auto pr-1">
+          <div className="space-y-1.5 md:col-span-1 max-h-[75vh] overflow-y-auto pr-1">
             {SYSTEM_STATES.map((state) => {
               const Icon = state.icon;
               return (
                 <button
                   key={state.id}
                   onClick={() => setSelectedState(state)}
-                  className={`w-full text-left p-3 rounded border transition-colors flex items-center gap-3 ${
+                  className={`w-full text-left p-3 rounded-[6px] border transition-colors flex items-center gap-3 cursor-pointer ${
                     selectedState.id === state.id
-                      ? 'bg-[#FFFFFF] border-[#2D5BFF] shadow-xs'
-                      : 'bg-[#FAFAFC] border-[#E5E7EB] hover:bg-[#FFFFFF]'
+                      ? 'bg-[#FFFFFF] border-[#171A1F] shadow-xs'
+                      : 'bg-[#F6F6F3] border-[#DFE2DF] hover:bg-[#FFFFFF]'
                   }`}
                 >
                   <div
-                    className={`p-1.5 rounded shrink-0 ${
+                    className={`p-1.5 rounded-[4px] shrink-0 ${
                       selectedState.id === state.id
-                        ? 'bg-[#2D5BFF]/10 text-[#2D5BFF]'
-                        : 'bg-[#E5E7EB]/60 text-[#6B7280]'
+                        ? 'bg-[#171A1F] text-white'
+                        : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#697078]'
                     }`}
                   >
-                    <Icon size={16} />
+                    <Icon size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] text-[#6B7280]">{state.code}</div>
-                    <div className="font-medium text-xs text-[#1E1E2A] truncate">{state.title}</div>
+                    <div className="font-mono text-[10px] text-[#697078]">{state.code}</div>
+                    <div className="font-medium text-[12px] text-[#171A1F] truncate">{state.title}</div>
                   </div>
                 </button>
               );
@@ -229,26 +227,26 @@ export default function SystemStatesGalleryPage() {
           </div>
 
           {/* Interactive Screen Preview */}
-          <div className="md:col-span-2 bg-[#FFFFFF] border border-[#E5E7EB] rounded p-8 flex flex-col justify-between min-h-[500px]">
-            <div className="flex items-center justify-between pb-4 border-b border-[#E5E7EB]">
+          <div className="md:col-span-2 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 flex flex-col justify-between min-h-[500px]">
+            <div className="flex items-center justify-between pb-4 border-b border-[#DFE2DF]">
               <div>
-                <span className="font-mono text-xs text-[#2D5BFF] bg-[#2D5BFF]/10 px-2 py-0.5 rounded font-semibold">
+                <span className="font-mono text-[10px] text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[3px] font-semibold">
                   {selectedState.code}
                 </span>
-                <span className="text-xs text-[#6B7280] ml-2 font-mono">{selectedState.category}</span>
+                <span className="text-[11px] text-[#697078] ml-2 font-mono">{selectedState.category}</span>
               </div>
-              <span className="text-xs text-[#6B7280]">UI Preview</span>
+              <span className="text-[11px] font-mono uppercase text-[#697078]">UI Preview</span>
             </div>
 
             {/* Centered Render of Error Component */}
             <div className="my-auto py-12 text-center max-w-md mx-auto space-y-4">
-              <div className="w-14 h-14 rounded-full bg-[#FAFAFC] border border-[#E5E7EB] flex items-center justify-center mx-auto text-[#1E1E2A]">
-                <StateIcon size={26} className={selectedState.id === 'STATE-LOADING' ? 'animate-spin' : ''} />
+              <div className="w-12 h-12 rounded-full bg-[#F6F6F3] border border-[#DFE2DF] flex items-center justify-center mx-auto text-[#171A1F]">
+                <StateIcon size={22} className={selectedState.id === 'STATE-LOADING' ? 'animate-spin' : ''} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-[#1E1E2A]">{selectedState.title}</h2>
-                <p className="text-xs text-[#6B7280] mt-1.5 leading-relaxed">
+                <h2 className="text-lg font-semibold text-[#171A1F] tracking-tight">{selectedState.title}</h2>
+                <p className="text-[13px] text-[#697078] mt-1.5 leading-relaxed">
                   {selectedState.userMessage}
                 </p>
               </div>
@@ -256,7 +254,7 @@ export default function SystemStatesGalleryPage() {
               <div className="pt-2">
                 <button
                   onClick={() => alert(`Simulated action: ${selectedState.suggestedAction}`)}
-                  className="px-4 py-2 bg-[#2D5BFF] text-white text-xs font-medium rounded hover:bg-[#2044C8] transition-colors"
+                  className="px-4 py-2 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors cursor-pointer"
                 >
                   {selectedState.suggestedAction}
                 </button>
@@ -264,8 +262,8 @@ export default function SystemStatesGalleryPage() {
             </div>
 
             {/* Technical Specification Footer */}
-            <div className="pt-4 border-t border-[#E5E7EB] text-xs text-[#6B7280] space-y-1">
-              <div className="font-semibold text-[#1E1E2A]">Technical Behavior & Recovery Rule:</div>
+            <div className="pt-4 border-t border-[#DFE2DF] text-[12px] text-[#697078] space-y-1">
+              <div className="font-semibold text-[#171A1F]">Technical Behavior & Recovery Rule:</div>
               <p className="leading-relaxed">{selectedState.description}</p>
             </div>
           </div>

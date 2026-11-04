@@ -84,24 +84,24 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title={payment.paymentReference}
-      subtitle={`PayPal Order: ${payment.paypalOrderId}`}
+      subtitle={`PayPal Order ID: ${payment.paypalOrderId}`}
     >
-      <div className="space-y-6 text-[#1E1E2A]">
+      <div className="space-y-6 text-[#171A1F]">
         {/* 1. Header Overview & Financial Total */}
-        <div className="p-4 rounded-xl bg-[#FAFAFC] border border-[#E5E7EB]">
+        <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF]">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[12px] text-[#6B7280]">Authorized Amount</span>
+            <span className="text-[12px] text-[#697078]">Authorized Amount</span>
             <AuthStatusBadge status={payment.authorizationStatus} />
           </div>
-          <div className="text-[28px] font-mono font-semibold tracking-tight text-[#1E1E2A]">
+          <div className="text-[26px] font-mono font-semibold tracking-tight text-[#171A1F]">
             ${payment.amount.toFixed(2)}{' '}
-            <span className="text-[14px] text-[#6B7280] font-normal">
+            <span className="text-[13px] text-[#697078] font-normal">
               {payment.currency}
             </span>
           </div>
-          <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E5E7EB] text-[12px] text-[#6B7280]">
+          <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#DFE2DF] text-[12px] text-[#697078]">
             <span>Product:</span>
-            <span className="font-medium text-[#1E1E2A] truncate">
+            <span className="font-medium text-[#171A1F] truncate">
               {payment.productName}
             </span>
           </div>
@@ -109,8 +109,8 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
         {/* 2. Authorization Path Motif Widget */}
         <div>
-          <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
-            Verification Protocol State
+          <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078] mb-2">
+            Lifecycle Protocol
           </div>
           <AuthorizationPath
             currentStage={currentPathStage}
@@ -121,11 +121,11 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
         {/* 3. Action Bar (If Hold is Active) */}
         {payment.authorizationStatus === 'HOLD_ACTIVE' && (
-          <div className="p-4 rounded-xl bg-[#F8F9FB] border border-[#E5E7EB] space-y-3">
-            <div className="text-[12px] font-semibold text-[#1E1E2A]">
-              Merchant Execution Controls
+          <div className="p-4 rounded-[6px] bg-[#FFFFFF] border border-[#DFE2DF] space-y-3">
+            <div className="text-[12px] font-semibold text-[#171A1F]">
+              Merchant Settlement Controls
             </div>
-            <p className="text-[12px] text-[#6B7280] leading-relaxed">
+            <p className="text-[12px] text-[#697078] leading-relaxed">
               Funds are currently frozen under a PayPal Authorization Hold. They have not been deducted as a final charge.
             </p>
             <div className="grid grid-cols-2 gap-2 pt-1">
@@ -147,7 +147,7 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
                 className="w-full text-[13px]"
               >
                 <CheckCircle2 size={15} />
-                <span>Capture Funds</span>
+                <span>Capture Hold</span>
               </Button>
             </div>
           </div>
@@ -156,15 +156,15 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
         {/* 4. Risk Signals & Intelligence Evidence */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">
-              Detected Risk Signals ({payment.riskSignals.length})
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Risk Signals ({payment.riskSignals.length})
             </span>
             <RiskBadge level={payment.riskLevel} score={payment.riskScore} />
           </div>
 
           {payment.riskSignals.length === 0 ? (
-            <div className="p-4 rounded-lg bg-[#10B981]/5 border border-[#10B981]/20 text-[13px] text-[#059669] flex items-center gap-2">
-              <CheckCircle2 size={16} />
+            <div className="p-3.5 rounded-[6px] bg-[#EAF4F1] border border-[#1A7A64]/20 text-[12px] text-[#1A7A64] flex items-center gap-2">
+              <CheckCircle2 size={15} />
               <span>Zero abnormal coercion or impersonation signals detected.</span>
             </div>
           ) : (
@@ -172,18 +172,18 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
               {payment.riskSignals.map((sig) => (
                 <div
                   key={sig.id}
-                  className="p-3 rounded-lg border border-[#E5E7EB] bg-white text-[12px] space-y-1"
+                  className="p-3 rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] text-[12px] space-y-1"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-[#1E1E2A]">{sig.title}</span>
-                    <span className="font-mono text-[10px] text-[#6B7280]">
+                    <span className="font-semibold text-[#171A1F]">{sig.title}</span>
+                    <span className="font-mono text-[10px] text-[#697078]">
                       {Math.round(sig.confidence * 100)}% Match
                     </span>
                   </div>
-                  <p className="text-[#6B7280] leading-relaxed">{sig.description}</p>
-                  <div className="flex items-center justify-between pt-1 text-[10px] text-[#9CA3AF]">
+                  <p className="text-[#697078] leading-relaxed">{sig.description}</p>
+                  <div className="flex items-center justify-between pt-1 text-[10px] text-[#697078] border-t border-[#DFE2DF]/60 mt-1">
                     <span>Source: {sig.source}</span>
-                    <span>{new Date(sig.detectedAt).toLocaleTimeString()}</span>
+                    <span className="font-mono">{new Date(sig.detectedAt).toLocaleTimeString()}</span>
                   </div>
                 </div>
               ))}
@@ -192,29 +192,29 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
         </div>
 
         {/* 5. Customer Profile & Trusted Contact */}
-        <div className="p-4 rounded-xl border border-[#E5E7EB] bg-white space-y-2.5 text-[12px]">
-          <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider mb-1">
-            Customer Context
+        <div className="p-4 rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] space-y-2 text-[12px]">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078] mb-1">
+            Customer Profile
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#6B7280]">Customer Name:</span>
-            <span className="font-medium text-[#1E1E2A]">{payment.customer.name}</span>
+            <span className="text-[#697078]">Name</span>
+            <span className="font-medium text-[#171A1F]">{payment.customer.name}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#6B7280]">Email:</span>
-            <span className="font-mono text-[#1E1E2A]">{payment.customer.maskedEmail}</span>
+            <span className="text-[#697078]">Email</span>
+            <span className="font-mono text-[#171A1F]">{payment.customer.maskedEmail}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#6B7280]">Phone:</span>
-            <span className="font-mono text-[#1E1E2A]">{payment.customer.maskedPhone}</span>
+            <span className="text-[#697078]">Phone</span>
+            <span className="font-mono text-[#171A1F]">{payment.customer.maskedPhone}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#6B7280]">Account History:</span>
-            <span className="text-[#1E1E2A]">{payment.customer.accountAgeMonths} months</span>
+            <span className="text-[#697078]">Tenure</span>
+            <span className="text-[#171A1F]">{payment.customer.accountAgeMonths} months</span>
           </div>
-          <div className="flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
-            <span className="text-[#6B7280]">Trusted Contact:</span>
-            <span className="font-medium text-[#1E1E2A]">
+          <div className="flex items-center justify-between pt-2 border-t border-[#DFE2DF]">
+            <span className="text-[#697078]">Trusted Contact</span>
+            <span className="font-medium text-[#171A1F]">
               {payment.customer.hasTrustedContact
                 ? payment.customer.trustedContactName
                 : 'None Registered'}
@@ -225,26 +225,26 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
         {/* 6. Intervention Conversation Transcript (If available) */}
         {interventionSession && (
           <div className="space-y-3">
-            <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">
-              Intervention Check-in Transcript
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Intervention Transcript
             </div>
-            <div className="p-3.5 rounded-xl border border-[#E5E7EB] bg-[#F8F9FB] space-y-2.5 max-h-56 overflow-y-auto text-[12px]">
+            <div className="p-3.5 rounded-[6px] border border-[#DFE2DF] bg-[#F6F6F3] space-y-2.5 max-h-56 overflow-y-auto text-[12px]">
               {interventionSession.messages.map((m) => (
                 <div
                   key={m.id}
-                  className={`p-2.5 rounded-lg ${
+                  className={`p-2.5 rounded-[4px] ${
                     m.sender === 'CUSTOMER'
-                      ? 'bg-white border border-[#E5E7EB] ml-4'
-                      : 'bg-[#2D5BFF]/8 border border-[#2D5BFF]/15 mr-4'
+                      ? 'bg-[#FFFFFF] border border-[#DFE2DF] ml-4'
+                      : 'bg-[#FFFFFF] border border-[#DFE2DF] mr-4'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10px] text-[#6B7280] mb-1">
-                    <span className="font-medium">
+                  <div className="flex items-center justify-between text-[10px] text-[#697078] mb-1">
+                    <span className="font-semibold text-[#171A1F]">
                       {m.sender === 'CUSTOMER' ? payment.customer.name : 'Scam Brake Assistant'}
                     </span>
-                    <span>{new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span className="font-mono">{new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
-                  <p className="text-[#1E1E2A] leading-relaxed">{m.content}</p>
+                  <p className="text-[#171A1F] leading-relaxed">{m.content}</p>
                 </div>
               ))}
             </div>
@@ -253,21 +253,21 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
 
         {/* 7. Cryptographic Audit Trail */}
         <div className="space-y-2">
-          <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
             Audit Trail ({auditEvents.length} events)
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {auditEvents.map((ev) => (
               <div
                 key={ev.id}
-                className="p-2.5 rounded-lg border border-[#E5E7EB] bg-white text-[12px] space-y-1 font-mono"
+                className="p-2.5 rounded-[4px] border border-[#DFE2DF] bg-[#FFFFFF] text-[12px] space-y-1 font-mono"
               >
-                <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
-                  <span className="font-semibold text-[#1E1E2A]">{ev.eventType}</span>
+                <div className="flex items-center justify-between text-[11px] text-[#697078]">
+                  <span className="font-medium text-[#171A1F]">{ev.eventType}</span>
                   <span>{new Date(ev.timestamp).toLocaleTimeString()}</span>
                 </div>
-                <div className="text-[11px] text-[#4B5563] font-sans">{ev.summary}</div>
-                <div className="text-[10px] text-[#9CA3AF] truncate">
+                <div className="text-[11px] text-[#697078] font-sans">{ev.summary}</div>
+                <div className="text-[10px] text-[#697078] truncate">
                   Hash: {ev.immutableHash}
                 </div>
               </div>

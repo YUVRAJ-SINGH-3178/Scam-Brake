@@ -76,3 +76,4 @@ All screens tested and verified at:
 - **Tablet:** 768 × 1024 (Collapsible sidebar, two-column reflow).
 - **Mobile:** 390 × 844 (Single-column stacked sheet, touch targets $\ge 44\text{px}$).
 - **Accessibility:** High contrast ratios ($\ge 4.5:1$), keyboard tab-index traversal, screen reader aria labels.
+

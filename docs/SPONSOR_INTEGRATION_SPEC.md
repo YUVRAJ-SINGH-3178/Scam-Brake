@@ -68,3 +68,4 @@ This document outlines the architectural role, integration points, API contracts
 ### 5. Zapier / Twilio (Trusted Contact Relay)
 - **Role:** Delivers outbound SMS advisories to registered trusted contacts only after explicit customer opt-in.
 - **Event:** `webhook.zapier.com/hooks/catch/scambrake/trusted-contact-alert`
+

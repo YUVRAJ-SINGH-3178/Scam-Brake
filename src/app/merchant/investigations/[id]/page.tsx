@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { AppShell } from '@/components/merchant/AppShell';
 import { mockStore } from '@/services';
 import { Payment, InterventionSession } from '@/types';
-import { Badge } from '@/components/ui/Badge';
+import { RiskBadge, AuthStatusBadge } from '@/components/ui/Badge';
 import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 import {
   ArrowLeft,
@@ -70,24 +70,22 @@ function MerchantInvestigationCaseContent() {
     return (
       <AppShell activeItem="/merchant/investigations/pay_sb_881901">
         <div className="py-24 text-center max-w-md mx-auto space-y-4">
-          <FileText size={32} className="mx-auto text-[#6B7280]" />
-          <h2 className="text-lg font-semibold text-[#1E1E2A]">Investigation Not Found</h2>
-          <p className="text-xs text-[#6B7280]">
+          <FileText size={32} className="mx-auto text-[#697078]" />
+          <h2 className="text-lg font-semibold text-[#171A1F]">Investigation Not Found</h2>
+          <p className="text-[13px] text-[#697078]">
             No payment record found matching ID `{paymentId}`.
           </p>
           <Link
             href="/merchant/interventions"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] text-xs font-medium rounded hover:bg-[#FAFAFC]"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] text-[12px] font-medium text-[#171A1F] rounded-[6px] hover:bg-[#F6F6F3]"
           >
             <ArrowLeft size={14} />
-            Return to Active Interventions
+            <span>Return to Active Interventions</span>
           </Link>
         </div>
       </AppShell>
     );
   }
-
-  const isHeld = payment.authorizationStatus === 'HOLD_ACTIVE';
 
   return (
     <AppShell activeItem="/merchant/investigations/pay_sb_881901">
@@ -96,46 +94,46 @@ function MerchantInvestigationCaseContent() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <Link
             href="/merchant/interventions"
-            className="inline-flex items-center gap-1.5 text-xs text-[#6B7280] hover:text-[#1E1E2A]"
+            className="inline-flex items-center gap-1.5 text-[12px] text-[#697078] hover:text-[#171A1F] font-medium"
           >
             <ArrowLeft size={14} />
-            Back to Active Interventions
+            <span>Back to Active Interventions</span>
           </Link>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#6B7280]">Case Ref: {payment.paymentReference}</span>
-            <Badge variant={payment.authorizationStatus} />
-            <Badge variant={payment.riskLevel} />
+            <span className="text-[11px] font-mono text-[#697078]">Case Ref: {payment.paymentReference}</span>
+            <AuthStatusBadge status={payment.authorizationStatus} />
+            <RiskBadge level={payment.riskLevel} score={payment.riskScore} />
           </div>
         </div>
 
         {actionNotice && (
-          <div className="bg-[#10B981]/10 border border-[#10B981]/30 text-[#059669] px-4 py-2.5 rounded text-sm flex items-center justify-between">
+          <div className="bg-[#EAF4F1] border border-[#1A7A64]/30 text-[#1A7A64] px-4 py-2.5 rounded-[6px] text-[13px] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 size={16} />
+              <CheckCircle2 size={15} />
               <span>{actionNotice}</span>
             </div>
-            <button onClick={() => setActionNotice(null)} className="text-xs hover:underline">
+            <button onClick={() => setActionNotice(null)} className="text-[12px] hover:underline cursor-pointer">
               Dismiss
             </button>
           </div>
         )}
 
         {/* Case Banner */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-[#E5E7EB]">
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-[#DFE2DF]">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-xs text-[#2D5BFF] bg-[#2D5BFF]/10 px-2 py-0.5 rounded font-semibold">
+                <span className="font-mono text-[10px] text-[#697078] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[4px] font-semibold uppercase">
                   INVESTIGATION CASE FILE
                 </span>
-                <span className="text-xs text-[#6B7280]">Created {new Date(payment.createdAt).toLocaleDateString()}</span>
+                <span className="text-[11px] text-[#697078]">Created {new Date(payment.createdAt).toLocaleDateString()}</span>
               </div>
-              <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
+              <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
                 {payment.customer.name} — Coercion Risk Assessment
               </h1>
-              <p className="text-xs text-[#6B7280] mt-1">
-                Purchasing <span className="text-[#1E1E2A] font-medium">{payment.productName}</span> for ${payment.amount.toFixed(2)} USD via {payment.merchantName}
+              <p className="text-[13px] text-[#697078] mt-1">
+                Purchasing <span className="text-[#171A1F] font-medium">{payment.productName}</span> for ${payment.amount.toFixed(2)} USD via {payment.merchantName}
               </p>
             </div>
 
@@ -143,14 +141,14 @@ function MerchantInvestigationCaseContent() {
               <button
                 onClick={handleVoid}
                 disabled={payment.authorizationStatus === 'VOIDED'}
-                className="px-3.5 py-1.5 bg-[#FFFFFF] border border-[#DC2626]/40 text-[#DC2626] text-xs font-medium rounded hover:bg-[#FEF2F2] disabled:opacity-50"
+                className="px-3.5 py-1.5 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] text-[12px] font-medium rounded-[6px] hover:bg-[#FDE8E8] disabled:opacity-50 cursor-pointer"
               >
                 Confirm Scam & Void Auth
               </button>
               <button
                 onClick={handleCapture}
                 disabled={payment.authorizationStatus === 'CAPTURED'}
-                className="px-3.5 py-1.5 bg-[#2D5BFF] text-white text-xs font-medium rounded hover:bg-[#2044C8] disabled:opacity-50"
+                className="px-3.5 py-1.5 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] disabled:opacity-50 cursor-pointer"
               >
                 Clear Hold & Capture
               </button>
@@ -159,49 +157,56 @@ function MerchantInvestigationCaseContent() {
 
           {/* Authorization Path Visualizer */}
           <AuthorizationPath
-            status={payment.authorizationStatus}
-            interventionStatus={payment.interventionStatus}
+            currentStage={
+              payment.authorizationStatus === 'VOIDED'
+                ? 'VOID'
+                : payment.authorizationStatus === 'CAPTURED'
+                ? 'CAPTURE'
+                : 'REVIEW'
+            }
+            variant="app"
+            holdSecondsRemaining={payment.authorizationHoldSecondsRemaining}
           />
         </div>
 
         {/* Navigation Tabs */}
-        <div className="border-b border-[#E5E7EB] flex items-center gap-6 text-xs">
+        <div className="border-b border-[#DFE2DF] flex items-center gap-6 text-[12px]">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`pb-2.5 font-medium border-b-2 transition-colors ${
+            className={`pb-2.5 font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'overview'
-                ? 'border-[#2D5BFF] text-[#2D5BFF]'
-                : 'border-transparent text-[#6B7280] hover:text-[#1E1E2A]'
+                ? 'border-[#171A1F] text-[#171A1F]'
+                : 'border-transparent text-[#697078] hover:text-[#171A1F]'
             }`}
           >
-            Case Overview & AI Hypothesis
+            Case Overview & Hypothesis
           </button>
           <button
             onClick={() => setActiveTab('transcript')}
-            className={`pb-2.5 font-medium border-b-2 transition-colors ${
+            className={`pb-2.5 font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'transcript'
-                ? 'border-[#2D5BFF] text-[#2D5BFF]'
-                : 'border-transparent text-[#6B7280] hover:text-[#1E1E2A]'
+                ? 'border-[#171A1F] text-[#171A1F]'
+                : 'border-transparent text-[#697078] hover:text-[#171A1F]'
             }`}
           >
             Customer Dialogue Transcript ({session?.messages.length || 0})
           </button>
           <button
             onClick={() => setActiveTab('threat-intel')}
-            className={`pb-2.5 font-medium border-b-2 transition-colors ${
+            className={`pb-2.5 font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'threat-intel'
-                ? 'border-[#2D5BFF] text-[#2D5BFF]'
-                : 'border-transparent text-[#6B7280] hover:text-[#1E1E2A]'
+                ? 'border-[#171A1F] text-[#171A1F]'
+                : 'border-transparent text-[#697078] hover:text-[#171A1F]'
             }`}
           >
-            Channel3 & Elastic Signals
+            Signal Telemetry
           </button>
           <button
             onClick={() => setActiveTab('kernel-audit')}
-            className={`pb-2.5 font-medium border-b-2 transition-colors ${
+            className={`pb-2.5 font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'kernel-audit'
-                ? 'border-[#2D5BFF] text-[#2D5BFF]'
-                : 'border-transparent text-[#6B7280] hover:text-[#1E1E2A]'
+                ? 'border-[#171A1F] text-[#171A1F]'
+                : 'border-transparent text-[#697078] hover:text-[#171A1F]'
             }`}
           >
             Kernel Verification & Trusted Contact
@@ -213,69 +218,69 @@ function MerchantInvestigationCaseContent() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2 space-y-6">
               {/* AI Coercion Hypothesis Box */}
-              <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-3">
+              <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-[#1E1E2A] flex items-center gap-2">
-                    <ShieldAlert size={16} className="text-[#DC2626]" />
-                    AI Behavioral & Coercion Hypothesis
+                  <h3 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+                    <ShieldAlert size={15} className="text-[#C53030]" />
+                    <span>Behavioral & Coercion Hypothesis</span>
                   </h3>
-                  <span className="font-mono text-xs bg-[#FEF2F2] text-[#DC2626] px-2 py-0.5 rounded font-semibold">
+                  <span className="font-mono text-[11px] bg-[#FDE8E8] text-[#C53030] px-2 py-0.5 rounded-[4px] font-semibold border border-[#C53030]/20">
                     Risk Score: {payment.riskScore} / 100
                   </span>
                 </div>
 
-                <div className="text-xs text-[#1E1E2A] bg-[#FAFAFC] border border-[#E5E7EB] p-4 rounded leading-relaxed space-y-2">
+                <div className="text-[12px] text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] p-4 rounded-[6px] leading-relaxed space-y-2">
                   <p>
                     <strong>Hypothesis:</strong> The customer is undergoing an active social-engineering coercion event consistent with an impersonation extortion scheme (IRS or Federal Agency spoof).
                   </p>
-                  <p className="text-[#6B7280]">
-                    <strong>Corroborating Evidence:</strong> The customer was instructed to remain on an active mobile call, buy prepaid store cards to "settle an immediate federal lien," and keep transaction details secret from cashier staff.
+                  <p className="text-[#697078]">
+                    <strong>Corroborating Evidence:</strong> The customer was instructed to remain on an active mobile call, buy prepaid store cards to &quot;settle an immediate federal lien,&quot; and keep transaction details secret from cashier staff.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-2 text-center text-xs">
-                  <div className="p-2.5 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <div className="text-[#6B7280]">Urgency Index</div>
-                    <div className="font-semibold text-[#DC2626] text-sm mt-0.5">High (92%)</div>
+                <div className="grid grid-cols-3 gap-2 pt-2 text-center text-[12px]">
+                  <div className="p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px]">
+                    <div className="text-[#697078]">Urgency Index</div>
+                    <div className="font-semibold text-[#C53030] text-[13px] mt-0.5">High (92%)</div>
                   </div>
-                  <div className="p-2.5 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <div className="text-[#6B7280]">Impersonation Match</div>
-                    <div className="font-semibold text-[#DC2626] text-sm mt-0.5">IRS Criminal Dept</div>
+                  <div className="p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px]">
+                    <div className="text-[#697078]">Impersonation Match</div>
+                    <div className="font-semibold text-[#C53030] text-[13px] mt-0.5">IRS Criminal Dept</div>
                   </div>
-                  <div className="p-2.5 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <div className="text-[#6B7280]">Secrecy Demanded</div>
-                    <div className="font-semibold text-[#D97706] text-sm mt-0.5">Confirmed</div>
+                  <div className="p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px]">
+                    <div className="text-[#697078]">Secrecy Demanded</div>
+                    <div className="font-semibold text-[#9A6700] text-[13px] mt-0.5">Confirmed</div>
                   </div>
                 </div>
               </div>
 
               {/* Event Timeline */}
-              <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-4">
-                <h3 className="text-sm font-semibold text-[#1E1E2A]">Intervention Timeline</h3>
-                <div className="border-l-2 border-[#E5E7EB] pl-4 space-y-4 text-xs">
+              <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
+                <h3 className="text-[13px] font-semibold text-[#171A1F]">Intervention Timeline</h3>
+                <div className="border-l-2 border-[#DFE2DF] pl-4 space-y-4 text-[12px]">
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#2D5BFF]" />
-                    <span className="text-[#6B7280] font-mono text-[11px]">10:32:00 AM</span>
-                    <div className="font-medium text-[#1E1E2A]">PayPal Order Initiated</div>
-                    <p className="text-[#6B7280]">Checkout with PayPal button clicked on merchant site for $1,200.00.</p>
+                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#171A1F]" />
+                    <span className="text-[#697078] font-mono text-[11px]">10:32:00 AM</span>
+                    <div className="font-medium text-[#171A1F]">PayPal Order Initiated</div>
+                    <p className="text-[#697078]">Checkout with PayPal button clicked on merchant site for $1,200.00.</p>
                   </div>
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
-                    <span className="text-[#6B7280] font-mono text-[11px]">10:32:04 AM</span>
-                    <div className="font-medium text-[#1E1E2A]">Authorization Created — Hold Placed</div>
-                    <p className="text-[#6B7280]">PayPal authorized payment; Scam Brake intercepted capture trigger due to high risk score (88/100).</p>
+                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#9A6700]" />
+                    <span className="text-[#697078] font-mono text-[11px]">10:32:04 AM</span>
+                    <div className="font-medium text-[#171A1F]">Authorization Created — Hold Placed</div>
+                    <p className="text-[#697078]">PayPal authorized payment; Scam Brake intercepted capture trigger due to high risk score (88/100).</p>
                   </div>
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#2D5BFF]" />
-                    <span className="text-[#6B7280] font-mono text-[11px]">10:32:15 AM</span>
-                    <div className="font-medium text-[#1E1E2A]">Conversational Check-In Launched</div>
-                    <p className="text-[#6B7280]">Scam Brake opened calm safety dialogue with customer {payment.customer.name}.</p>
+                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#171A1F]" />
+                    <span className="text-[#697078] font-mono text-[11px]">10:32:15 AM</span>
+                    <div className="font-medium text-[#171A1F]">Conversational Check-In Launched</div>
+                    <p className="text-[#697078]">Scam Brake opened calm safety dialogue with customer {payment.customer.name}.</p>
                   </div>
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#10B981]" />
-                    <span className="text-[#6B7280] font-mono text-[11px]">10:33:45 AM</span>
-                    <div className="font-medium text-[#1E1E2A]">Kernel Independent Directory Check Displayed</div>
-                    <p className="text-[#6B7280]">Customer shown official public switchboard for IRS Criminal Investigation.</p>
+                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#1A7A64]" />
+                    <span className="text-[#697078] font-mono text-[11px]">10:33:45 AM</span>
+                    <div className="font-medium text-[#171A1F]">Kernel Independent Directory Check Displayed</div>
+                    <p className="text-[#697078]">Customer shown official public switchboard for IRS Criminal Investigation.</p>
                   </div>
                 </div>
               </div>
@@ -283,50 +288,50 @@ function MerchantInvestigationCaseContent() {
 
             {/* Sidebar Column: Customer profile & Sponsor diagnostics */}
             <div className="space-y-6">
-              <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-3 text-xs">
-                <h3 className="font-semibold text-[#1E1E2A] flex items-center gap-1.5">
-                  <User size={14} className="text-[#6B7280]" />
-                  Protected Customer
+              <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-3 text-[12px]">
+                <h3 className="font-semibold text-[#171A1F] flex items-center gap-1.5">
+                  <User size={14} className="text-[#697078]" />
+                  <span>Protected Customer</span>
                 </h3>
                 <div className="space-y-1.5 pt-1">
                   <div>
-                    <span className="text-[#6B7280]">Full Name:</span>{' '}
-                    <span className="font-medium text-[#1E1E2A]">{payment.customer.name}</span>
+                    <span className="text-[#697078]">Full Name:</span>{' '}
+                    <span className="font-medium text-[#171A1F]">{payment.customer.name}</span>
                   </div>
                   <div>
-                    <span className="text-[#6B7280]">Account Age:</span>{' '}
-                    <span className="text-[#1E1E2A]">{payment.customer.accountAgeMonths} months</span>
+                    <span className="text-[#697078]">Account Age:</span>{' '}
+                    <span className="text-[#171A1F]">{payment.customer.accountAgeMonths} months</span>
                   </div>
                   <div>
-                    <span className="text-[#6B7280]">Masked Email:</span>{' '}
-                    <span className="font-mono text-[#1E1E2A]">{payment.customer.maskedEmail}</span>
+                    <span className="text-[#697078]">Email:</span>{' '}
+                    <span className="font-mono text-[#171A1F]">{payment.customer.maskedEmail}</span>
                   </div>
                   <div>
-                    <span className="text-[#6B7280]">Masked Phone:</span>{' '}
-                    <span className="font-mono text-[#1E1E2A]">{payment.customer.maskedPhone}</span>
+                    <span className="text-[#697078]">Phone:</span>{' '}
+                    <span className="font-mono text-[#171A1F]">{payment.customer.maskedPhone}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-3 text-xs">
-                <h3 className="font-semibold text-[#1E1E2A] flex items-center gap-1.5">
-                  <Database size={14} className="text-[#6B7280]" />
-                  Technology Stack Traces
+              <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-3 text-[12px]">
+                <h3 className="font-semibold text-[#171A1F] flex items-center gap-1.5">
+                  <Database size={14} className="text-[#697078]" />
+                  <span>Telemetry Traces</span>
                 </h3>
                 <div className="space-y-2">
-                  <div className="p-2 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <span className="text-[#6B7280] block text-[11px]">PayPal Orders API</span>
-                    <span className="font-mono text-[#1E1E2A] text-[11px] truncate block">
+                  <div className="p-2 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px]">
+                    <span className="text-[#697078] block text-[10px] font-mono uppercase">PayPal Orders API</span>
+                    <span className="font-mono text-[#171A1F] text-[11px] truncate block">
                       {payment.paypalOrderId}
                     </span>
                   </div>
-                  <div className="p-2 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <span className="text-[#6B7280] block text-[11px]">Channel3 Telemetry Ref</span>
-                    <span className="font-mono text-[#1E1E2A] text-[11px]">ch3_intel_79182a</span>
+                  <div className="p-2 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px]">
+                    <span className="text-[#697078] block text-[10px] font-mono uppercase">Channel3 Telemetry Ref</span>
+                    <span className="font-mono text-[#171A1F] text-[11px]">ch3_intel_79182a</span>
                   </div>
-                  <div className="p-2 bg-[#FAFAFC] border border-[#E5E7EB] rounded">
-                    <span className="text-[#6B7280] block text-[11px]">Elastic Pattern Match Cluster</span>
-                    <span className="font-mono text-[#1E1E2A] text-[11px]">cluster-irs-urgent-wire-2026</span>
+                  <div className="p-2 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px]">
+                    <span className="text-[#697078] block text-[10px] font-mono uppercase">Pattern Match Cluster</span>
+                    <span className="font-mono text-[#171A1F] text-[11px]">cluster-irs-urgent-wire-2026</span>
                   </div>
                 </div>
               </div>
@@ -336,17 +341,17 @@ function MerchantInvestigationCaseContent() {
 
         {/* Tab Content 2: Transcript */}
         {activeTab === 'transcript' && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
-              <h3 className="text-sm font-semibold text-[#1E1E2A] flex items-center gap-2">
-                <MessageSquare size={16} className="text-[#2D5BFF]" />
-                Customer Safety Dialogue Log
+          <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF]">
+              <h3 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+                <MessageSquare size={15} className="text-[#171A1F]" />
+                <span>Customer Dialogue Transcript</span>
               </h3>
-              <span className="text-xs text-[#6B7280]">Voluntarily provided session transcript</span>
+              <span className="text-[11px] text-[#697078]">Voluntarily provided session transcript</span>
             </div>
 
             {(!session || session.messages.length === 0) ? (
-              <div className="py-12 text-center text-xs text-[#6B7280]">
+              <div className="py-12 text-center text-[12px] text-[#697078]">
                 No messages recorded for this session.
               </div>
             ) : (
@@ -358,15 +363,15 @@ function MerchantInvestigationCaseContent() {
                       msg.sender === 'CUSTOMER' ? 'items-end' : 'items-start'
                     }`}
                   >
-                    <div className="text-[11px] text-[#6B7280] mb-1 font-mono">
+                    <div className="text-[10px] text-[#697078] mb-1 font-mono">
                       {msg.sender === 'CUSTOMER' ? payment.customer.name : 'Scam Brake Safety AI'}{' '}
                       • {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                     <div
-                      className={`max-w-md p-3.5 rounded text-xs leading-relaxed ${
+                      className={`max-w-md p-3.5 rounded-[6px] text-[13px] leading-relaxed ${
                         msg.sender === 'CUSTOMER'
-                          ? 'bg-[#2D5BFF] text-white'
-                          : 'bg-[#FAFAFC] border border-[#E5E7EB] text-[#1E1E2A]'
+                          ? 'bg-[#171A1F] text-white'
+                          : 'bg-[#F6F6F3] border border-[#DFE2DF] text-[#171A1F]'
                       }`}
                     >
                       {msg.content}
@@ -380,20 +385,22 @@ function MerchantInvestigationCaseContent() {
 
         {/* Tab Content 3: Threat Intel */}
         {activeTab === 'threat-intel' && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-[#1E1E2A]">Channel3 & Elastic Signal Telemetry</h3>
+          <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
+            <h3 className="text-[13px] font-semibold text-[#171A1F]">Signal Telemetry</h3>
             <div className="space-y-3">
               {payment.riskSignals.map((sig) => (
-                <div key={sig.id} className="p-4 bg-[#FAFAFC] border border-[#E5E7EB] rounded text-xs space-y-2">
+                <div key={sig.id} className="p-4 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] text-[12px] space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm text-[#1E1E2A]">{sig.title}</span>
-                    <Badge variant={sig.severity} />
+                    <span className="font-semibold text-[13px] text-[#171A1F]">{sig.title}</span>
+                    <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-[3px] bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20">
+                      {sig.severity}
+                    </span>
                   </div>
-                  <p className="text-[#6B7280]">{sig.description}</p>
-                  <div className="flex items-center justify-between pt-2 border-t border-[#E5E7EB] text-[11px] text-[#6B7280]">
-                    <span>Source: <strong className="text-[#1E1E2A]">{sig.source}</strong></span>
-                    <span>Confidence Score: <strong className="text-[#1E1E2A]">{Math.round(sig.confidence * 100)}%</strong></span>
-                    <span>Detected: <strong className="text-[#1E1E2A]">{new Date(sig.detectedAt).toLocaleTimeString()}</strong></span>
+                  <p className="text-[#697078]">{sig.description}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-[#DFE2DF] text-[11px] text-[#697078]">
+                    <span>Source: <strong className="text-[#171A1F] font-mono">{sig.source}</strong></span>
+                    <span>Confidence: <strong className="text-[#171A1F] font-mono">{Math.round(sig.confidence * 100)}%</strong></span>
+                    <span>Detected: <strong className="text-[#171A1F] font-mono">{new Date(sig.detectedAt).toLocaleTimeString()}</strong></span>
                   </div>
                 </div>
               ))}
@@ -404,54 +411,54 @@ function MerchantInvestigationCaseContent() {
         {/* Tab Content 4: Kernel Audit */}
         {activeTab === 'kernel-audit' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-4 text-xs">
-              <h3 className="text-sm font-semibold text-[#1E1E2A] flex items-center gap-2">
-                <Search size={15} className="text-[#2D5BFF]" />
-                Kernel Public Directory Verification
+            <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4 text-[12px]">
+              <h3 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+                <Search size={14} className="text-[#171A1F]" />
+                <span>Kernel Directory Verification</span>
               </h3>
-              <p className="text-[#6B7280]">
-                Independent phone registry verification enabled to compare incoming caller claims with official government directory records.
+              <p className="text-[#697078]">
+                Independent directory verification compares incoming caller claims with official government records.
               </p>
-              <div className="p-3 bg-[#FAFAFC] border border-[#E5E7EB] rounded space-y-2">
+              <div className="p-3 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Target Agency:</span>
-                  <span className="font-medium text-[#1E1E2A]">{session?.independentVerification.targetOrganization || 'IRS Criminal Investigation'}</span>
+                  <span className="text-[#697078]">Target Agency:</span>
+                  <span className="font-medium text-[#171A1F]">{session?.independentVerification.targetOrganization || 'IRS Criminal Investigation'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Official Switchboard:</span>
-                  <span className="font-mono text-[#1E1E2A]">{session?.independentVerification.officialPhone || '1-800-829-1040'}</span>
+                  <span className="text-[#697078]">Official Switchboard:</span>
+                  <span className="font-mono text-[#171A1F]">{session?.independentVerification.officialPhone || '1-800-829-1040'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Status:</span>
-                  <span className="text-[#D97706] font-medium">{session?.independentVerification.status || 'PENDING'}</span>
+                  <span className="text-[#697078]">Status:</span>
+                  <span className="text-[#9A6700] font-medium font-mono">{session?.independentVerification.status || 'PENDING'}</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded p-5 space-y-4 text-xs">
-              <h3 className="text-sm font-semibold text-[#1E1E2A] flex items-center gap-2">
-                <UserCheck size={15} className="text-[#059669]" />
-                Trusted Contact Advocacy Record
+            <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4 text-[12px]">
+              <h3 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+                <UserCheck size={14} className="text-[#1A7A64]" />
+                <span>Trusted Contact Record</span>
               </h3>
-              <p className="text-[#6B7280]">
+              <p className="text-[#697078]">
                 Explicit customer consent record for notifying registered advocate of high-risk payment hold.
               </p>
-              <div className="p-3 bg-[#FAFAFC] border border-[#E5E7EB] rounded space-y-2">
+              <div className="p-3 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Contact Name:</span>
-                  <span className="font-medium text-[#1E1E2A]">{session?.trustedContact.name || 'Marcus Vance'}</span>
+                  <span className="text-[#697078]">Contact Name:</span>
+                  <span className="font-medium text-[#171A1F]">{session?.trustedContact.name || 'David Stephenson'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Relationship:</span>
-                  <span className="text-[#1E1E2A]">{session?.trustedContact.relationship || 'Son'}</span>
+                  <span className="text-[#697078]">Relationship:</span>
+                  <span className="text-[#171A1F]">{session?.trustedContact.relationship || 'Son'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">Consent Granted:</span>
-                  <span className="text-[#059669] font-medium">{session?.trustedContact.consentGranted ? 'Yes (Explicit)' : 'Pending'}</span>
+                  <span className="text-[#697078]">Consent Granted:</span>
+                  <span className="text-[#1A7A64] font-medium">{session?.trustedContact.consentGranted ? 'Yes (Explicit)' : 'Pending'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6B7280]">SMS Dispatched:</span>
-                  <span className="text-[#1E1E2A]">{session?.trustedContact.notificationSent ? 'Yes (via Zapier/Twilio)' : 'Not Dispatched'}</span>
+                  <span className="text-[#697078]">SMS Dispatched:</span>
+                  <span className="text-[#171A1F]">{session?.trustedContact.notificationSent ? 'Yes (via SMS Gateway)' : 'Not Dispatched'}</span>
                 </div>
               </div>
             </div>
@@ -466,9 +473,8 @@ export default function MerchantInvestigationCasePage() {
   return (
     <React.Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFC] py-24 text-center text-[#6B7280]">
-          <div className="inline-block animate-spin rounded-full h-6 w-6 border-2 border-[#2D5BFF] border-t-transparent mb-3" />
-          <p className="text-sm">Loading investigation case...</p>
+        <div className="min-h-screen bg-[#F6F6F3] py-24 text-center text-[#697078]">
+          <p className="text-xs font-mono">Loading investigation case...</p>
         </div>
       }
     >

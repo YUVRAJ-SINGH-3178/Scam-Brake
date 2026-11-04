@@ -21,10 +21,8 @@ function AuthorizingContent() {
 
     const t3 = setTimeout(() => {
       if (product === 'camera') {
-        // Clean legitimate purchase -> go to status captured
         router.push('/checkout/status?outcome=captured&product=camera');
       } else {
-        // Coercion risk -> trigger Scam Brake Intervention
         router.push('/intervention?product=' + product);
       }
     }, 3800);
@@ -37,33 +35,33 @@ function AuthorizingContent() {
   }, [product, router]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-[#1E1E2A] flex flex-col items-center justify-center p-6 antialiased">
-      <div className="max-w-md w-full bg-white border border-[#E5E7EB] rounded-2xl p-8 text-center space-y-6">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col items-center justify-center p-6 antialiased">
+      <div className="max-w-md w-full bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 text-center space-y-6">
         <div className="flex justify-center">
-          <ScamBrakeMark size={48} />
+          <ScamBrakeMark size={40} />
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-xl font-semibold text-[#1E1E2A]">
+          <h1 className="text-xl font-semibold text-[#171A1F] tracking-tight">
             {stage === 'CONTACTING_PAYPAL'
               ? 'Connecting with PayPal...'
               : stage === 'HOLD_PLACED'
               ? 'Authorization Hold Established'
-              : 'Scam Brake Risk Check Active...'}
+              : 'Evaluating Risk Signals...'}
           </h1>
-          <p className="text-[13px] text-[#6B7280] leading-relaxed">
+          <p className="text-[13px] text-[#697078] leading-relaxed">
             {stage === 'CONTACTING_PAYPAL'
-              ? 'Requesting pre-capture authorization for order.'
+              ? 'Requesting pre-capture authorization hold for order.'
               : stage === 'HOLD_PLACED'
-              ? 'Funds are held in escrow. No money has left your account yet.'
-              : 'Verifying that this transaction is free of social-engineering coercion.'}
+              ? 'Funds are held in authorization. No money has moved.'
+              : 'Verifying that this transaction is free of social engineering coercion.'}
           </p>
         </div>
 
         {/* Pulse Bar */}
-        <div className="w-full bg-[#E5E7EB] h-1.5 rounded-full overflow-hidden">
+        <div className="w-full bg-[#DFE2DF] h-1 rounded-[2px] overflow-hidden">
           <div
-            className="h-full bg-[#2D5BFF] transition-all duration-700 ease-out"
+            className="h-full bg-[#171A1F] transition-all duration-700 ease-out"
             style={{
               width:
                 stage === 'CONTACTING_PAYPAL'
@@ -75,14 +73,14 @@ function AuthorizingContent() {
           />
         </div>
 
-        <div className="p-3.5 rounded-lg bg-[#F8F9FB] border border-[#E5E7EB] text-[12px] text-[#6B7280] text-left space-y-1">
+        <div className="p-3.5 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[12px] text-[#697078] text-left space-y-1">
           <div className="flex items-center justify-between">
-            <span className="font-medium text-[#1E1E2A]">Mode:</span>
-            <span className="font-mono text-[#2D5BFF]">intent=AUTHORIZE</span>
+            <span className="font-medium text-[#171A1F]">Mode</span>
+            <span className="font-mono text-[#171A1F]">intent=AUTHORIZE</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-medium text-[#1E1E2A]">Protection Engine:</span>
-            <span>Scam Brake v2.4</span>
+            <span className="font-medium text-[#171A1F]">Protection</span>
+            <span>Pre-Capture Verification Gate</span>
           </div>
         </div>
       </div>
@@ -94,8 +92,8 @@ export default function AuthorizingPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFC] flex items-center justify-center p-6">
-          <div className="text-xs text-[#6B7280]">Connecting PayPal authorization hold...</div>
+        <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
+          <div className="text-xs font-mono text-[#697078]">Connecting PayPal authorization hold...</div>
         </div>
       }
     >

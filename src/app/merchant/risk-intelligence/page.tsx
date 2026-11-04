@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AppShell } from '@/components/merchant/AppShell';
-import { Badge } from '@/components/ui/Badge';
+import { RiskBadge } from '@/components/ui/Badge';
 import {
   ShieldAlert,
   Search,
@@ -10,10 +10,8 @@ import {
   Terminal,
   Activity,
   AlertTriangle,
-  Flame,
   FileCode,
   CheckCircle,
-  ExternalLink,
 } from 'lucide-react';
 
 interface ThreatTaxonomyItem {
@@ -158,45 +156,48 @@ export default function MerchantRiskIntelligencePage() {
     <AppShell activeItem="/merchant/risk-intelligence">
       <div className="space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
-              Risk & Social Engineering Intelligence
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Intelligence
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+              Risk & Threat Taxonomy
             </h1>
-            <p className="text-sm text-[#6B7280] mt-1">
-              Real-time threat taxonomy and behavioral pattern indices powered by Channel3 and Elastic.
+            <p className="text-[13px] text-[#697078] mt-1">
+              Real-time threat taxonomy and behavioral pattern indices for pre-capture hold decisions.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#059669] bg-[#10B981]/10 px-2.5 py-1 rounded border border-[#10B981]/20 flex items-center gap-1.5 font-medium">
-              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-              Elastic Pattern Engine: Connected
+            <span className="text-[11px] font-mono text-[#1A7A64] bg-[#EAF4F1] px-2.5 py-1 rounded-[4px] border border-[#1A7A64]/20 flex items-center gap-1.5 font-medium">
+              <span className="w-2 h-2 rounded-full bg-[#1A7A64]" />
+              Pattern Engine: Active
             </span>
           </div>
         </div>
 
         {/* Intelligence Metric Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-4 rounded">
-            <div className="text-xs text-[#6B7280]">Classified Scam Types</div>
-            <div className="font-mono text-2xl font-semibold text-[#1E1E2A] mt-1">18 Clusters</div>
-            <div className="text-[11px] text-[#6B7280] mt-0.5">Updated daily from global feeds</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-[6px] border border-[#DFE2DF] bg-[#F6F6F3]">
+          <div>
+            <div className="text-[12px] text-[#697078]">Classified Scam Types</div>
+            <div className="font-mono text-[22px] font-semibold text-[#171A1F] mt-0.5">18 Clusters</div>
+            <div className="text-[11px] text-[#697078] mt-0.5">Updated daily from global feeds</div>
           </div>
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-4 rounded">
-            <div className="text-xs text-[#6B7280]">Coercion Accuracy</div>
-            <div className="font-mono text-2xl font-semibold text-[#059669] mt-1">98.4%</div>
-            <div className="text-[11px] text-[#6B7280] mt-0.5">&lt;0.2% false positive holds</div>
+          <div>
+            <div className="text-[12px] text-[#697078]">Coercion Accuracy</div>
+            <div className="font-mono text-[22px] font-semibold text-[#1A7A64] mt-0.5">98.4%</div>
+            <div className="text-[11px] text-[#1A7A64] mt-0.5">&lt;0.2% false positive holds</div>
           </div>
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-4 rounded">
-            <div className="text-xs text-[#6B7280]">Average Hold Window</div>
-            <div className="font-mono text-2xl font-semibold text-[#2D5BFF] mt-1">8.5 min</div>
-            <div className="text-[11px] text-[#6B7280] mt-0.5">To customer resolution</div>
+          <div>
+            <div className="text-[12px] text-[#697078]">Average Hold Window</div>
+            <div className="font-mono text-[22px] font-semibold text-[#171A1F] mt-0.5">8.5 min</div>
+            <div className="text-[11px] text-[#697078] mt-0.5">To customer resolution</div>
           </div>
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-4 rounded">
-            <div className="text-xs text-[#6B7280]">Dispute Chargebacks</div>
-            <div className="font-mono text-2xl font-semibold text-[#059669] mt-1">$0.00</div>
-            <div className="text-[11px] text-[#6B7280] mt-0.5">Pre-capture voids incur zero fees</div>
+          <div>
+            <div className="text-[12px] text-[#697078]">Dispute Chargebacks</div>
+            <div className="font-mono text-[22px] font-semibold text-[#1A7A64] mt-0.5">$0.00</div>
+            <div className="text-[11px] text-[#1A7A64] mt-0.5">Pre-capture voids incur zero fees</div>
           </div>
         </div>
 
@@ -205,13 +206,13 @@ export default function MerchantRiskIntelligencePage() {
           {/* List of Threat Categories */}
           <div className="md:col-span-1 space-y-3">
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#697078]" />
               <input
                 type="text"
                 placeholder="Search threat schemes..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full text-xs pl-8 pr-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded focus:outline-hidden focus:border-[#2D5BFF]"
+                className="w-full text-[12px] pl-8 pr-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] focus:outline-none focus:border-[#171A1F]"
               />
             </div>
 
@@ -220,20 +221,22 @@ export default function MerchantRiskIntelligencePage() {
                 <button
                   key={item.id}
                   onClick={() => setSelectedThreat(item)}
-                  className={`w-full text-left p-3.5 rounded border transition-colors ${
+                  className={`w-full text-left p-3.5 rounded-[6px] border transition-colors cursor-pointer ${
                     selectedThreat.id === item.id
-                      ? 'bg-[#FFFFFF] border-[#2D5BFF] shadow-xs'
-                      : 'bg-[#FAFAFC] border-[#E5E7EB] hover:bg-[#FFFFFF]'
+                      ? 'bg-[#FFFFFF] border-[#171A1F] shadow-xs'
+                      : 'bg-[#F6F6F3] border-[#DFE2DF] hover:bg-[#FFFFFF]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-[10px] text-[#6B7280]">{item.id}</span>
-                    <Badge variant={item.severity} />
+                    <span className="font-mono text-[10px] text-[#697078]">{item.id}</span>
+                    <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-[3px] bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20">
+                      {item.severity}
+                    </span>
                   </div>
-                  <div className="font-medium text-xs text-[#1E1E2A] line-clamp-1">{item.name}</div>
-                  <div className="text-[11px] text-[#6B7280] mt-1 flex justify-between">
+                  <div className="font-medium text-[12px] text-[#171A1F] line-clamp-1">{item.name}</div>
+                  <div className="text-[11px] text-[#697078] mt-1 flex justify-between">
                     <span>{item.frequency}</span>
-                    <span className="text-[#059669] font-medium">Prevented {item.avgLossPrevented}</span>
+                    <span className="text-[#1A7A64] font-medium">Prevented {item.avgLossPrevented}</span>
                   </div>
                 </button>
               ))}
@@ -241,20 +244,22 @@ export default function MerchantRiskIntelligencePage() {
           </div>
 
           {/* Deep Threat Detail View */}
-          <div className="md:col-span-2 bg-[#FFFFFF] border border-[#E5E7EB] rounded p-6 space-y-6">
-            <div className="pb-4 border-b border-[#E5E7EB] flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+          <div className="md:col-span-2 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-6">
+            <div className="pb-4 border-b border-[#DFE2DF] flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-[#6B7280]">{selectedThreat.id}</span>
-                  <Badge variant={selectedThreat.severity} />
-                  <span className="text-xs text-[#6B7280] font-mono">{selectedThreat.category}</span>
+                  <span className="font-mono text-[10px] text-[#697078]">{selectedThreat.id}</span>
+                  <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-[3px] bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20">
+                    {selectedThreat.severity}
+                  </span>
+                  <span className="text-[11px] text-[#697078] font-mono">{selectedThreat.category}</span>
                 </div>
-                <h2 className="text-xl font-semibold text-[#1E1E2A]">{selectedThreat.name}</h2>
+                <h2 className="text-xl font-semibold text-[#171A1F] tracking-tight">{selectedThreat.name}</h2>
               </div>
 
               <div className="text-right">
-                <span className="text-xs text-[#6B7280] block">Avg Loss Prevented</span>
-                <span className="font-mono text-xl font-semibold text-[#059669]">
+                <span className="text-[11px] text-[#697078] block">Avg Loss Prevented</span>
+                <span className="font-mono text-xl font-semibold text-[#1A7A64] tabular-nums">
                   {selectedThreat.avgLossPrevented}
                 </span>
               </div>
@@ -262,24 +267,24 @@ export default function MerchantRiskIntelligencePage() {
 
             {/* Scheme Narrative */}
             <div className="space-y-2">
-              <h3 className="text-xs font-semibold text-[#6B7280]">
+              <h3 className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
                 Threat Mechanism
               </h3>
-              <p className="text-xs text-[#1E1E2A] leading-relaxed bg-[#FAFAFC] p-3.5 rounded border border-[#E5E7EB]">
+              <p className="text-[12px] text-[#171A1F] leading-relaxed bg-[#F6F6F3] p-3.5 rounded-[6px] border border-[#DFE2DF]">
                 {selectedThreat.description}
               </p>
             </div>
 
             {/* Key Indicators */}
             <div className="space-y-2">
-              <h3 className="text-xs font-semibold text-[#6B7280]">
+              <h3 className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
                 Behavioral & Technical Indicators
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px]">
                 {selectedThreat.keyIndicators.map((ind, i) => (
-                  <div key={i} className="flex items-start gap-2 p-2.5 bg-[#FAFAFC] rounded border border-[#E5E7EB]">
-                    <AlertTriangle size={14} className="text-[#D97706] shrink-0 mt-0.5" />
-                    <span className="text-[#1E1E2A]">{ind}</span>
+                  <div key={i} className="flex items-start gap-2 p-2.5 bg-[#F6F6F3] rounded-[4px] border border-[#DFE2DF]">
+                    <AlertTriangle size={13} className="text-[#9A6700] shrink-0 mt-0.5" />
+                    <span className="text-[#171A1F]">{ind}</span>
                   </div>
                 ))}
               </div>
@@ -287,14 +292,14 @@ export default function MerchantRiskIntelligencePage() {
 
             {/* Verbatim Script Phrases */}
             <div className="space-y-2">
-              <h3 className="text-xs font-semibold text-[#6B7280]">
+              <h3 className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
                 Observed Extortion Script Quotes
               </h3>
               <div className="space-y-1.5">
                 {selectedThreat.sampleScriptPhrases.map((phrase, i) => (
                   <div
                     key={i}
-                    className="p-2.5 bg-[#FEF2F2]/60 border border-[#DC2626]/20 rounded text-xs text-[#991B1B] font-mono italic"
+                    className="p-2.5 bg-[#FDE8E8] border border-[#C53030]/20 rounded-[4px] text-[12px] text-[#C53030] font-mono italic"
                   >
                     {phrase}
                   </div>
@@ -302,13 +307,13 @@ export default function MerchantRiskIntelligencePage() {
               </div>
             </div>
 
-            {/* Scam Brake Countermeasure */}
-            <div className="space-y-2 pt-2 border-t border-[#E5E7EB]">
-              <h3 className="text-xs font-semibold text-[#059669] flex items-center gap-1.5">
+            {/* Countermeasure */}
+            <div className="space-y-2 pt-2 border-t border-[#DFE2DF]">
+              <h3 className="text-[12px] font-semibold text-[#1A7A64] flex items-center gap-1.5">
                 <CheckCircle size={14} />
-                Scam Brake Protocol Countermeasure
+                <span>Scam Brake Protocol Countermeasure</span>
               </h3>
-              <p className="text-xs text-[#1E1E2A] leading-relaxed">
+              <p className="text-[12px] text-[#171A1F] leading-relaxed">
                 {selectedThreat.countermeasure}
               </p>
             </div>

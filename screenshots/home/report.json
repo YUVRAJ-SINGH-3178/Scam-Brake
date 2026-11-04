@@ -1,0 +1,2078 @@
+{
+ "url": "http://localhost:3000",
+ "at": "2026-11-04T18:48:39.086Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.48,
+    0.73,
+    0.66,
+    0.69,
+    0.86,
+    0.59,
+    0.61
+   ],
+   "motion": {
+    "elements": 24,
+    "css": 24,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5610,
+     "screens": 6.2,
+     "words": 1108,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 14,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 9,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 6,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "chars": 38,
+     "lines": 2,
+     "size": 46,
+     "vw": 3.2,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.025,
+     "leading": 1.14,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.43,
+     "top": 160,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "lines": 2,
+     "size": 46,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "words": 6,
+      "chars": 38,
+      "lines": 2,
+      "size": 46,
+      "vw": 3.2,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.14,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.43,
+      "top": 160,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Authentication cannot protect volition.",
+      "words": 4,
+      "chars": 39,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.43,
+      "top": 1026,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Experience Scam Brake in action.",
+      "words": 5,
+      "chars": 32,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 1585,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Five phases to settlement.",
+      "words": 4,
+      "chars": 26,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 2857,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built with strict customer privacy limits.",
+      "words": 6,
+      "chars": 42,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 3401,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently asked questions.",
+      "words": 3,
+      "chars": 27,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.53,
+      "top": 3995,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Protect checkouts before funds leave the account.",
+      "words": 7,
+      "chars": 49,
+      "lines": 2,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.53,
+      "top": 4845,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.98,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.02,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      36,
+      46
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.2
+     },
+     "measureChars": 96,
+     "max": {
+      "size": 46,
+      "vw": 3.2,
+      "font": "Switzer",
+      "text": "Stop the payment before pressure wins."
+     },
+     "monoShare": 0.02,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.05,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 160,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2b303a",
+       "share": 0.45
+      },
+      {
+       "color": "#525860",
+       "share": 0.29
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.04
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#171a1f",
+      "hsl": {
+       "h": 218,
+       "s": 0.15,
+       "l": 0.11
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 5,
+     "radius": 6,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Merchant Workspace",
+      "Explore Interactive Demo",
+      "Merchant Integration",
+      "Simulate Customer Void ($0 fee)",
+      "Simulate Capture"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 21,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1854
+      },
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2088
+      },
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 3001
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 8,
+     "fixed": true,
+     "height": 64,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5610,
+    "margins": {
+     "left": 80,
+     "right": 105
+    },
+    "sections": [
+     {
+      "sel": "section.pt-16.pb-20",
+      "tag": "section",
+      "top": 64,
+      "height": 866,
+      "words": 158,
+      "media": 0,
+      "middle": 115,
+      "heading": {
+       "text": "Stop the payment before pressure wins.",
+       "size": 46,
+       "tag": "h1"
+      },
+      "left": 80,
+      "right": 105,
+      "textLeft": 80,
+      "textRight": 105,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 930,
+      "height": 559,
+      "words": 160,
+      "media": 0,
+      "middle": 77,
+      "heading": {
+       "text": "Authentication cannot protect volition.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 80,
+      "right": 105,
+      "textLeft": 80,
+      "textRight": 105,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#demo.py-24.px-6",
+      "tag": "section",
+      "top": 1489,
+      "height": 1272,
+      "words": 240,
+      "media": 0,
+      "middle": 14,
+      "heading": {
+       "text": "Experience Scam Brake in action.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 80,
+      "right": 112,
+      "textLeft": 80,
+      "textRight": 112,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 2761,
+      "height": 544,
+      "words": 103,
+      "media": 0,
+      "middle": 73,
+      "heading": {
+       "text": "Five phases to settlement.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 80,
+      "right": 107,
+      "textLeft": 80,
+      "textRight": 107,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 3305,
+      "height": 594,
+      "words": 153,
+      "media": 0,
+      "middle": 18,
+      "heading": {
+       "text": "Built with strict customer privacy limits.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 80,
+      "right": 146,
+      "textLeft": 80,
+      "textRight": 146,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 3899,
+      "height": 834,
+      "words": 225,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently asked questions.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 80,
+      "right": 613,
+      "textLeft": 80,
+      "textRight": 613,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-28.px-6",
+      "tag": "section",
+      "top": 4733,
+      "height": 452,
+      "words": 35,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Protect checkouts before funds leave the account.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 400,
+      "right": 400,
+      "textLeft": 400,
+      "textRight": 400,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-[#FFFFFF]",
+      "tag": "footer",
+      "top": 5185,
+      "height": 425,
+      "words": 108,
+      "media": 0,
+      "middle": 97,
+      "heading": null,
+      "left": 80,
+      "right": 80,
+      "textLeft": 80,
+      "textRight": 80,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "size": 46,
+      "top": 160,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 80,
+      "n": 17
+     },
+     {
+      "x": 104,
+      "n": 1
+     },
+     {
+      "x": 363,
+      "n": 1
+     },
+     {
+      "x": 622,
+      "n": 1
+     },
+     {
+      "x": 882,
+      "n": 1
+     },
+     {
+      "x": 1141,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.17,
+    "voidBox": {
+     "x": 0,
+     "y": 600,
+     "w": 720,
+     "h": 300
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 1024,
+   "height": 768,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.54,
+    0.74,
+    0.69,
+    0.51,
+    0.58,
+    0.84,
+    0.69,
+    0.73
+   ],
+   "motion": {
+    "elements": 24,
+    "css": 24,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "page": {
+     "height": 5973,
+     "screens": 7.8,
+     "words": 1108,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 14,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 9,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 7,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "chars": 38,
+     "lines": 2,
+     "size": 46,
+     "vw": 4.5,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.025,
+     "leading": 1.14,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.45,
+     "top": 160,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "lines": 2,
+     "size": 46,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "words": 6,
+      "chars": 38,
+      "lines": 2,
+      "size": 46,
+      "vw": 4.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.14,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.45,
+      "top": 160,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Authentication cannot protect volition.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.45,
+      "top": 1122,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Experience Scam Brake in action.",
+      "words": 5,
+      "chars": 32,
+      "lines": 1,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.66,
+      "top": 1718,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Five phases to settlement.",
+      "words": 4,
+      "chars": 26,
+      "lines": 1,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.66,
+      "top": 3029,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built with strict customer privacy limits.",
+      "words": 6,
+      "chars": 42,
+      "lines": 1,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.66,
+      "top": 3621,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently asked questions.",
+      "words": 3,
+      "chars": 27,
+      "lines": 1,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.75,
+      "top": 4337,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Protect checkouts before funds leave the account.",
+      "words": 7,
+      "chars": 49,
+      "lines": 2,
+      "size": 36,
+      "vw": 3.5,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.75,
+      "top": 5187,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.98,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.02,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      36,
+      46
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.2
+     },
+     "measureChars": 96,
+     "max": {
+      "size": 46,
+      "vw": 4.5,
+      "font": "Switzer",
+      "text": "Stop the payment before pressure wins."
+     },
+     "monoShare": 0.02,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.05,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 160,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2b303a",
+       "share": 0.45
+      },
+      {
+       "color": "#525860",
+       "share": 0.29
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.04
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#171a1f",
+      "hsl": {
+       "h": 218,
+       "s": 0.15,
+       "l": 0.11
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 3,
+     "radius": 6,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Merchant Workspace",
+      "Explore Interactive Demo",
+      "Merchant Integration"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 21,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1987
+      },
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2241
+      },
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 3173
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 8,
+     "fixed": true,
+     "height": 64,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "pageH": 5973,
+    "margins": {
+     "left": 24,
+     "right": 49
+    },
+    "sections": [
+     {
+      "sel": "section.pt-16.pb-20",
+      "tag": "section",
+      "top": 64,
+      "height": 962,
+      "words": 158,
+      "media": 0,
+      "middle": 85,
+      "heading": {
+       "text": "Stop the payment before pressure wins.",
+       "size": 46,
+       "tag": "h1"
+      },
+      "left": 24,
+      "right": 49,
+      "textLeft": 24,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 1026,
+      "height": 596,
+      "words": 160,
+      "media": 0,
+      "middle": 81,
+      "heading": {
+       "text": "Authentication cannot protect volition.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 49,
+      "textLeft": 24,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#demo.py-24.px-6",
+      "tag": "section",
+      "top": 1622,
+      "height": 1311,
+      "words": 240,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Experience Scam Brake in action.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 56,
+      "textLeft": 24,
+      "textRight": 56,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 2933,
+      "height": 592,
+      "words": 103,
+      "media": 0,
+      "middle": 71,
+      "heading": {
+       "text": "Five phases to settlement.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 56,
+      "textLeft": 24,
+      "textRight": 56,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 3525,
+      "height": 716,
+      "words": 153,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built with strict customer privacy limits.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 53,
+      "textLeft": 24,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 4241,
+      "height": 834,
+      "words": 225,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently asked questions.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 253,
+      "textLeft": 24,
+      "textRight": 253,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-28.px-6",
+      "tag": "section",
+      "top": 5075,
+      "height": 452,
+      "words": 35,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Protect checkouts before funds leave the account.",
+       "size": 36,
+       "tag": "h2"
+      },
+      "left": 192,
+      "right": 192,
+      "textLeft": 192,
+      "textRight": 192,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-[#FFFFFF]",
+      "tag": "footer",
+      "top": 5527,
+      "height": 446,
+      "words": 108,
+      "media": 0,
+      "middle": 36,
+      "heading": null,
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "size": 46,
+      "top": 160,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 24,
+      "n": 17
+     },
+     {
+      "x": 48,
+      "n": 1
+     },
+     {
+      "x": 246,
+      "n": 1
+     },
+     {
+      "x": 445,
+      "n": 1
+     },
+     {
+      "x": 643,
+      "n": 1
+     },
+     {
+      "x": 842,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.11,
+    "voidBox": {
+     "x": 0,
+     "y": 614,
+     "w": 555,
+     "h": 154
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.47,
+    0.83,
+    0.91,
+    0.75,
+    0.86,
+    0.84,
+    0.84,
+    0.46,
+    0.78,
+    0.83,
+    1,
+    0.55
+   ],
+   "motion": {
+    "elements": 24,
+    "css": 24,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 11007,
+     "screens": 13,
+     "words": 1095,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 14,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 9,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 5,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "chars": 38,
+     "lines": 2,
+     "size": 30,
+     "vw": 7.7,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.025,
+     "leading": 1.14,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.88,
+     "top": 128,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Stop the payment before pressure wins.",
+     "words": 6,
+     "lines": 2,
+     "size": 30,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "words": 6,
+      "chars": 38,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.14,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 128,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Authentication cannot protect volition.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 2205,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Experience Scam Brake in action.",
+      "words": 5,
+      "chars": 32,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 3363,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Five phases to settlement.",
+      "words": 4,
+      "chars": 26,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 5692,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built with strict customer privacy limits.",
+      "words": 6,
+      "chars": 42,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 6992,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently asked questions.",
+      "words": 3,
+      "chars": 27,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 8195,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Protect checkouts before funds leave the account.",
+      "words": 7,
+      "chars": 49,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 9569,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.98,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.02,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      30
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.2
+     },
+     "measureChars": 43,
+     "max": {
+      "size": 30,
+      "vw": 7.7,
+      "font": "Switzer",
+      "text": "Stop the payment before pressure wins."
+     },
+     "monoShare": 0.02,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.05,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 858,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2b303a",
+       "share": 0.46
+      },
+      {
+       "color": "#525860",
+       "share": 0.3
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.03
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 2,
+     "radius": 6,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Explore Interactive Demo",
+      "Merchant Integration"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 27,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1238
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 3757
+      },
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 4397
+      },
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 5894
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 64,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 11007,
+    "margins": {
+     "left": 24,
+     "right": 25
+    },
+    "sections": [
+     {
+      "sel": "section.pt-16.pb-20",
+      "tag": "section",
+      "top": 64,
+      "height": 2045,
+      "words": 158,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Stop the payment before pressure wins.",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 24,
+      "right": 35,
+      "textLeft": 24,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 2109,
+      "height": 1158,
+      "words": 160,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Authentication cannot protect volition.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 27,
+      "textLeft": 24,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#demo.py-24.px-6",
+      "tag": "section",
+      "top": 3267,
+      "height": 2329,
+      "words": 240,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Experience Scam Brake in action.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 5596,
+      "height": 1301,
+      "words": 103,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Five phases to settlement.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 42,
+      "textLeft": 24,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 6896,
+      "height": 1203,
+      "words": 153,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built with strict customer privacy limits.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-24.px-6",
+      "tag": "section",
+      "top": 8099,
+      "height": 1358,
+      "words": 225,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently asked questions.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.py-28.px-6",
+      "tag": "section",
+      "top": 9457,
+      "height": 548,
+      "words": 35,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Protect checkouts before funds leave the account.",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 30,
+      "right": 30,
+      "textLeft": 30,
+      "textRight": 30,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-[#FFFFFF]",
+      "tag": "footer",
+      "top": 10005,
+      "height": 1002,
+      "words": 108,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 24,
+      "right": 25,
+      "textLeft": 24,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Stop the payment before pressure wins.",
+      "size": 30,
+      "top": 128,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 24,
+      "n": 17
+     },
+     {
+      "x": 48,
+      "n": 5
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "card-rows",
+   "width": 1440,
+   "message": "3 rows of identical boxed cards.",
+   "fix": "Vary the composition; not every section is a card grid.",
+   "alsoAt": [
+    1024,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-real-pictures",
+   "width": 1440,
+   "message": "Only 0 real photograph(s) or clip(s); the rest are interface fragments.",
+   "fix": "Add two or more real pictures of the customer's world from scripts/assets.mjs, not stock of people at laptops."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "measure",
+   "width": 1440,
+   "message": "Longest paragraph runs about 96 characters per line.",
+   "fix": "Cap paragraphs at 45–75 characters (max-width: 60ch).",
+   "alsoAt": [
+    1024
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 80px on the left, 105px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page.",
+   "alsoAt": [
+    1024
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "lopsided",
+   "width": 1440,
+   "message": "A section keeps its content on one side and leaves 613px of the width empty: \"Frequently asked questions.\".",
+   "fix": "Fill the other side with what the section has (its picture, a second column, the figure), or defend the void in one sentence."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\desktop-page-01.jpg",
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 1024,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\tablet-page-01.jpg",
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\mobile-page-01.jpg",
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\home\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

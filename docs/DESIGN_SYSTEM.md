@@ -100,3 +100,4 @@ Guided by `emil-design-eng/SKILL.md` and `animate/SKILL.md`:
 - **Desktop (1440px):** Full L-chrome (48px top bar, 240px sidebar, 16px inset margin, framed sheet layout).
 - **Tablet (768px):** Collapsible navigation drawer, two-column reflow for metrics and tables.
 - **Mobile (390px):** Single-column stacked sheets, horizontal scrolling tables with sticky primary identifier, full-width touch targets ($\ge 44\text{px}$).
+

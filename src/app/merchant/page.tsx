@@ -12,7 +12,6 @@ import {
   XCircle,
   Eye,
   Filter,
-  Sparkles,
 } from 'lucide-react';
 import { AppShell } from '@/components/merchant/AppShell';
 import { PaymentTable } from '@/components/merchant/PaymentTable';
@@ -30,7 +29,6 @@ export default function MerchantDashboardPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const activeHolds = payments.filter((p) => p.authorizationStatus === 'HOLD_ACTIVE');
-  const criticalCases = payments.filter((p) => p.riskLevel === 'CRITICAL');
 
   const handleSelectPayment = (payment: Payment) => {
     setSelectedPayment(payment);
@@ -48,39 +46,39 @@ export default function MerchantDashboardPage() {
   return (
     <AppShell activeItem="Overview">
       <div className="space-y-8">
-        {/* Screen Header & The Core Question */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        {/* Screen Header & Strategic Question */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <div className="text-[11px] font-mono font-semibold text-[#2D5BFF] uppercase tracking-wider">
-              OPERATIONAL OVERVIEW
+            <div className="text-[13px] font-medium text-[#525860]">
+              Operational Overview
             </div>
-            <h1 className="text-2xl font-semibold text-[#1E1E2A] mt-0.5">
+            <h1 className="text-2xl font-semibold text-[#171A1F] mt-0.5 tracking-tight">
               Which protected payments need attention now?
             </h1>
-            <p className="text-[13px] text-[#6B7280] mt-1">
-              Currently holding <strong className="text-[#1E1E2A]">{activeHolds.length} uncaptured authorizations</strong> undergoing customer verification.
+            <p className="text-[14px] text-[#525860] mt-1">
+              Currently holding <strong className="text-[#171A1F] font-semibold">{activeHolds.length} uncaptured authorizations</strong> undergoing customer verification.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Link href="/merchant/simulator">
               <Button variant="outline" size="sm">
-                <span>Run Simulator</span>
+                <span>Simulation Center</span>
               </Button>
             </Link>
             <Link href="/merchant/payments">
               <Button variant="primary" size="sm">
                 <span>View Full Ledger</span>
-                <ArrowRight size={14} />
+                <ArrowRight size={13} />
               </Button>
             </Link>
           </div>
         </div>
 
-        {/* 1. Scam Brake Signature Element: The Authorization Path Lifecycle Strip */}
+        {/* 1. Scam Brake Signature Element: Authorization Protocol Lifecycle */}
         <div className="space-y-2">
-          <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">
-            Active Pre-Capture Protocol Lifecycle
+          <div className="text-[13px] font-medium text-[#525860]">
+            Pre-Capture Hold Lifecycle
           </div>
           <AuthorizationPath
             currentStage="REVIEW"
@@ -90,45 +88,45 @@ export default function MerchantDashboardPage() {
           />
         </div>
 
-        {/* 2. Structured Financial Metrics (KPIs as Clean Type, Not Tiles) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-xl border border-[#E5E7EB] bg-[#FAFAFC]">
+        {/* 2. Structured Financial Metrics (Clean Hairline Grid) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-[6px] border border-[#DFE2DF] bg-[#F6F6F3]">
           <div>
-            <div className="text-[12px] text-[#6B7280]">Total Protected Volume</div>
-            <div className="text-[24px] font-mono font-semibold text-[#1E1E2A] mt-0.5">
-              ${metrics.totalProtectedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            <div className="text-[13px] text-[#525860]">Total Protected Volume</div>
+            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
+              <code>${metrics.totalProtectedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[11px] text-[#6B7280] mt-0.5">
+            <div className="text-[12px] text-[#525860] mt-0.5">
               {metrics.totalTransactionsReviewed} authorizations reviewed
             </div>
           </div>
 
           <div>
-            <div className="text-[12px] text-[#6B7280]">Active Holds (In Review)</div>
-            <div className="text-[24px] font-mono font-semibold text-[#F59E0B] mt-0.5">
-              ${metrics.activeHoldAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            <div className="text-[13px] text-[#525860]">Active Holds (In Review)</div>
+            <div className="text-[22px] font-semibold text-[#784D00] mt-0.5 tabular-nums">
+              <code>${metrics.activeHoldAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[11px] text-[#D97706] font-medium mt-0.5">
-              {metrics.activeHoldCount} payments pending decision
-            </div>
-          </div>
-
-          <div>
-            <div className="text-[12px] text-[#6B7280]">Fraud Voided (Money Saved)</div>
-            <div className="text-[24px] font-mono font-semibold text-[#EF4444] mt-0.5">
-              ${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-            </div>
-            <div className="text-[11px] text-[#DC2626] font-medium mt-0.5">
-              {metrics.voidedFraudCount} scam payments stopped
+            <div className="text-[12px] text-[#784D00] mt-0.5 font-medium">
+              {metrics.activeHoldCount} holds pending decision
             </div>
           </div>
 
           <div>
-            <div className="text-[12px] text-[#6B7280]">Captured Legitimate Volume</div>
-            <div className="text-[24px] font-mono font-semibold text-[#10B981] mt-0.5">
-              ${metrics.capturedLegitimateAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            <div className="text-[13px] text-[#525860]">Fraud Voided (Protected)</div>
+            <div className="text-[22px] font-semibold text-[#C53030] mt-0.5 tabular-nums">
+              <code>${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[11px] text-[#059669] font-medium mt-0.5">
-              {metrics.capturedLegitimateCount} clean orders fulfilled
+            <div className="text-[12px] text-[#C53030] mt-0.5 font-medium">
+              {metrics.voidedFraudCount} scam payments prevented
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[13px] text-[#525860]">Captured Legitimate Volume</div>
+            <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5 tabular-nums">
+              <code>${metrics.capturedLegitimateAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
+            </div>
+            <div className="text-[12px] text-[#1A7A64] mt-0.5 font-medium">
+              {metrics.capturedLegitimateCount} clean orders settled
             </div>
           </div>
         </div>
@@ -137,14 +135,14 @@ export default function MerchantDashboardPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-pulse" />
-              <h2 className="text-[15px] font-semibold text-[#1E1E2A]">
-                Authorizations Requiring Immediate Attention ({activeHolds.length})
+              <span className="w-2 h-2 rounded-full bg-[#9A6700]" />
+              <h2 className="text-[14px] font-semibold text-[#171A1F]">
+                Authorizations Requiring Attention ({activeHolds.length})
               </h2>
             </div>
             <Link
               href="/merchant/interventions"
-              className="text-[12px] text-[#2D5BFF] hover:underline font-medium"
+              className="text-[12px] text-[#171A1F] hover:text-[#1A7A64] hover:underline font-medium"
             >
               Open Interventions Queue →
             </Link>
@@ -155,14 +153,14 @@ export default function MerchantDashboardPage() {
               <div
                 key={p.id}
                 onClick={() => handleSelectPayment(p)}
-                className="p-4 rounded-xl border border-[#E5E7EB] bg-white hover:border-[#2D5BFF] transition-all cursor-pointer shadow-xs space-y-3"
+                className="p-4 rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] hover:border-[#171A1F]/40 transition-colors cursor-pointer space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[13px] font-bold text-[#2D5BFF]">
+                    <span className="font-mono text-[12px] font-semibold text-[#171A1F]">
                       {p.paymentReference}
                     </span>
-                    <span className="text-[11px] text-[#6B7280]">
+                    <span className="text-[11px] text-[#697078]">
                       ({p.customer.name})
                     </span>
                   </div>
@@ -170,25 +168,25 @@ export default function MerchantDashboardPage() {
                 </div>
 
                 <div className="flex items-baseline justify-between">
-                  <div className="text-[13px] font-medium text-[#1E1E2A] truncate max-w-[240px]">
+                  <div className="text-[13px] font-medium text-[#171A1F] truncate max-w-[240px]">
                     {p.productName}
                   </div>
-                  <div className="font-mono font-bold text-[16px] text-[#1E1E2A]">
+                  <div className="font-mono font-semibold text-[15px] text-[#171A1F] tabular-nums">
                     ${p.amount.toFixed(2)}
                   </div>
                 </div>
 
                 {/* Primary Risk Indicator */}
                 {p.riskSignals[0] && (
-                  <div className="p-2.5 rounded-lg bg-[#EF4444]/8 border border-[#EF4444]/20 text-[11px] text-[#991B1B] flex items-start gap-2">
-                    <AlertTriangle size={14} className="text-[#EF4444] shrink-0 mt-0.5" />
+                  <div className="p-2.5 rounded-[4px] bg-[#FAF2E4] border border-[#784D00]/20 text-[12px] text-[#784D00] flex items-start gap-2">
+                    <AlertTriangle size={13} className="text-[#784D00] shrink-0 mt-0.5" />
                     <span>{p.riskSignals[0].title}: {p.riskSignals[0].description}</span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2 border-t border-[#E5E7EB] text-[11px] text-[#6B7280]">
-                  <span>Hold Expires in: {Math.floor(p.authorizationHoldSecondsRemaining / 3600)}h</span>
-                  <span className="text-[#2D5BFF] font-medium flex items-center gap-1">
+                <div className="flex items-center justify-between pt-2 border-t border-[#DFE2DF] text-[12px] text-[#525860]">
+                  <span><code>Hold Window: {Math.floor(p.authorizationHoldSecondsRemaining / 3600)}h remaining</code></span>
+                  <span className="text-[#171A1F] font-medium flex items-center gap-1">
                     <span>Inspect Case</span>
                     <ArrowRight size={11} />
                   </span>
@@ -201,11 +199,11 @@ export default function MerchantDashboardPage() {
         {/* 4. Complete Protected Payments Ledger */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-[15px] font-semibold text-[#1E1E2A]">
+            <h2 className="text-[14px] font-semibold text-[#171A1F]">
               Recent Protected Payments
             </h2>
-            <div className="text-[12px] text-[#6B7280]">
-              Showing all recorded PayPal authorizations
+            <div className="text-[12px] text-[#697078]">
+              All recorded PayPal authorization holds
             </div>
           </div>
 

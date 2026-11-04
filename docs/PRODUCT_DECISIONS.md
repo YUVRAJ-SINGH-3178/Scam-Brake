@@ -69,3 +69,4 @@ Merchants and regulators require proof that an authorization hold or pre-capture
 Every state transition (authorization created, intervention opened, directory verified, contact consent granted, void executed) writes an immutable record sealed with a **deterministic SHA-256 hash**:
 - Merkle hashes chain previous event states to prevent retroactive alteration.
 - Available for merchant audit export as signed JSON.
+

@@ -104,3 +104,4 @@ The frontend is driven by `mockStore` (`src/services/index.ts`), which maintains
 2. **Database Persistence:** Swap in-memory arrays with PostgreSQL / Prisma or Drizzle ORM.
 3. **AI Backend:** Replace static rule responses in `sendCustomerMessage` with real streaming LLM calls (e.g. Gemini API) with guardrails.
 4. **Out-of-band Communications:** Wire `grantTrustedContactConsent` to live Twilio / Zapier Webhook APIs.
+

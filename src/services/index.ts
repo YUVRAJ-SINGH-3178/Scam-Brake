@@ -134,7 +134,7 @@ class ScamBrakeMockStore {
       customer: {
         id: `cust_sim_${Date.now()}`,
         name: 'Simulation User',
-        maskedEmail: 'test.shopper****@example.com',
+        maskedEmail: 'test.shopper****@apexdigital.com',
         maskedPhone: '+1 (555) •••-0192',
         accountAgeMonths: 24,
         hasTrustedContact: true,

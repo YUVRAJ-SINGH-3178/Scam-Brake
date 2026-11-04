@@ -62,3 +62,4 @@ Rather than adopting a generic security padlock or shield, Scam Brake's signatur
 - A controlled gate/pause midway through the trajectory representing the PayPal authorization hold.
 - A fork at the terminal end resolving into either **Capture** (settlement) or **Pre-Capture Void** ($0 fee cancellation).
 - This motif is codified in `<AuthorizationPath />` and `<ScamBrakeMark />`.
+

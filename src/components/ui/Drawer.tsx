@@ -39,9 +39,9 @@ export const Drawer: React.FC<DrawerProps> = ({
       role="dialog"
       aria-modal="true"
     >
-      {/* Backdrop with 250ms ease-out */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-250"
+        className="fixed inset-0 bg-[#171A1F]/40 backdrop-blur-[1px] transition-opacity duration-250"
         style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
         onClick={onClose}
         aria-hidden="true"
@@ -49,30 +49,30 @@ export const Drawer: React.FC<DrawerProps> = ({
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
         <div
-          className={`${width} bg-[#FFFFFF] border-l border-[#E5E7EB] shadow-2xl flex flex-col h-full transform transition-transform duration-300`}
+          className={`${width} bg-[#FFFFFF] border-l border-[#DFE2DF] shadow-xl flex flex-col h-full transform transition-transform duration-300`}
           style={{
-            transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)', // --ease-drawer
+            transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
           }}
         >
           {/* Header */}
-          <div className="px-6 py-4.5 border-b border-[#E5E7EB] flex items-center justify-between bg-[#FAFAFC]">
+          <div className="px-6 py-4 border-b border-[#DFE2DF] flex items-center justify-between bg-[#F6F6F3]">
             <div>
               <h2
                 id="drawer-title"
-                className="text-[16px] font-semibold text-[#1E1E2A] leading-snug"
+                className="text-[15px] font-semibold text-[#171A1F] leading-snug"
               >
                 {title}
               </h2>
               {subtitle && (
-                <p className="text-[12px] text-[#6B7280] mt-0.5">{subtitle}</p>
+                <p className="text-[12px] font-mono text-[#697078] mt-0.5">{subtitle}</p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md text-[#6B7280] hover:text-[#1E1E2A] hover:bg-[#E5E7EB]/60 transition-colors cursor-pointer"
+              className="p-1 rounded-[4px] text-[#697078] hover:text-[#171A1F] hover:bg-[#FFFFFF] transition-colors cursor-pointer"
               aria-label="Close detail drawer"
             >
-              <X size={18} />
+              <X size={17} />
             </button>
           </div>
 

@@ -59,3 +59,4 @@ The customer experiencing an active intervention may be under intense psychologi
 - *"Capture Payment"* (Tooltip: *"Execute settlement via PayPal Orders API (`intent: CAPTURE`)."*)
 - *"Void Authorization"* (Tooltip: *"Terminate hold via PayPal Orders API (`intent: VOID`). $0 fee, 0 chargeback."*)
 - *"Export Signed JSON"* (Tooltip: *"Export Merkle-sealed SHA-256 audit log."*)
+

@@ -84,14 +84,14 @@ export default function MerchantPaymentsPage() {
     <AppShell activeItem="/merchant/payments">
       <div className="space-y-6">
         {notification && (
-          <div className="bg-[#10B981]/10 border border-[#10B981]/30 text-[#059669] px-4 py-2.5 rounded text-sm flex items-center justify-between">
+          <div className="bg-[#EAF4F1] border border-[#1A7A64]/30 text-[#1A7A64] px-4 py-2.5 rounded-[6px] text-[13px] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 size={16} />
+              <CheckCircle2 size={15} />
               <span>{notification}</span>
             </div>
             <button
               onClick={() => setNotification(null)}
-              className="text-xs text-[#059669] hover:underline"
+              className="text-[12px] text-[#1A7A64] hover:underline cursor-pointer"
             >
               Dismiss
             </button>
@@ -99,26 +99,29 @@ export default function MerchantPaymentsPage() {
         )}
 
         {/* Page Title & Action Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#1E1E2A]">
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
+              Register
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
               Protected Payments Ledger
             </h1>
-            <p className="text-sm text-[#6B7280] mt-1">
-              Complete register of merchant checkouts governed by Scam Brake authorization holds.
+            <p className="text-[13px] text-[#697078] mt-1">
+              Complete register of merchant checkouts governed by Scam Brake pre-capture holds.
             </p>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <Link
               href="/merchant/simulator"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] hover:bg-[#FAFAFC] text-xs font-medium text-[#1E1E2A] rounded transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#171A1F] rounded-[6px] transition-colors"
             >
-              <PlusCircle size={14} className="text-[#2D5BFF]" />
-              Simulate Checkout
+              <PlusCircle size={14} className="text-[#171A1F]" />
+              <span>Simulate Checkout</span>
             </Link>
             <button
               onClick={() => setPayments(mockStore.getPayments())}
-              className="p-1.5 bg-[#FFFFFF] border border-[#E5E7EB] hover:bg-[#FAFAFC] text-[#6B7280] rounded transition-colors"
+              className="p-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[#697078] hover:text-[#171A1F] rounded-[6px] transition-colors cursor-pointer"
               title="Refresh ledger"
             >
               <RefreshCw size={14} />
@@ -139,10 +142,10 @@ export default function MerchantPaymentsPage() {
                 a.download = `scambrake_ledger_${new Date().toISOString().slice(0, 10)}.csv`;
                 a.click();
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#E5E7EB] hover:bg-[#FAFAFC] text-xs font-medium text-[#6B7280] rounded transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#697078] hover:text-[#171A1F] rounded-[6px] transition-colors cursor-pointer"
             >
               <Download size={14} />
-              Export CSV
+              <span>Export CSV</span>
             </button>
           </div>
         </div>
@@ -150,43 +153,43 @@ export default function MerchantPaymentsPage() {
         {/* Tab & Filter Bar */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Segmented Filter Tabs */}
-          <div className="inline-flex items-center bg-[#FAFAFC] border border-[#E5E7EB] p-0.5 rounded">
+          <div className="inline-flex items-center bg-[#F6F6F3] border border-[#DFE2DF] p-0.5 rounded-[6px]">
             <button
               onClick={() => setActiveTab('all')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-3 py-1 text-[12px] font-medium rounded-[4px] transition-colors cursor-pointer ${
                 activeTab === 'all'
-                  ? 'bg-[#FFFFFF] text-[#1E1E2A] shadow-xs'
-                  : 'text-[#6B7280] hover:text-[#1E1E2A]'
+                  ? 'bg-[#FFFFFF] text-[#171A1F] border border-[#DFE2DF] font-semibold'
+                  : 'text-[#697078] hover:text-[#171A1F]'
               }`}
             >
               All Records ({counts.all})
             </button>
             <button
               onClick={() => setActiveTab('held')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-3 py-1 text-[12px] font-medium rounded-[4px] transition-colors cursor-pointer ${
                 activeTab === 'held'
-                  ? 'bg-[#FFFFFF] text-[#D97706] shadow-xs font-semibold'
-                  : 'text-[#6B7280] hover:text-[#1E1E2A]'
+                  ? 'bg-[#FFFFFF] text-[#9A6700] border border-[#DFE2DF] font-semibold'
+                  : 'text-[#697078] hover:text-[#171A1F]'
               }`}
             >
               Holds Active ({counts.held})
             </button>
             <button
               onClick={() => setActiveTab('captured')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-3 py-1 text-[12px] font-medium rounded-[4px] transition-colors cursor-pointer ${
                 activeTab === 'captured'
-                  ? 'bg-[#FFFFFF] text-[#059669] shadow-xs'
-                  : 'text-[#6B7280] hover:text-[#1E1E2A]'
+                  ? 'bg-[#FFFFFF] text-[#1A7A64] border border-[#DFE2DF] font-semibold'
+                  : 'text-[#697078] hover:text-[#171A1F]'
               }`}
             >
               Captured ({counts.captured})
             </button>
             <button
               onClick={() => setActiveTab('voided')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-3 py-1 text-[12px] font-medium rounded-[4px] transition-colors cursor-pointer ${
                 activeTab === 'voided'
-                  ? 'bg-[#FFFFFF] text-[#DC2626] shadow-xs'
-                  : 'text-[#6B7280] hover:text-[#1E1E2A]'
+                  ? 'bg-[#FFFFFF] text-[#C53030] border border-[#DFE2DF] font-semibold'
+                  : 'text-[#697078] hover:text-[#171A1F]'
               }`}
             >
               Voided ({counts.voided})
@@ -195,26 +198,26 @@ export default function MerchantPaymentsPage() {
 
           {/* Quick Filter Selectors */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
+            <div className="flex items-center gap-1.5 text-[12px] text-[#697078]">
               <SlidersHorizontal size={13} />
               <span>Filter:</span>
             </div>
             <select
               value={filterRisk}
               onChange={(e) => setFilterRisk(e.target.value as RiskLevel | 'ALL')}
-              className="text-xs bg-[#FFFFFF] border border-[#E5E7EB] text-[#1E1E2A] rounded px-2.5 py-1.5 focus:outline-hidden focus:border-[#2D5BFF]"
+              className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-[#171A1F]"
             >
               <option value="ALL">All Risk Levels</option>
-              <option value="CRITICAL">Critical Risk (80-100)</option>
-              <option value="HIGH">High Risk (60-79)</option>
-              <option value="MEDIUM">Medium Risk (30-59)</option>
-              <option value="LOW">Low Risk (0-29)</option>
+              <option value="CRITICAL">Critical Risk (80–100)</option>
+              <option value="HIGH">High Risk (60–79)</option>
+              <option value="MEDIUM">Medium Risk (30–59)</option>
+              <option value="LOW">Low Risk (0–29)</option>
             </select>
 
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as AuthorizationStatus | 'ALL')}
-              className="text-xs bg-[#FFFFFF] border border-[#E5E7EB] text-[#1E1E2A] rounded px-2.5 py-1.5 focus:outline-hidden focus:border-[#2D5BFF]"
+              className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-[#171A1F]"
             >
               <option value="ALL">All Authorization States</option>
               <option value="HOLD_ACTIVE">Hold Active</option>
@@ -226,7 +229,7 @@ export default function MerchantPaymentsPage() {
         </div>
 
         {/* Ledger Table */}
-        <div className="border border-[#E5E7EB] rounded overflow-hidden bg-[#FFFFFF]">
+        <div className="border border-[#DFE2DF] rounded-[6px] overflow-hidden bg-[#FFFFFF]">
           <PaymentTable
             payments={filteredPayments}
             onSelectPayment={handleSelectPayment}
@@ -235,12 +238,12 @@ export default function MerchantPaymentsPage() {
         </div>
 
         {/* Footnote on Pre-Capture Hold Architecture */}
-        <div className="text-xs text-[#6B7280] pt-2 flex items-center justify-between">
+        <div className="text-[12px] text-[#697078] pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-[#DFE2DF]">
           <p>
             Authorizations are temporary holds created via PayPal Orders API (`intent: AUTHORIZE`).
             Voiding an uncaptured authorization releases funds without transaction fees or chargebacks.
           </p>
-          <span className="font-mono text-[11px] text-[#6B7280]">
+          <span className="font-mono text-[11px] text-[#697078] shrink-0">
             Displaying {filteredPayments.length} of {payments.length} transactions
           </span>
         </div>

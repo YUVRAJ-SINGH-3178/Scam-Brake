@@ -89,3 +89,4 @@ flowchart LR
 2. **Active Queue Triaging:** Filters by *"Holds Active"* to inspect payments with ticking countdown timers before automated policy expiration.
 3. **Deep Investigation:** Clicks into a case to inspect the full transcript, Channel3 confidence scores, and Merkle-sealed audit events.
 4. **Manual Governance:** The operator can execute manual voids or captures if out-of-band verification is established directly with the customer.
+

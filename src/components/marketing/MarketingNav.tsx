@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ScamBrakeLogo } from '@/components/brand/ScamBrakeMark';
-import { Button } from '@/components/ui/Button';
+import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { Menu, X } from 'lucide-react';
 
 export const MarketingNav: React.FC = () => {
@@ -12,31 +11,34 @@ export const MarketingNav: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
+    { label: 'Product', href: '/' },
     { label: 'How It Works', href: '/how-it-works' },
-    { label: 'Interactive Demo', href: '/demo' },
     { label: 'Merchant Integration', href: '/merchant-integration' },
-    { label: 'Security & Privacy', href: '/security' },
-    { label: 'FAQ', href: '/faq' },
+    { label: 'Security', href: '/security' },
+    { label: 'Documentation', href: '/merchant/docs' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0C0C14]/90 backdrop-blur-md border-b border-[rgba(255,255,255,0.08)]">
+    <header className="sticky top-0 z-40 w-full bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Brand */}
-        <Link href="/" className="cursor-pointer">
-          <ScamBrakeLogo variant="dark" />
+        {/* Left: SCAM BRAKE wordmark */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <ScamBrakeMark size={28} />
+          <span className="font-semibold tracking-tight text-[15px] text-[#171A1F]">
+            SCAM <span className="font-normal text-[#697078]">BRAKE</span>
+          </span>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-7 text-[13px] font-medium text-[rgba(237,237,243,0.7)]">
+        {/* Centre: Main Navigation Links */}
+        <nav className="hidden md:flex items-center gap-7 text-[13px] font-medium text-[#697078]">
           {links.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors hover:text-[#EDEDF3] ${
-                  isActive ? 'text-[#2D5BFF]' : ''
+                className={`transition-colors hover:text-[#171A1F] ${
+                  isActive ? 'text-[#171A1F] font-semibold' : ''
                 }`}
               >
                 {link.label}
@@ -45,28 +47,29 @@ export const MarketingNav: React.FC = () => {
           })}
         </nav>
 
-        {/* Right CTA / Portal Links */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link href="/merchant">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.14)] text-white border-[rgba(255,255,255,0.12)] text-[12px]"
-            >
-              Merchant Ops App
-            </Button>
+        {/* Right: Sign in & Restrained Rectangular Workspace Button */}
+        <div className="hidden md:flex items-center gap-4 text-[13px]">
+          <Link
+            href="/merchant"
+            className="text-[#697078] hover:text-[#171A1F] font-medium transition-colors"
+          >
+            Sign in
           </Link>
-          <Link href="/demo">
-            <Button variant="primary" size="sm" className="text-[12px]">
-              Run Live Demo
-            </Button>
+
+          <span className="text-[#DFE2DF] text-xs">|</span>
+
+          <Link
+            href="/merchant"
+            className="inline-flex items-center justify-center h-9 px-3.5 bg-[#171A1F] hover:bg-[#2B303A] text-white text-[13px] font-medium rounded-[6px] transition-colors"
+          >
+            Merchant Workspace
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-[rgba(237,237,243,0.7)] hover:text-white"
+          className="md:hidden p-2 text-[#697078] hover:text-[#171A1F]"
           aria-label="Toggle Navigation Menu"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -75,31 +78,31 @@ export const MarketingNav: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-b border-[rgba(255,255,255,0.1)] bg-[#0C0C14] px-6 py-4 space-y-3">
+        <div className="md:hidden bg-[#FFFFFF] border-b border-[#DFE2DF] px-6 py-4 space-y-3 text-[14px]">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="block text-[14px] font-medium text-[rgba(237,237,243,0.8)] hover:text-white py-1"
+              className="block py-1.5 text-[#697078] hover:text-[#171A1F]"
             >
               {link.label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-[rgba(255,255,255,0.1)] flex flex-col gap-2">
-            <Link href="/merchant" onClick={() => setMobileOpen(false)}>
-              <Button
-                variant="secondary"
-                size="md"
-                className="w-full bg-[rgba(255,255,255,0.08)] text-white border-[rgba(255,255,255,0.12)]"
-              >
-                Merchant Ops App
-              </Button>
+          <div className="pt-3 border-t border-[#DFE2DF] flex items-center justify-between">
+            <Link
+              href="/merchant"
+              onClick={() => setMobileOpen(false)}
+              className="text-[#171A1F] font-medium"
+            >
+              Sign in
             </Link>
-            <Link href="/demo" onClick={() => setMobileOpen(false)}>
-              <Button variant="primary" size="md" className="w-full">
-                Run Live Demo
-              </Button>
+            <Link
+              href="/merchant"
+              onClick={() => setMobileOpen(false)}
+              className="px-3.5 py-1.5 bg-[#171A1F] text-white rounded-[6px] text-xs font-medium"
+            >
+              Merchant Workspace
             </Link>
           </div>
         </div>

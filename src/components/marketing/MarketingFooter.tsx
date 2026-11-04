@@ -4,142 +4,116 @@ import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 
 export const MarketingFooter: React.FC = () => {
   return (
-    <footer className="w-full bg-[#08080E] text-[rgba(237,237,243,0.7)] border-t border-[rgba(255,255,255,0.08)] py-16 px-6">
+    <footer className="w-full bg-[#FFFFFF] text-[#525860] py-16 px-6">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Brand Column */}
-          <div className="md:col-span-2 space-y-4">
+          <div className="md:col-span-2 space-y-3.5">
             <div className="flex items-center gap-2.5">
-              <ScamBrakeMark size={32} variant="dark" />
-              <span className="text-[17px] font-semibold text-white tracking-tight">
-                SCAM<span className="text-[#2D5BFF] ml-0.5">BRAKE</span>
+              <ScamBrakeMark size={28} />
+              <span className="text-[15px] font-semibold text-[#171A1F] tracking-tight">
+                SCAM <span className="font-normal text-[#525860]">BRAKE</span>
               </span>
             </div>
-            <p className="text-[13px] text-[rgba(237,237,243,0.6)] leading-relaxed max-w-sm">
-              The merchant-integrated payment protection protocol that introduces an AI-assisted verification stage between PayPal payment authorization and final capture.
+            <p className="text-[14px] text-[#525860] leading-relaxed max-w-sm">
+              Merchant-integrated payment verification protocol introducing an AI-assisted hold between PayPal authorization and capture.
             </p>
-            <div className="text-[11px] text-[rgba(237,237,243,0.4)]">
+            <div className="text-[13px] text-[#525860]">
               Stop. Verify. Stay protected.
             </div>
           </div>
 
-          {/* Navigation Columns */}
+          {/* Navigation Column 1 */}
           <div className="space-y-3">
-            <div className="text-[12px] font-semibold text-white uppercase tracking-wider">
-              Product
+            <div className="text-[13px] font-semibold text-[#171A1F]">
+              Platform
             </div>
-            <ul className="space-y-2 text-[13px]">
+            <ul className="space-y-2.5 text-[14px]">
               <li>
-                <Link href="/how-it-works" className="hover:text-white transition-colors">
+                <Link href="/how-it-works" className="hover:text-[#171A1F] transition-colors">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/demo" className="hover:text-white transition-colors">
-                  Interactive Demo
+                <Link href="/demo" className="hover:text-[#171A1F] transition-colors">
+                  Interactive Simulator
                 </Link>
               </li>
               <li>
-                <Link href="/checkout" className="hover:text-white transition-colors">
-                  Customer Checkout Preview
+                <Link href="/checkout" className="hover:text-[#171A1F] transition-colors">
+                  Protected Checkout Demo
                 </Link>
               </li>
               <li>
-                <Link href="/system-states" className="hover:text-white transition-colors">
-                  System States & Fallbacks
+                <Link href="/system-states" className="hover:text-[#171A1F] transition-colors">
+                  System State Catalog
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Navigation Column 2 */}
           <div className="space-y-3">
-            <div className="text-[12px] font-semibold text-white uppercase tracking-wider">
-              Merchant App
+            <div className="text-[13px] font-semibold text-[#171A1F]">
+              Merchant Operations
             </div>
-            <ul className="space-y-2 text-[13px]">
+            <ul className="space-y-2.5 text-[14px]">
               <li>
-                <Link href="/merchant" className="hover:text-white transition-colors">
-                  Operations Overview
+                <Link href="/merchant" className="hover:text-[#171A1F] transition-colors">
+                  Operations Console
                 </Link>
               </li>
               <li>
-                <Link href="/merchant/payments" className="hover:text-white transition-colors">
+                <Link href="/merchant/payments" className="hover:text-[#171A1F] transition-colors">
                   Protected Payments Ledger
                 </Link>
               </li>
               <li>
-                <Link href="/merchant/simulator" className="hover:text-white transition-colors">
-                  Risk Simulation Center
+                <Link href="/merchant/risk-intelligence" className="hover:text-[#171A1F] transition-colors">
+                  Threat Taxonomy
                 </Link>
               </li>
               <li>
-                <Link href="/merchant/docs" className="hover:text-white transition-colors">
-                  API & Developer Specs
+                <Link href="/merchant/docs" className="hover:text-[#171A1F] transition-colors">
+                  OpenAPI Specification
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Navigation Column 3 */}
           <div className="space-y-3">
-            <div className="text-[12px] font-semibold text-white uppercase tracking-wider">
-              Boundaries
+            <div className="text-[13px] font-semibold text-[#171A1F]">
+              Governance & Legal
             </div>
-            <ul className="space-y-2 text-[13px]">
+            <ul className="space-y-2.5 text-[14px]">
               <li>
-                <Link href="/security" className="hover:text-white transition-colors">
-                  Security & Privacy
+                <Link href="/security" className="hover:text-[#171A1F] transition-colors">
+                  Security & Anti-Surveillance
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-white transition-colors">
+                <Link href="/faq" className="hover:text-[#171A1F] transition-colors">
                   Frequently Asked Questions
                 </Link>
               </li>
               <li>
-                <Link href="/merchant/integrations" className="hover:text-white transition-colors">
-                  Sponsor Architecture
+                <Link href="/merchant/audit-log" className="hover:text-[#171A1F] transition-colors">
+                  Cryptographic Audit Trail
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Sponsor Technologies Attribution Strip */}
-        <div className="pt-8 border-t border-[rgba(255,255,255,0.06)] text-[12px] text-[rgba(237,237,243,0.5)]">
-          <div className="mb-2 font-medium text-[rgba(237,237,243,0.7)]">
-            Architected for Sponsor Technology Standards:
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            <span>AG Grid (Financial Grids)</span>
-            <span>•</span>
-            <span>APIMatic (OpenAPI Specs)</span>
-            <span>•</span>
-            <span>Astropods (AI Agent Sandboxes)</span>
-            <span>•</span>
-            <span>Bryntum (Hold Timelines)</span>
-            <span>•</span>
-            <span>Channel3 (SKU Intelligence)</span>
-            <span>•</span>
-            <span>Elastic (Threat Search)</span>
-            <span>•</span>
-            <span>Kernel (Out-of-band Verification)</span>
-            <span>•</span>
-            <span>Postman (API Collections)</span>
-            <span>•</span>
-            <span>Render (Worker Infra)</span>
-            <span>•</span>
-            <span>Zapier (Outbound Alerts)</span>
-          </div>
-        </div>
-
-        {/* Legal & Product Boundaries Disclaimer */}
-        <div className="pt-6 border-t border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[11px] text-[rgba(237,237,243,0.4)]">
-          <div>
-            Scam Brake is an integrated checkout security verification platform, not a universal PayPal interceptor. Funds are held via pre-capture authorizations. AI does not autonomously void or capture funds without merchant and policy rules.
-          </div>
-          <div className="shrink-0">
-            © 2026 Scam Brake Technologies Inc. All rights reserved.
+        {/* Legal Disclaimer & Copyright */}
+        <div className="pt-10 flex flex-col sm:flex-row items-baseline justify-between gap-4 text-[13px] text-[#525860]">
+          <p className="max-w-xl leading-relaxed">
+            Scam Brake is an independent payment protection protocol and is not affiliated with, endorsed by, or sponsored by PayPal, Inc. PayPal is a registered trademark of PayPal, Inc. Pre-capture authorization holds are governed by PayPal Orders API specifications.
+          </p>
+          <div className="whitespace-nowrap text-[#525860]">
+            &copy; 2026 Scam Brake. All rights reserved.
           </div>
         </div>
       </div>

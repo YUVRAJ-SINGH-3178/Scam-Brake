@@ -1,11 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, ArrowRight, Info, CheckCircle2 } from 'lucide-react';
-import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
-import { Button } from '@/components/ui/Button';
+import { ShieldCheck, Lock, Info } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -17,7 +14,7 @@ export default function CheckoutPage() {
       name: 'Apex Digital Voucher Multi-Pack ($500 x 3)',
       category: 'Stored Value Digital Cards',
       price: 1500.0,
-      note: 'Simulates the high-risk government / tech-support coercion pattern.',
+      note: 'Simulates high-risk government or tech-support coercion pattern.',
     },
     camera: {
       name: 'Sony Alpha 7R V Full-Frame Camera Kit',
@@ -36,7 +33,6 @@ export default function CheckoutPage() {
   const handlePayPalCheckout = () => {
     setIsLoading(true);
     setTimeout(() => {
-      // Redirect to authorization simulation
       router.push(`/checkout/authorizing?product=${selectedProduct}`);
     }, 500);
   };
@@ -44,24 +40,24 @@ export default function CheckoutPage() {
   const current = products[selectedProduct];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] text-[#1E1E2A] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased selection:bg-[#1A7A64]/15">
       {/* Merchant Header */}
-      <header className="h-16 bg-white border-b border-[#E5E7EB] px-6 flex items-center justify-between">
+      <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#1E1E2A] text-white flex items-center justify-center font-bold text-[14px]">
+          <div className="w-7 h-7 rounded-[4px] bg-[#171A1F] text-white flex items-center justify-center font-bold text-[12px]">
             AD
           </div>
           <div>
-            <div className="font-semibold text-[15px] leading-tight">
-              Apex Digital & Hardware
+            <div className="font-semibold text-[14px] leading-tight text-[#171A1F]">
+              Apex Digital &amp; Hardware
             </div>
-            <div className="text-[11px] text-[#6B7280]">
-              Merchant Partner Checkout
+            <div className="text-[12px] text-[#525860]">
+              Protected Checkout
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#10B981]/10 text-[#059669] text-[12px] font-medium border border-[#10B981]/20">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#EAF4F1] text-[#1A7A64] text-[12px] font-medium border border-[#1A7A64]/20">
           <ShieldCheck size={14} />
           <span>Protected by Scam Brake</span>
         </div>
@@ -72,17 +68,17 @@ export default function CheckoutPage() {
         {/* Left Column: Order Configuration & Demo Picker */}
         <div className="md:col-span-7 space-y-6">
           <div className="space-y-1">
-            <h1 className="text-2xl font-semibold text-[#1E1E2A]">
-              Checkout Simulation
+            <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
+              Checkout Sandbox
             </h1>
-            <p className="text-[13px] text-[#6B7280]">
+            <p className="text-[14px] text-[#525860]">
               Select an item to simulate how Scam Brake protects PayPal authorization holds.
             </p>
           </div>
 
           <div className="space-y-3">
-            <label className="text-[12px] font-semibold text-[#6B7280] uppercase tracking-wider block">
-              Choose Test Order Item:
+            <label className="text-[13px] font-medium text-[#525860] block">
+              Choose Order Scenario:
             </label>
 
             {(Object.keys(products) as (keyof typeof products)[]).map((key) => {
@@ -93,25 +89,25 @@ export default function CheckoutPage() {
                 <div
                   key={key}
                   onClick={() => setSelectedProduct(key)}
-                  className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                  className={`p-4 rounded-[6px] transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-white border-[#2D5BFF] ring-2 ring-[#2D5BFF]/20'
-                      : 'bg-[#FAFAFC] border-[#E5E7EB] hover:bg-white'
+                      ? 'bg-[#FFFFFF] border-2 border-[#171A1F]'
+                      : 'bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F]/40'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-medium text-[14px] text-[#1E1E2A]">
+                    <span className="font-medium text-[14px] text-[#171A1F]">
                       {item.name}
                     </span>
-                    <span className="font-mono font-semibold text-[15px] text-[#1E1E2A]">
-                      ${item.price.toFixed(2)}
+                    <span className="font-semibold text-[15px] text-[#171A1F] tabular-nums">
+                      <code>${item.price.toFixed(2)}</code>
                     </span>
                   </div>
-                  <div className="text-[12px] text-[#6B7280]">
+                  <div className="text-[12px] text-[#525860]">
                     {item.category}
                   </div>
-                  <div className="mt-2 text-[11px] text-[#2D5BFF] flex items-center gap-1.5 pt-2 border-t border-[#E5E7EB]">
-                    <Info size={12} />
+                  <div className="mt-2 text-[12px] text-[#525860] flex items-center gap-1.5 pt-2 border-t border-[#DFE2DF]">
+                    <Info size={13} className="text-[#171A1F] shrink-0" />
                     <span>{item.note}</span>
                   </div>
                 </div>
@@ -122,41 +118,41 @@ export default function CheckoutPage() {
 
         {/* Right Column: Payment Method & PayPal Approval Card */}
         <div className="md:col-span-5 space-y-4">
-          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
-              <span className="text-[14px] font-semibold text-[#1E1E2A]">
+          <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF]">
+              <span className="text-[14px] font-semibold text-[#171A1F]">
                 Order Total
               </span>
-              <span className="text-[20px] font-mono font-bold text-[#1E1E2A]">
-                ${current.price.toFixed(2)} <span className="text-[12px] font-normal text-[#6B7280]">USD</span>
+              <span className="text-[18px] font-bold text-[#171A1F] tabular-nums">
+                <code>${current.price.toFixed(2)}</code> <span className="text-[13px] font-normal text-[#525860]">USD</span>
               </span>
             </div>
 
-            <div className="space-y-2 text-[12px] text-[#6B7280]">
+            <div className="space-y-2 text-[13px] text-[#525860]">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-mono text-[#1E1E2A]">${current.price.toFixed(2)}</span>
+                <span className="text-[#171A1F] tabular-nums"><code>${current.price.toFixed(2)}</code></span>
               </div>
               <div className="flex justify-between">
                 <span>Estimated Tax</span>
-                <span className="font-mono text-[#1E1E2A]">$0.00</span>
+                <span className="text-[#171A1F] tabular-nums"><code>$0.00</code></span>
               </div>
-              <div className="flex justify-between font-medium text-[#1E1E2A] pt-1 border-t border-[#E5E7EB]">
+              <div className="flex justify-between font-medium text-[#171A1F] pt-1.5 border-t border-[#DFE2DF]">
                 <span>Total Authorization</span>
-                <span className="font-mono">${current.price.toFixed(2)}</span>
+                <span className="tabular-nums"><code>${current.price.toFixed(2)}</code></span>
               </div>
             </div>
 
             {/* PayPal Button Action */}
             <div className="pt-2 space-y-3">
-              <div className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider text-center">
-                Express Payment
+              <div className="text-[13px] font-medium text-[#525860] text-center">
+                Payment Method
               </div>
 
               <button
                 disabled={isLoading}
                 onClick={handlePayPalCheckout}
-                className="w-full h-11 rounded-lg bg-[#FFC439] hover:bg-[#F4B92E] text-[#003087] font-semibold text-[14px] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.98]"
+                className="w-full h-11 rounded-[6px] bg-[#FFC439] hover:bg-[#F4B92E] text-[#003087] font-semibold text-[14px] flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.98]"
               >
                 {isLoading ? (
                   <span>Connecting to PayPal...</span>
@@ -168,10 +164,10 @@ export default function CheckoutPage() {
                 )}
               </button>
 
-              <div className="p-3 rounded-lg bg-[#F8F9FB] border border-[#E5E7EB] text-[11px] text-[#6B7280] flex items-start gap-2">
-                <Lock size={14} className="text-[#10B981] shrink-0 mt-0.5" />
+              <div className="p-3 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[12px] text-[#525860] flex items-start gap-2">
+                <Lock size={14} className="text-[#1A7A64] shrink-0 mt-0.5" />
                 <span>
-                  This checkout uses Scam Brake pre-capture authorization protection. Funds are held safely while preliminary risk is verified.
+                  This checkout uses Scam Brake pre-capture hold protection. Funds remain safe in your account during review.
                 </span>
               </div>
             </div>
