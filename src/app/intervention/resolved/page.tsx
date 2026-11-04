@@ -22,8 +22,8 @@ function InterventionResolvedContent() {
             SCAM BRAKE
           </span>
         </div>
-        <div className="text-[11px] font-mono text-[#697078]">
-          OUTCOME CONFIRMATION
+        <div className="text-[12px] text-[#525860] font-medium">
+          Outcome Confirmation
         </div>
       </header>
 
@@ -47,7 +47,7 @@ function InterventionResolvedContent() {
                 ? 'Payment Safely Canceled'
                 : 'Payment Verified & Captured'}
             </h1>
-            <p className="text-[13px] text-[#697078] leading-relaxed max-w-md mx-auto">
+            <p className="text-[13px] text-[#525860] leading-relaxed max-w-md mx-auto">
               {isVoid
                 ? 'The PayPal authorization hold has been voided. Zero funds were captured or transferred. Your account balance remains completely intact.'
                 : 'Your confirmation has been recorded. Merchant capture has completed and your order is proceeding normally.'}
@@ -63,19 +63,19 @@ function InterventionResolvedContent() {
             />
           </div>
 
-          <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-left text-[12px] space-y-2">
+          <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-left text-[13px] space-y-2">
             <div className="flex justify-between">
-              <span className="text-[#697078]">PayPal Authorization Reference:</span>
-              <span className="font-mono text-[#171A1F]">AUTH-HLD-99120</span>
+              <span className="text-[#525860]">PayPal Authorization Reference:</span>
+              <code className="font-mono text-[#171A1F]">AUTH-HLD-99120</code>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#697078]">Resolution Timestamp:</span>
+              <span className="text-[#525860]">Resolution Timestamp:</span>
               <span className="text-[#171A1F]">{new Date().toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#697078]">Final Financial Debit:</span>
-              <span className="font-mono font-semibold text-[#171A1F] tabular-nums">
-                {isVoid ? '$0.00 USD' : '$1,500.00 USD'}
+              <span className="text-[#525860]">Final Financial Debit:</span>
+              <span className="font-semibold text-[#171A1F] tabular-nums">
+                <code className="font-mono">{isVoid ? '$0.00 USD' : '$1,500.00 USD'}</code>
               </span>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function InterventionResolvedPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
-          <div className="text-xs font-mono text-[#697078]">Loading outcome...</div>
+          <div className="text-xs text-[#525860]"><code>Loading outcome...</code></div>
         </div>
       }
     >

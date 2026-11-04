@@ -100,10 +100,10 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
               });
               document.dispatchEvent(event);
             }}
-            className="w-full h-8 px-3 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-[#697078] text-[12px] flex items-center justify-between hover:border-[#171A1F]/30 hover:bg-[#FFFFFF] transition-all cursor-pointer"
+            className="w-full h-8 px-3 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-[#525860] text-[12px] flex items-center justify-between hover:border-[#171A1F]/30 hover:bg-[#FFFFFF] transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              <Search size={13} className="text-[#697078]" />
+              <Search size={13} className="text-[#525860]" />
               <span>Search authorizations, cases, or press</span>
             </div>
             <kbd className="text-[10px] font-mono bg-[#FFFFFF] border border-[#DFE2DF] px-1.5 py-0.5 rounded-[3px] text-[#171A1F]">

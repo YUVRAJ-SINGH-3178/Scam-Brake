@@ -68,8 +68,8 @@ function MerchantPaymentDetailContent() {
   if (loading) {
     return (
       <AppShell activeItem="/merchant/payments">
-        <div className="py-24 text-center text-[#697078]">
-          <p className="text-xs font-mono">Loading authorization record...</p>
+        <div className="py-24 text-center text-[#525860]">
+          <p className="text-[13px] font-medium">Loading authorization record...</p>
         </div>
       </AppShell>
     );
@@ -78,17 +78,17 @@ function MerchantPaymentDetailContent() {
   if (!payment) {
     return (
       <AppShell activeItem="/merchant/payments">
-        <div className="max-w-md mx-auto py-16 text-center space-y-4">
-          <div className="p-3 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] w-fit mx-auto text-[#697078]">
+        <div className="max-w-md mx-auto py-16 text-center space-y-4" data-ui="true">
+          <div className="p-3 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] w-fit mx-auto text-[#525860]">
             <FileText size={24} />
           </div>
           <h2 className="text-lg font-semibold text-[#171A1F]">Payment Record Not Found</h2>
-          <p className="text-[13px] text-[#697078]">
-            The payment reference `{paymentId}` could not be located in the merchant ledger.
+          <p className="text-[13px] text-[#525860]">
+            The payment reference <code className="font-mono text-xs">{paymentId}</code> could not be located in the merchant ledger.
           </p>
           <Link
             href="/merchant/payments"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] text-[12px] font-medium text-[#171A1F] rounded-[6px] hover:bg-[#F6F6F3]"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] text-[13px] font-medium text-[#171A1F] rounded-[6px] hover:bg-[#F6F6F3]"
           >
             <ArrowLeft size={14} />
             <span>Back to Payments Ledger</span>
@@ -107,16 +107,16 @@ function MerchantPaymentDetailContent() {
         <div className="flex items-center justify-between">
           <Link
             href="/merchant/payments"
-            className="inline-flex items-center gap-1.5 text-[12px] text-[#697078] hover:text-[#171A1F] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[13px] text-[#525860] hover:text-[#171A1F] transition-colors"
           >
             <ArrowLeft size={14} />
             <span>Return to Payments Ledger</span>
           </Link>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[11px] text-[#697078]">
+            <code className="font-mono text-[12px] text-[#525860] bg-[#F6F6F3] px-2 py-0.5 rounded">
               PayPal Auth: {payment.paypalAuthorizationId}
-            </span>
+            </code>
           </div>
         </div>
 
@@ -138,30 +138,30 @@ function MerchantPaymentDetailContent() {
         {/* Header Summary */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b border-[#DFE2DF]">
-            <div className="space-y-1">
-              <div className="flex items-center gap-3">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
-                  {payment.paymentReference}
+                  <code className="font-mono text-xl">{payment.paymentReference}</code>
                 </h1>
                 <AuthStatusBadge status={payment.authorizationStatus} />
                 <RiskBadge level={payment.riskLevel} score={payment.riskScore} />
               </div>
-              <p className="text-[12px] text-[#697078]">
+              <p className="text-[13px] text-[#525860]">
                 Authorized {new Date(payment.authorizedAt).toLocaleString()} via PayPal Protected Checkout
               </p>
             </div>
 
             <div className="text-left sm:text-right">
-              <div className="font-mono text-3xl font-semibold text-[#171A1F] tabular-nums">
-                ${payment.amount.toFixed(2)}
+              <div className="text-3xl font-semibold text-[#171A1F] tabular-nums">
+                <code className="font-mono">${payment.amount.toFixed(2)}</code>
               </div>
-              <div className="text-[12px] text-[#697078] mt-0.5">USD Pre-Capture Hold</div>
+              <div className="text-[12px] text-[#525860] mt-0.5">USD Pre-Capture Hold</div>
             </div>
           </div>
 
           {/* Authorization Path Motif */}
           <div className="pt-2">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078] mb-3">Authorization Lifecycle State</div>
+            <div className="text-[13px] font-medium text-[#525860] mb-3">Authorization lifecycle state</div>
             <AuthorizationPath
               currentStage={
                 payment.authorizationStatus === 'VOIDED'
@@ -177,12 +177,12 @@ function MerchantPaymentDetailContent() {
 
           {/* Operational Hold Counter */}
           {isHeld && (
-            <div className="bg-[#FAF2E4] border border-[#9A6700]/20 rounded-[6px] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="bg-[#FAF2E4] border border-[#784D00]/20 rounded-[6px] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <Clock size={16} className="text-[#9A6700]" />
+                <Clock size={16} className="text-[#784D00] shrink-0" />
                 <div>
-                  <div className="text-[12px] font-semibold text-[#9A6700]">Active Pre-Capture Hold</div>
-                  <div className="text-[11px] text-[#9A6700]">
+                  <div className="text-[13px] font-semibold text-[#784D00]">Active Pre-Capture Hold</div>
+                  <div className="text-[12px] text-[#784D00]">
                     Window remaining: ~{Math.floor(payment.authorizationHoldSecondsRemaining / 60)} minutes before automated timeout policy.
                   </div>
                 </div>
@@ -191,13 +191,13 @@ function MerchantPaymentDetailContent() {
               <div className="flex items-center gap-2">
                 <Link
                   href={`/merchant/investigations/${payment.id}`}
-                  className="px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] text-[12px] font-medium text-[#171A1F] rounded-[6px] hover:bg-[#F6F6F3] transition-colors"
+                  className="px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] text-[13px] font-medium text-[#171A1F] rounded-[6px] hover:bg-[#F6F6F3] transition-colors"
                 >
                   View Case
                 </Link>
                 <Link
                   href={`/intervention?paymentId=${payment.id}`}
-                  className="px-3 py-1.5 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors"
+                  className="px-3 py-1.5 bg-[#171A1F] text-white text-[13px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors"
                 >
                   Customer View
                 </Link>
@@ -210,30 +210,30 @@ function MerchantPaymentDetailContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Column 1: Customer Profile */}
           <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
-            <h2 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
-              <User size={14} className="text-[#697078]" />
+            <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
+              <User size={15} className="text-[#525860]" />
               <span>Customer Profile</span>
             </h2>
 
-            <div className="divide-y divide-[#DFE2DF] text-[12px]">
+            <div className="divide-y divide-[#DFE2DF] text-[13px]">
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Customer Name</span>
+                <span className="text-[#525860]">Customer Name</span>
                 <span className="font-medium text-[#171A1F]">{payment.customer.name}</span>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Email</span>
-                <span className="font-mono text-[#171A1F]">{payment.customer.maskedEmail}</span>
+                <span className="text-[#525860]">Email</span>
+                <code className="font-mono text-[12px] text-[#171A1F]">{payment.customer.maskedEmail}</code>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Phone</span>
-                <span className="font-mono text-[#171A1F]">{payment.customer.maskedPhone}</span>
+                <span className="text-[#525860]">Phone</span>
+                <code className="font-mono text-[12px] text-[#171A1F]">{payment.customer.maskedPhone}</code>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Account Age</span>
+                <span className="text-[#525860]">Account Age</span>
                 <span className="text-[#171A1F]">{payment.customer.accountAgeMonths} months</span>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Trusted Contact</span>
+                <span className="text-[#525860]">Trusted Contact</span>
                 <span className="font-medium text-[#171A1F]">
                   {payment.customer.hasTrustedContact ? payment.customer.trustedContactName : 'None Registered'}
                 </span>
@@ -243,27 +243,27 @@ function MerchantPaymentDetailContent() {
 
           {/* Column 2: Order & Execution */}
           <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
-            <h2 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
-              <ShoppingBag size={14} className="text-[#697078]" />
+            <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
+              <ShoppingBag size={15} className="text-[#525860]" />
               <span>Item & Settlement Context</span>
             </h2>
 
-            <div className="divide-y divide-[#DFE2DF] text-[12px]">
+            <div className="divide-y divide-[#DFE2DF] text-[13px]">
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Product</span>
+                <span className="text-[#525860]">Product</span>
                 <span className="font-medium text-[#171A1F] truncate max-w-[200px]">{payment.productName}</span>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Category</span>
+                <span className="text-[#525860]">Category</span>
                 <span className="text-[#171A1F]">{payment.productCategory}</span>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">Merchant</span>
+                <span className="text-[#525860]">Merchant</span>
                 <span className="text-[#171A1F]">{payment.merchantName}</span>
               </div>
               <div className="py-2.5 flex justify-between">
-                <span className="text-[#697078]">PayPal Order ID</span>
-                <span className="font-mono text-[#171A1F]">{payment.paypalOrderId}</span>
+                <span className="text-[#525860]">PayPal Order ID</span>
+                <code className="font-mono text-[12px] text-[#171A1F]">{payment.paypalOrderId}</code>
               </div>
             </div>
 
@@ -271,13 +271,13 @@ function MerchantPaymentDetailContent() {
               <div className="pt-3 border-t border-[#DFE2DF] flex items-center gap-2">
                 <button
                   onClick={handleVoid}
-                  className="flex-1 py-1.5 px-3 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] text-[12px] font-medium rounded-[6px] hover:bg-[#FDE8E8] transition-colors cursor-pointer"
+                  className="flex-1 py-1.5 px-3 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] text-[13px] font-medium rounded-[6px] hover:bg-[#FDE8E8] transition-colors cursor-pointer"
                 >
                   Void Hold
                 </button>
                 <button
                   onClick={handleCapture}
-                  className="flex-1 py-1.5 px-3 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors cursor-pointer"
+                  className="flex-1 py-1.5 px-3 bg-[#171A1F] text-white text-[13px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors cursor-pointer"
                 >
                   Capture Hold
                 </button>
@@ -294,8 +294,8 @@ export default function MerchantPaymentDetailPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="min-h-screen bg-[#F6F6F3] py-24 text-center text-[#697078]">
-          <p className="text-xs font-mono">Loading payment details...</p>
+        <div className="min-h-screen bg-[#F6F6F3] py-24 text-center text-[#525860]">
+          <p className="text-[13px] font-medium">Loading payment details...</p>
         </div>
       }
     >

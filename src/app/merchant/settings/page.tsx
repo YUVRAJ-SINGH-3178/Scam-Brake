@@ -29,20 +29,17 @@ export default function MerchantSettingsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
-              Configuration
-            </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
               Account & Credentials
             </h1>
-            <p className="text-[13px] text-[#697078] mt-1">
+            <p className="text-[13px] text-[#525860] mt-1">
               Manage merchant organization credentials, PayPal partner credentials, and event webhook endpoints.
             </p>
           </div>
 
           <button
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[12px] font-medium rounded-[6px] transition-colors self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[13px] font-medium rounded-[6px] transition-colors self-start sm:self-auto cursor-pointer"
           >
             <Save size={13} />
             <span>Save Settings</span>
@@ -58,14 +55,14 @@ export default function MerchantSettingsPage() {
 
         {/* Section 1: Merchant Profile */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
-          <h2 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+          <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
             <Globe size={15} className="text-[#171A1F]" />
             <span>Organization Profile</span>
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[12px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[13px]">
             <div className="space-y-1.5">
-              <label className="text-[#697078] font-medium">Merchant Legal Name</label>
+              <label className="text-[#525860] font-medium">Merchant Legal Name</label>
               <input
                 type="text"
                 value={merchantName}
@@ -74,7 +71,7 @@ export default function MerchantSettingsPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[#697078] font-medium">Security Alerts Recipient</label>
+              <label className="text-[#525860] font-medium">Security Alerts Recipient</label>
               <input
                 type="email"
                 value={contactEmail}
@@ -87,21 +84,21 @@ export default function MerchantSettingsPage() {
 
         {/* Section 2: Production API Key */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
-          <h2 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+          <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
             <Key size={15} className="text-[#171A1F]" />
             <span>Production API Secret</span>
           </h2>
-          <p className="text-[12px] text-[#697078]">
+          <p className="text-[13px] text-[#525860]">
             Use this secret key in your server-side PayPal authorization evaluation hooks. Keep this key strictly confidential.
           </p>
 
-          <div className="flex items-center gap-2 text-[12px]">
-            <div className="flex-1 font-mono p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] text-[#171A1F] overflow-x-auto">
-              {apiKey}
+          <div className="flex items-center gap-2 text-[13px]">
+            <div className="flex-1 p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] text-[#171A1F] overflow-x-auto">
+              <code className="font-mono text-xs">{apiKey}</code>
             </div>
             <button
               onClick={handleCopy}
-              className="px-3 py-2.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#171A1F] rounded-[6px] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-2.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[13px] font-medium text-[#171A1F] rounded-[6px] transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <Copy size={13} />
               <span>{copiedKey ? 'Copied' : 'Copy Key'}</span>
@@ -111,16 +108,16 @@ export default function MerchantSettingsPage() {
 
         {/* Section 3: Webhook Endpoint */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
-          <h2 className="text-[13px] font-semibold text-[#171A1F] flex items-center gap-2">
+          <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
             <Bell size={15} className="text-[#171A1F]" />
             <span>Outbound Webhook Delivery</span>
           </h2>
-          <p className="text-[12px] text-[#697078]">
+          <p className="text-[13px] text-[#525860]">
             Scam Brake delivers signed HTTP POST events when authorizations are placed on hold, verified safe, or voided.
           </p>
 
-          <div className="space-y-1.5 text-[12px]">
-            <label className="text-[#697078] font-medium">Webhook URL Endpoint</label>
+          <div className="space-y-1.5 text-[13px]">
+            <label className="text-[#525860] font-medium">Webhook URL Endpoint</label>
             <input
               type="url"
               value={webhookUrl}
@@ -129,8 +126,8 @@ export default function MerchantSettingsPage() {
             />
           </div>
 
-          <div className="text-[11px] text-[#697078] font-mono">
-            Supported events: `authorization.hold.created`, `intervention.resolved.void`, `intervention.resolved.capture`, `audit.hash.sealed`.
+          <div className="text-[12px] text-[#525860]">
+            Supported events: <code>authorization.hold.created</code>, <code>intervention.resolved.void</code>, <code>intervention.resolved.capture</code>, <code>audit.hash.sealed</code>.
           </div>
         </div>
       </div>

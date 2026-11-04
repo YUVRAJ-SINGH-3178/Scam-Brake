@@ -32,7 +32,7 @@ export const Badge: React.FC<BadgeProps> = ({
   }[size];
 
   // Restrained financial palette: teal for verified/protection, amber for holds/review, red for confirmed scam/danger
-  let resolvedClass = 'bg-[#F6F6F3] text-[#697078] border border-[#DFE2DF]';
+  let resolvedClass = 'bg-[#F6F6F3] text-[#525860] border border-[#DFE2DF]';
   let defaultLabel: React.ReactNode = variant;
 
   switch (variant) {
@@ -49,7 +49,7 @@ export const Badge: React.FC<BadgeProps> = ({
     case 'MEDIUM':
     case 'HOLD_ACTIVE':
     case 'PENDING_REVIEW':
-      resolvedClass = 'bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/25';
+      resolvedClass = 'bg-[#FAF2E4] text-[#784D00] border border-[#784D00]/25';
       defaultLabel = variant === 'MEDIUM' ? 'Medium Risk' : variant === 'HOLD_ACTIVE' ? 'Hold Active' : variant === 'PENDING_REVIEW' ? 'Pending Review' : variant;
       break;
 
@@ -79,7 +79,7 @@ export const Badge: React.FC<BadgeProps> = ({
     case 'NOT_REQUIRED':
     case 'ABANDONED':
     default:
-      resolvedClass = 'bg-[#F6F6F3] text-[#697078] border border-[#DFE2DF]';
+      resolvedClass = 'bg-[#F6F6F3] text-[#525860] border border-[#DFE2DF]';
       break;
   }
 
@@ -103,7 +103,7 @@ export const RiskBadge: React.FC<{ level: RiskLevel; score?: number }> = ({
       <span className="w-1.5 h-1.5 rounded-full bg-current" />
       <span>{level === 'CRITICAL' ? 'Critical' : level === 'HIGH' ? 'High' : level === 'MEDIUM' ? 'Medium' : 'Low'} Risk</span>
       {score !== undefined && (
-        <span className="font-mono ml-0.5 opacity-80">({score})</span>
+        <code className="font-mono ml-0.5 opacity-90">({score})</code>
       )}
     </Badge>
   );

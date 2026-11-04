@@ -49,7 +49,7 @@ export const Modal: React.FC<ModalProps> = ({
 
       {/* Centered Modal Container */}
       <div
-        className={`relative bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] shadow-lg w-full ${maxWidth} overflow-hidden transform transition-all duration-200`}
+        className={`relative bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] shadow-lg w-full ${maxWidth} overflow-hidden transform transition-[transform,opacity] duration-200`}
         style={{
           transformOrigin: 'center',
           transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -65,7 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
               {title}
             </h3>
             {subtitle && (
-              <p className="text-[12px] text-[#697078] mt-0.5">{subtitle}</p>
+              <p className="text-[12px] text-[#525860] mt-0.5">{subtitle}</p>
             )}
           </div>
           <button

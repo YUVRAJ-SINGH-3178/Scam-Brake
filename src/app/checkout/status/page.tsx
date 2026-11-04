@@ -22,22 +22,22 @@ function CheckoutStatusContent() {
             SCAM BRAKE
           </span>
         </div>
-        <div className="text-[11px] font-mono text-[#697078]">
-          PAYMENT STATUS
+        <div className="text-[12px] text-[#525860] font-medium">
+          Payment Status
         </div>
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto w-full p-6 py-12 space-y-6">
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 space-y-6 text-center">
           <div className="w-10 h-10 rounded-full bg-[#EAF4F1] text-[#1A7A64] flex items-center justify-center mx-auto border border-[#1A7A64]/20">
-            {isCaptured ? <CheckCircle2 size={20} /> : <Clock size={20} className="text-[#9A6700]" />}
+            {isCaptured ? <CheckCircle2 size={20} /> : <Clock size={20} className="text-[#784D00]" />}
           </div>
 
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
               {isCaptured ? 'Payment Captured Successfully' : 'Authorization In Review'}
             </h1>
-            <p className="text-[13px] text-[#697078] leading-relaxed max-w-md mx-auto">
+            <p className="text-[13px] text-[#525860] leading-relaxed max-w-md mx-auto">
               {isCaptured
                 ? 'Your order has been verified and settled through PayPal. The merchant is preparing your fulfillment.'
                 : 'Scam Brake is currently reviewing the pre-capture authorization hold. Funds remain safe in your account.'}
@@ -75,7 +75,7 @@ export default function CheckoutStatusPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
-          <div className="text-xs font-mono text-[#697078]">Loading payment status...</div>
+          <div className="text-xs text-[#525860]"><code>Loading payment status...</code></div>
         </div>
       }
     >

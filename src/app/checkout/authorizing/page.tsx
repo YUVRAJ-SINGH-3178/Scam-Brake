@@ -49,7 +49,7 @@ function AuthorizingContent() {
               ? 'Authorization Hold Established'
               : 'Evaluating Risk Signals...'}
           </h1>
-          <p className="text-[13px] text-[#697078] leading-relaxed">
+          <p className="text-[13px] text-[#525860] leading-relaxed">
             {stage === 'CONTACTING_PAYPAL'
               ? 'Requesting pre-capture authorization hold for order.'
               : stage === 'HOLD_PLACED'
@@ -61,7 +61,7 @@ function AuthorizingContent() {
         {/* Pulse Bar */}
         <div className="w-full bg-[#DFE2DF] h-1 rounded-[2px] overflow-hidden">
           <div
-            className="h-full bg-[#171A1F] transition-all duration-700 ease-out"
+            className="h-full bg-[#171A1F] transition-[width] duration-700 ease-out"
             style={{
               width:
                 stage === 'CONTACTING_PAYPAL'
@@ -73,10 +73,10 @@ function AuthorizingContent() {
           />
         </div>
 
-        <div className="p-3.5 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[12px] text-[#697078] text-left space-y-1">
+        <div className="p-3.5 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[13px] text-[#525860] text-left space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="font-medium text-[#171A1F]">Mode</span>
-            <span className="font-mono text-[#171A1F]">intent=AUTHORIZE</span>
+            <code className="font-mono text-[#171A1F] text-xs">intent=AUTHORIZE</code>
           </div>
           <div className="flex items-center justify-between">
             <span className="font-medium text-[#171A1F]">Protection</span>
@@ -93,7 +93,7 @@ export default function AuthorizingPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
-          <div className="text-xs font-mono text-[#697078]">Connecting PayPal authorization hold...</div>
+          <div className="text-xs text-[#525860]"><code>Connecting PayPal authorization hold...</code></div>
         </div>
       }
     >

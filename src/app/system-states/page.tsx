@@ -168,14 +168,14 @@ export default function SystemStatesGalleryPage() {
               SCAM BRAKE
             </span>
           </Link>
-          <span className="text-[11px] text-[#697078] border-l border-[#DFE2DF] pl-2 font-mono">
-            SYSTEM STATE CATALOG (12 EDGE CASES)
+          <span className="text-[12px] text-[#525860] border-l border-[#DFE2DF] pl-2 font-medium">
+            System state catalog (12 edge cases)
           </span>
         </div>
 
         <Link
           href="/merchant"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#171A1F] rounded-[6px] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[13px] font-medium text-[#171A1F] rounded-[6px] transition-colors"
         >
           <Home size={13} />
           <span>Return to Dashboard</span>
@@ -188,7 +188,7 @@ export default function SystemStatesGalleryPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
             Edge Case & Error State Design System
           </h1>
-          <p className="text-[13px] text-[#697078] mt-1">
+          <p className="text-[13px] text-[#525860] mt-1">
             Standardized UX treatments for HTTP codes, network disconnections, timeout windows, and payment exceptions.
           </p>
         </div>
@@ -204,7 +204,7 @@ export default function SystemStatesGalleryPage() {
                   onClick={() => setSelectedState(state)}
                   className={`w-full text-left p-3 rounded-[6px] border transition-colors flex items-center gap-3 cursor-pointer ${
                     selectedState.id === state.id
-                      ? 'bg-[#FFFFFF] border-[#171A1F] shadow-xs'
+                      ? 'bg-[#FFFFFF] border-[#171A1F]'
                       : 'bg-[#F6F6F3] border-[#DFE2DF] hover:bg-[#FFFFFF]'
                   }`}
                 >
@@ -212,14 +212,14 @@ export default function SystemStatesGalleryPage() {
                     className={`p-1.5 rounded-[4px] shrink-0 ${
                       selectedState.id === state.id
                         ? 'bg-[#171A1F] text-white'
-                        : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#697078]'
+                        : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#525860]'
                     }`}
                   >
                     <Icon size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono text-[10px] text-[#697078]">{state.code}</div>
-                    <div className="font-medium text-[12px] text-[#171A1F] truncate">{state.title}</div>
+                    <code className="font-mono text-[11px] text-[#525860] block">{state.code}</code>
+                    <div className="font-medium text-[13px] text-[#171A1F] truncate">{state.title}</div>
                   </div>
                 </button>
               );
@@ -230,12 +230,12 @@ export default function SystemStatesGalleryPage() {
           <div className="md:col-span-2 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 flex flex-col justify-between min-h-[500px]">
             <div className="flex items-center justify-between pb-4 border-b border-[#DFE2DF]">
               <div>
-                <span className="font-mono text-[10px] text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[3px] font-semibold">
+                <code className="font-mono text-[11px] text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[3px] font-semibold">
                   {selectedState.code}
-                </span>
-                <span className="text-[11px] text-[#697078] ml-2 font-mono">{selectedState.category}</span>
+                </code>
+                <span className="text-[12px] text-[#525860] ml-2">{selectedState.category}</span>
               </div>
-              <span className="text-[11px] font-mono uppercase text-[#697078]">UI Preview</span>
+              <span className="text-[12px] text-[#525860]">UI Preview</span>
             </div>
 
             {/* Centered Render of Error Component */}
@@ -246,7 +246,7 @@ export default function SystemStatesGalleryPage() {
 
               <div>
                 <h2 className="text-lg font-semibold text-[#171A1F] tracking-tight">{selectedState.title}</h2>
-                <p className="text-[13px] text-[#697078] mt-1.5 leading-relaxed">
+                <p className="text-[13px] text-[#525860] mt-1.5 leading-relaxed">
                   {selectedState.userMessage}
                 </p>
               </div>
@@ -254,7 +254,7 @@ export default function SystemStatesGalleryPage() {
               <div className="pt-2">
                 <button
                   onClick={() => alert(`Simulated action: ${selectedState.suggestedAction}`)}
-                  className="px-4 py-2 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-[#171A1F] text-white text-[13px] font-medium rounded-[6px] hover:bg-[#2B303A] transition-colors cursor-pointer"
                 >
                   {selectedState.suggestedAction}
                 </button>
@@ -262,7 +262,7 @@ export default function SystemStatesGalleryPage() {
             </div>
 
             {/* Technical Specification Footer */}
-            <div className="pt-4 border-t border-[#DFE2DF] text-[12px] text-[#697078] space-y-1">
+            <div className="pt-4 border-t border-[#DFE2DF] text-[13px] text-[#525860] space-y-1">
               <div className="font-semibold text-[#171A1F]">Technical Behavior & Recovery Rule:</div>
               <p className="leading-relaxed">{selectedState.description}</p>
             </div>

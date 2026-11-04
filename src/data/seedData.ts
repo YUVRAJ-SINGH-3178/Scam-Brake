@@ -652,7 +652,7 @@ export const SIMULATION_SCENARIOS: SimulationScenario[] = [
       {
         id: 'sim_l3',
         sender: 'AI_ASSISTANT',
-        content: 'Thank you for confirming. No coercive flags or remote sessions detected. Authorization captured seamlessly.',
+        content: 'Thank you for confirming. No coercive flags or remote sessions detected. Authorization captured directly without delay.',
         timestamp: '14:10:25',
       },
     ],

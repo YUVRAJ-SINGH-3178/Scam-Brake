@@ -103,20 +103,17 @@ export default function MerchantDocsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
-              Integration
-            </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
               API Specifications
             </h1>
-            <p className="text-[13px] text-[#697078] mt-1">
+            <p className="text-[13px] text-[#525860] mt-1">
               Technical integration contracts, REST endpoints, and PayPal authorization lifecycle hooks.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-[#697078] bg-[#F6F6F3] px-2.5 py-1 rounded-[4px] border border-[#DFE2DF]">
-              OpenAPI 3.1 Spec
+            <span className="text-[12px] text-[#525860] bg-[#F6F6F3] px-2.5 py-1 rounded-[4px] border border-[#DFE2DF]">
+              <code>OpenAPI 3.1 Spec</code>
             </span>
           </div>
         </div>
@@ -127,28 +124,28 @@ export default function MerchantDocsPage() {
             <BookOpen size={15} className="text-[#171A1F]" />
             <span>How to Integrate with PayPal Checkout</span>
           </h2>
-          <p className="text-[12px] text-[#697078] leading-relaxed">
-            In standard PayPal implementations, merchants create orders with `intent: CAPTURE`, which settles funds immediately.
-            To integrate Scam Brake, initialize your order with <strong className="text-[#171A1F] font-mono">intent: &apos;AUTHORIZE&apos;</strong>. When the customer approves the payment, call Scam Brake&apos;s evaluation endpoint before executing final capture.
+          <p className="text-[13px] text-[#525860] leading-relaxed">
+            In standard PayPal implementations, merchants create orders with <code>intent: CAPTURE</code>, which settles funds immediately.
+            To integrate Scam Brake, initialize your order with <code className="text-[#171A1F] font-mono font-semibold">intent: &apos;AUTHORIZE&apos;</code>. When the customer approves the payment, call Scam Brake&apos;s evaluation endpoint before executing final capture.
           </p>
 
-          <div className="bg-[#171A1F] text-[#F6F6F3] p-4 rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
-            <span className="text-[#697078] block">// PayPal JS SDK Button Implementation</span>
+          <pre className="bg-[#171A1F] text-[#F6F6F3] p-4 rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
+            <span className="text-[#525860] block">// PayPal JS SDK Button Implementation</span>
             <span className="text-[#93C5FD]">paypal.Buttons</span>(&#123;{'\n'}
             {'  '}<span className="text-[#6EE7B7]">createOrder</span>: (data, actions) =&gt; &#123;{'\n'}
             {'    '}return actions.order.create(&#123;{'\n'}
-            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#697078]">// Enables pre-capture hold</span>{'\n'}
+            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#525860]">// Enables pre-capture hold</span>{'\n'}
             {'      '}purchase_units: [&#123; amount: &#123; value: cart.total &#125; &#125;]{'\n'}
             {'    '}&#125;);{'\n'}
             {'  '}&#125;,{'\n'}
             {'  '}<span className="text-[#6EE7B7]">onApprove</span>: async (data, actions) =&gt; &#123;{'\n'}
-            {'    '}<span className="text-[#697078]">// 1. Customer authorized hold in PayPal popup</span>{'\n'}
+            {'    '}<span className="text-[#525860]">// 1. Customer authorized hold in PayPal popup</span>{'\n'}
             {'    '}const authorization = await actions.order.authorize();{'\n'}
-            {'    '}<span className="text-[#697078]">// 2. Post authorization to Scam Brake for risk evaluation</span>{'\n'}
+            {'    '}<span className="text-[#525860]">// 2. Post authorization to Scam Brake for risk evaluation</span>{'\n'}
             {'    '}const check = await fetch(&apos;/api/scambrake/evaluate&apos;, &#123; ... &#125;);{'\n'}
             {'  '}&#125;{'\n'}
             &#125;);
-          </div>
+          </pre>
         </div>
 
         {/* REST API Endpoints Explorer */}
@@ -160,14 +157,14 @@ export default function MerchantDocsPage() {
               <button
                 key={ep.path}
                 onClick={() => setSelectedEndpoint(ep)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-[6px] text-[12px] transition-colors cursor-pointer ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-[6px] text-[13px] transition-colors cursor-pointer ${
                   selectedEndpoint.path === ep.path
                     ? 'bg-[#171A1F] text-white font-medium'
                     : 'bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] hover:bg-[#F6F6F3]'
                 }`}
               >
-                <span className="font-mono text-[10px] font-bold opacity-80">{ep.method}</span>
-                <span className="font-mono">{ep.path}</span>
+                <code className="font-mono text-[11px] font-bold opacity-85">{ep.method}</code>
+                <code className="font-mono">{ep.path}</code>
               </button>
             ))}
           </div>
@@ -177,38 +174,38 @@ export default function MerchantDocsPage() {
             <div className="flex items-center justify-between pb-3 border-b border-[#DFE2DF]">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-[3px] text-[10px] font-mono font-bold bg-[#F6F6F3] border border-[#DFE2DF] text-[#171A1F]">
+                  <code className="px-2 py-0.5 rounded-[3px] text-[11px] font-mono font-bold bg-[#F6F6F3] border border-[#DFE2DF] text-[#171A1F]">
                     {selectedEndpoint.method}
-                  </span>
-                  <span className="font-mono text-[13px] font-semibold text-[#171A1F]">
+                  </code>
+                  <code className="font-mono text-[14px] font-semibold text-[#171A1F]">
                     {selectedEndpoint.path}
-                  </span>
+                  </code>
                 </div>
-                <p className="text-[12px] text-[#697078] mt-1">{selectedEndpoint.description}</p>
+                <p className="text-[13px] text-[#525860] mt-1">{selectedEndpoint.description}</p>
               </div>
             </div>
 
             {selectedEndpoint.requestBody && (
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[#697078]">
-                  <span>Request Payload</span>
+                <div className="flex items-center justify-between text-[12px] font-medium text-[#525860]">
+                  <span>Request payload</span>
                   <button
                     onClick={() => copyCode(selectedEndpoint.requestBody!)}
-                    className="inline-flex items-center gap-1 text-[11px] text-[#171A1F] hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 text-[12px] text-[#171A1F] hover:underline cursor-pointer"
                   >
-                    {copied ? <Check size={11} /> : <Copy size={11} />}
+                    {copied ? <Check size={12} /> : <Copy size={12} />}
                     <span>{copied ? 'Copied' : 'Copy'}</span>
                   </button>
                 </div>
-                <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[11px] overflow-x-auto leading-relaxed">
+                <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
                   {selectedEndpoint.requestBody}
                 </pre>
               </div>
             )}
 
             <div className="space-y-2">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">Response Schema (200 OK)</div>
-              <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[11px] overflow-x-auto leading-relaxed">
+              <div className="text-[12px] font-medium text-[#525860]">Response schema (200 OK)</div>
+              <pre className="p-3 bg-[#171A1F] text-[#F6F6F3] rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
                 {selectedEndpoint.responseBody}
               </pre>
             </div>

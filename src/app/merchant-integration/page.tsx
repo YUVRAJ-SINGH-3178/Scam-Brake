@@ -14,29 +14,26 @@ export default function MerchantIntegrationPage() {
       <MarketingNav />
 
       <main className="flex-1 py-16 px-6 max-w-6xl mx-auto w-full space-y-16">
-        <div className="space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-[4px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] text-[11px] font-mono">
-            <span>DEVELOPER ARCHITECTURE</span>
-          </div>
+        <div className="space-y-4 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl font-semibold text-[#171A1F] leading-tight tracking-tight">
             Merchant Integration Architecture
           </h1>
-          <p className="text-[15px] text-[#697078] leading-relaxed">
+          <p className="text-[17px] text-[#171A1F] leading-relaxed max-w-2xl">
             Eliminate friendly fraud disputes, recover scam-coerced gift card chargebacks, and protect your brand reputation with three API endpoints.
           </p>
         </div>
 
         {/* Integration Code Sample Block */}
-        <div className="rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] overflow-hidden">
-          <div className="px-6 py-3 border-b border-[#DFE2DF] bg-[#F6F6F3] flex items-center justify-between text-[12px] text-[#697078]">
+        <div className="rounded-[6px] bg-[#FFFFFF] overflow-hidden" data-ui="true">
+          <div className="px-6 py-3 border-b border-[#DFE2DF] bg-[#F6F6F3] flex items-center justify-between text-[13px] text-[#525860]">
             <div className="flex items-center gap-2">
               <Code2 size={15} className="text-[#171A1F]" />
-              <span className="font-mono text-[#171A1F] font-medium">checkout.ts — Pre-Capture Integration</span>
+              <code className="font-mono text-[#171A1F] font-medium text-xs">checkout.ts — Pre-Capture Integration</code>
             </div>
-            <span className="font-mono text-[11px]">TypeScript / Node 22</span>
+            <code className="font-mono text-[11px] text-[#525860]">TypeScript / Node 22</code>
           </div>
 
-          <div className="p-6 overflow-x-auto text-[12px] font-mono leading-relaxed text-[#171A1F] bg-[#171A1F] text-[#F6F6F3]">
+          <div className="p-6 overflow-x-auto text-[12px] font-mono leading-relaxed bg-[#171A1F] text-[#F6F6F3]">
             <pre>
 {`import { ScamBrakeClient } from '@scambrake/sdk';
 import { PayPalClient } from '@paypal/checkout-server-sdk';
@@ -97,7 +94,7 @@ export async function onCustomerApproved(orderId, clientTelemetry) {
             <h2 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
               Technology Specifications
             </h2>
-            <p className="text-[13px] text-[#697078] mt-0.5">
+            <p className="text-[13px] text-[#525860] mt-0.5">
               Scam Brake is architected to interface cleanly with industry-standard platforms.
             </p>
           </div>
@@ -106,19 +103,19 @@ export async function onCustomerApproved(orderId, clientTelemetry) {
             {SPONSORS.map((spon) => (
               <div
                 key={spon.id}
-                className="p-5 rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] space-y-2"
+                className="p-5 rounded-[6px] bg-[#FFFFFF] space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-[#171A1F] text-[13px]">{spon.name}</span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-[#F6F6F3] border border-[#DFE2DF] text-[#697078]">
+                  <span className="font-semibold text-[#171A1F] text-[14px]">{spon.name}</span>
+                  <code className="text-[11px] font-mono px-2 py-0.5 rounded-[3px] bg-[#F6F6F3] border border-[#DFE2DF] text-[#525860]">
                     {spon.category}
-                  </span>
+                  </code>
                 </div>
-                <p className="text-[12px] text-[#697078] leading-relaxed">
+                <p className="text-[13px] text-[#525860] leading-relaxed">
                   {spon.purpose}
                 </p>
-                <div className="text-[11px] font-mono text-[#697078] pt-1 border-t border-[#DFE2DF]">
-                  Interface: {spon.interfaceMethod}
+                <div className="text-[12px] text-[#525860] pt-1 border-t border-[#DFE2DF]">
+                  Interface: <code>{spon.interfaceMethod}</code>
                 </div>
               </div>
             ))}
@@ -126,12 +123,12 @@ export async function onCustomerApproved(orderId, clientTelemetry) {
         </div>
 
         {/* Merchant Dashboard Direct Link */}
-        <div className="p-8 rounded-[6px] border border-[#DFE2DF] bg-[#FFFFFF] flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="p-8 rounded-[6px] bg-[#FFFFFF] flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <div className="text-[16px] font-semibold text-[#171A1F]">
               Explore the Merchant Operations Console
             </div>
-            <div className="text-[13px] text-[#697078] mt-0.5">
+            <div className="text-[13px] text-[#525860] mt-0.5">
               Review live payment holds, risk intelligence scores, and automated void rules.
             </div>
           </div>

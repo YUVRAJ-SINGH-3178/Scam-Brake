@@ -38,27 +38,24 @@ export default function FAQPage() {
 
       <main className="flex-1 py-16 px-6 max-w-4xl mx-auto w-full space-y-12">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-[4px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] text-[11px] font-mono">
-            <span>KNOWLEDGE BASE</span>
-          </div>
           <h1 className="text-4xl sm:text-5xl font-semibold text-[#171A1F] leading-tight tracking-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-[15px] text-[#697078] leading-relaxed">
+          <p className="text-[17px] text-[#171A1F] leading-relaxed max-w-2xl">
             Detailed answers regarding payment authorization holds, AI safety boundaries, and merchant integration.
           </p>
         </div>
 
-        <div className="divide-y divide-[#DFE2DF] border-y border-[#DFE2DF] bg-[#FFFFFF] rounded-[6px] overflow-hidden">
+        <div className="divide-y divide-[#DFE2DF] bg-[#FFFFFF] rounded-[6px] overflow-hidden">
           {faqs.map((f, idx) => (
             <div
               key={idx}
               className="p-6 space-y-2 hover:bg-[#F6F6F3]/50 transition-colors"
             >
-              <h2 className="text-[16px] font-semibold text-[#171A1F]">
+              <h2 className="text-[17px] font-semibold text-[#171A1F]">
                 {f.q}
               </h2>
-              <p className="text-[14px] text-[#697078] leading-relaxed">
+              <p className="text-[15px] text-[#171A1F] leading-relaxed">
                 {f.a}
               </p>
             </div>

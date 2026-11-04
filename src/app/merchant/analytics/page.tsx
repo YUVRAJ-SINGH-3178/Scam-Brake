@@ -29,7 +29,7 @@ const MONTHLY_PROTECTION_DATA = [
 const RISK_SCORE_DISTRIBUTION = [
   { bucket: '0–20 (Safe)', count: 48, fill: '#1A7A64' },
   { bucket: '21–40 (Low)', count: 24, fill: '#2B303A' },
-  { bucket: '41–60 (Med)', count: 14, fill: '#9A6700' },
+  { bucket: '41–60 (Med)', count: 14, fill: '#784D00' },
   { bucket: '61–80 (High)', count: 8, fill: '#D97706' },
   { bucket: '81–100 (Crit)', count: 6, fill: '#C53030' },
 ];
@@ -51,13 +51,10 @@ export default function MerchantAnalyticsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
-              Reporting
-            </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
               Analytics & Protection Efficacy
             </h1>
-            <p className="text-[13px] text-[#697078] mt-1">
+            <p className="text-[13px] text-[#525860] mt-1">
               Operational metrics on pre-capture holds, prevented social engineering losses, and customer conversion.
             </p>
           </div>
@@ -66,7 +63,7 @@ export default function MerchantAnalyticsPage() {
             onClick={() => {
               alert('Exporting analytics report as CSV...');
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#697078] hover:text-[#171A1F] rounded-[6px] transition-colors self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[13px] font-medium text-[#525860] hover:text-[#171A1F] rounded-[6px] transition-colors self-start sm:self-auto cursor-pointer"
           >
             <Download size={14} />
             <span>Export Monthly Summary</span>
@@ -76,35 +73,35 @@ export default function MerchantAnalyticsPage() {
         {/* Core Financial Metrics Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-[6px] border border-[#DFE2DF] bg-[#F6F6F3]">
           <div>
-            <span className="text-[12px] text-[#697078]">Total Protected Volume</span>
-            <div className="font-mono text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
-              ${metrics.totalProtectedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            <span className="text-[13px] text-[#525860]">Total Protected Volume</span>
+            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
+              <code className="font-mono">${metrics.totalProtectedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[11px] text-[#697078] mt-0.5">Across all checkouts</div>
+            <div className="text-[12px] text-[#525860] mt-0.5">Across all checkouts</div>
           </div>
 
           <div>
-            <span className="text-[12px] text-[#697078]">Confirmed Fraud Voided</span>
-            <div className="font-mono text-[22px] font-semibold text-[#C53030] mt-0.5 tabular-nums">
-              ${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            <span className="text-[13px] text-[#525860]">Confirmed Fraud Voided</span>
+            <div className="text-[22px] font-semibold text-[#C53030] mt-0.5 tabular-nums">
+              <code className="font-mono">${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[11px] text-[#C53030] mt-0.5 font-medium">100% pre-capture, $0 dispute fees</div>
+            <div className="text-[12px] text-[#C53030] mt-0.5 font-medium">100% pre-capture, $0 dispute fees</div>
           </div>
 
           <div>
-            <span className="text-[12px] text-[#697078]">Interventions Completed</span>
-            <div className="font-mono text-[22px] font-semibold text-[#1A7A64] mt-0.5 tabular-nums">
-              {metrics.interventionsCount} Sessions
+            <span className="text-[13px] text-[#525860]">Interventions Completed</span>
+            <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5 tabular-nums">
+              <code className="font-mono">{metrics.interventionsCount} Sessions</code>
             </div>
-            <div className="text-[11px] text-[#697078] mt-0.5">Voluntary customer participation</div>
+            <div className="text-[12px] text-[#525860] mt-0.5">Voluntary customer participation</div>
           </div>
 
           <div>
-            <span className="text-[12px] text-[#697078]">Median Resolution Time</span>
-            <div className="font-mono text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
-              {Math.round(metrics.medianInterventionSeconds / 60)} min
+            <span className="text-[13px] text-[#525860]">Median Resolution Time</span>
+            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
+              <code className="font-mono">{Math.round(metrics.medianInterventionSeconds / 60)} min</code>
             </div>
-            <div className="text-[11px] text-[#697078] mt-0.5">From auth hold to decision</div>
+            <div className="text-[12px] text-[#525860] mt-0.5">From auth hold to decision</div>
           </div>
         </div>
 
@@ -114,19 +111,19 @@ export default function MerchantAnalyticsPage() {
           <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-[13px] font-semibold text-[#171A1F]">
+                <h3 className="text-[14px] font-semibold text-[#171A1F]">
                   Volume: Captured vs. Pre-Capture Void
                 </h3>
-                <p className="text-[11px] text-[#697078]">Monthly dollar volume distribution (USD)</p>
+                <p className="text-[12px] text-[#525860]">Monthly dollar volume distribution (USD)</p>
               </div>
-              <div className="flex items-center gap-3 text-[11px]">
+              <div className="flex items-center gap-3 text-[12px]">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-[2px] bg-[#1A7A64]" />
-                  <span className="text-[#697078]">Captured</span>
+                  <span className="text-[#525860]">Captured</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-[2px] bg-[#C53030]" />
-                  <span className="text-[#697078]">Voided Fraud</span>
+                  <span className="text-[#525860]">Voided Fraud</span>
                 </div>
               </div>
             </div>
@@ -135,16 +132,16 @@ export default function MerchantAnalyticsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={MONTHLY_PROTECTION_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#DFE2DF" />
-                  <XAxis dataKey="month" stroke="#697078" fontSize={11} tickLine={false} />
+                  <XAxis dataKey="month" stroke="#525860" fontSize={12} tickLine={false} />
                   <YAxis
-                    stroke="#697078"
-                    fontSize={11}
+                    stroke="#525860"
+                    fontSize={12}
                     tickLine={false}
                     tickFormatter={(val) => `$${val / 1000}k`}
                   />
                   <Tooltip
                     formatter={(value: any) => [`$${Number(value).toLocaleString()}`, '']}
-                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#DFE2DF', fontSize: '11px', borderRadius: '4px' }}
+                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#DFE2DF', fontSize: '12px', borderRadius: '4px' }}
                   />
                   <Area
                     type="monotone"
@@ -170,20 +167,20 @@ export default function MerchantAnalyticsPage() {
           {/* Risk Score Distribution */}
           <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
             <div>
-              <h3 className="text-[13px] font-semibold text-[#171A1F]">
+              <h3 className="text-[14px] font-semibold text-[#171A1F]">
                 Risk Score Distribution
               </h3>
-              <p className="text-[11px] text-[#697078]">Number of checkouts across risk buckets (Last 30 Days)</p>
+              <p className="text-[12px] text-[#525860]">Number of checkouts across risk buckets (Last 30 Days)</p>
             </div>
 
             <div className="h-64 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={RISK_SCORE_DISTRIBUTION} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#DFE2DF" />
-                  <XAxis dataKey="bucket" stroke="#697078" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#697078" fontSize={11} tickLine={false} />
+                  <XAxis dataKey="bucket" stroke="#525860" fontSize={12} tickLine={false} />
+                  <YAxis stroke="#525860" fontSize={12} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#DFE2DF', fontSize: '11px', borderRadius: '4px' }}
+                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#DFE2DF', fontSize: '12px', borderRadius: '4px' }}
                   />
                   <Bar dataKey="count" radius={[2, 2, 0, 0]}>
                     {RISK_SCORE_DISTRIBUTION.map((entry, index) => (
@@ -199,20 +196,22 @@ export default function MerchantAnalyticsPage() {
         {/* Secondary Row: Resolution Velocities */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-5 space-y-4">
           <div>
-            <h3 className="text-[13px] font-semibold text-[#171A1F]">
+            <h3 className="text-[14px] font-semibold text-[#171A1F]">
               Intervention Resolution Velocity
             </h3>
-            <p className="text-[11px] text-[#697078]">
+            <p className="text-[12px] text-[#525860]">
               How quickly customers review their situation and confirm either safe release or pre-capture void.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-1 text-center text-[12px]">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-1 text-center text-[13px]">
             {RESOLUTION_TIME_DATA.map((item, idx) => (
               <div key={idx} className="p-3 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px]">
-                <span className="text-[#697078]">{item.interval}</span>
-                <div className="font-mono text-[16px] font-semibold text-[#171A1F] mt-1 tabular-nums">{item.count} orders</div>
-                <div className="text-[10px] text-[#697078] mt-0.5">
+                <span className="text-[#525860]">{item.interval}</span>
+                <div className="text-[16px] font-semibold text-[#171A1F] mt-1 tabular-nums">
+                  <code className="font-mono">{item.count} orders</code>
+                </div>
+                <div className="text-[12px] text-[#525860] mt-0.5">
                   {Math.round((item.count / 100) * 100)}% of holds
                 </div>
               </div>

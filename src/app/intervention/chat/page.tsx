@@ -62,7 +62,7 @@ function CustomerInterventionChatContent() {
       {/* Top Header */}
       <header className="h-14 bg-[#FFFFFF] border-b border-[#DFE2DF] px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <Link href="/intervention" className="text-[#697078] hover:text-[#171A1F] p-1">
+          <Link href="/intervention" className="text-[#525860] hover:text-[#171A1F] p-1">
             <ArrowLeft size={16} />
           </Link>
           <div className="flex items-center gap-2">
@@ -70,18 +70,18 @@ function CustomerInterventionChatContent() {
             <span className="font-semibold text-[14px] tracking-tight text-[#171A1F]">
               SCAM BRAKE
             </span>
-            <span className="text-[11px] text-[#697078] border-l border-[#DFE2DF] pl-2 font-mono">
-              SAFETY INQUIRY
+            <span className="text-[12px] text-[#525860] border-l border-[#DFE2DF] pl-2 font-medium">
+              Safety inquiry
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-[12px]">
-          <span className="font-mono text-[11px] text-[#697078]">
-            Ref: {payment.paymentReference}
+        <div className="flex items-center gap-3 text-[13px]">
+          <span className="text-[12px] text-[#525860]">
+            Ref: <code className="font-mono text-[#171A1F]">{payment.paymentReference}</code>
           </span>
-          <span className="bg-[#FAF2E4] text-[#9A6700] border border-[#9A6700]/20 font-mono px-2 py-0.5 rounded-[4px] text-[11px] font-semibold flex items-center gap-1">
-            <Clock size={11} />
+          <span className="bg-[#FAF2E4] text-[#784D00] border border-[#784D00]/20 px-2 py-0.5 rounded-[4px] text-[12px] font-medium flex items-center gap-1">
+            <Clock size={12} />
             Funds Held
           </span>
         </div>
@@ -90,10 +90,12 @@ function CustomerInterventionChatContent() {
       {/* Main Chat Flow */}
       <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 flex flex-col justify-between space-y-4">
         {/* Reassurance Banner */}
-        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-4 text-[12px] text-[#697078] space-y-1">
-          <div className="font-semibold text-[#171A1F] flex items-center gap-1.5 text-[13px]">
-            <ShieldAlert size={14} className="text-[#9A6700]" />
-            <span>Your ${payment.amount.toFixed(2)} payment has not been transferred.</span>
+        <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-4 text-[13px] text-[#525860] space-y-1">
+          <div className="flex items-center justify-between">
+            <h1 className="font-semibold text-[#171A1F] flex items-center gap-1.5 text-[15px]">
+              <ShieldAlert size={16} className="text-[#784D00]" />
+              <span>Your <code className="font-mono">${payment.amount.toFixed(2)}</code> payment has not been transferred.</span>
+            </h1>
           </div>
           <p className="leading-relaxed">
             PayPal has temporarily authorized this hold so that you can verify this transaction in complete privacy. No money will leave your account without your explicit confirmation.
@@ -109,9 +111,9 @@ function CustomerInterventionChatContent() {
                 msg.sender === 'CUSTOMER' ? 'items-end' : 'items-start'
               }`}
             >
-              <div className="text-[10px] text-[#697078] mb-1 font-mono">
+              <div className="text-[11px] text-[#525860] mb-1">
                 {msg.sender === 'CUSTOMER' ? 'You' : 'Scam Brake Assistant'} •{' '}
-                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <code className="font-mono">{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</code>
               </div>
               <div
                 className={`max-w-lg p-3.5 rounded-[6px] text-[13px] leading-relaxed ${
@@ -129,7 +131,7 @@ function CustomerInterventionChatContent() {
                     <button
                       key={i}
                       onClick={() => handleSendMessage(reply)}
-                      className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F] text-[#171A1F] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer"
+                      className="text-[13px] bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F] text-[#171A1F] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer"
                     >
                       {reply}
                     </button>
@@ -184,7 +186,7 @@ function CustomerInterventionChatContent() {
 
           {/* Resolution Decisions */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-[11px] text-[#697078]">
+            <span className="text-[12px] text-[#525860]">
               Ready to decide? You have total control over this authorization hold.
             </span>
 
@@ -192,14 +194,14 @@ function CustomerInterventionChatContent() {
               <button
                 onClick={handleVoidPayment}
                 disabled={isResolving}
-                className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] hover:bg-[#FDE8E8] text-[12px] font-medium rounded-[6px] transition-colors cursor-pointer"
+                className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] hover:bg-[#FDE8E8] text-[13px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
                 Cancel & Void Payment ($0 fee)
               </button>
               <button
                 onClick={handleProceedPayment}
                 disabled={isResolving}
-                className="flex-1 sm:flex-none px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[12px] font-medium rounded-[6px] transition-colors cursor-pointer"
+                className="flex-1 sm:flex-none px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[13px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
                 Confirm & Capture Payment
               </button>
@@ -216,7 +218,7 @@ export default function CustomerInterventionChatPage() {
     <React.Suspense
       fallback={
         <div className="min-h-screen bg-[#F6F6F3] flex items-center justify-center p-6">
-          <div className="text-xs font-mono text-[#697078]">Connecting safety check-in...</div>
+          <div className="text-xs text-[#525860]"><code>Connecting safety check-in...</code></div>
         </div>
       }
     >

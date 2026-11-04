@@ -89,7 +89,7 @@ export default function CheckoutPage() {
                 <div
                   key={key}
                   onClick={() => setSelectedProduct(key)}
-                  className={`p-4 rounded-[6px] transition-all cursor-pointer ${
+                  className={`p-4 rounded-[6px] transition-colors cursor-pointer ${
                     isSelected
                       ? 'bg-[#FFFFFF] border-2 border-[#171A1F]'
                       : 'bg-[#FFFFFF] border border-[#DFE2DF] hover:border-[#171A1F]/40'
@@ -152,7 +152,7 @@ export default function CheckoutPage() {
               <button
                 disabled={isLoading}
                 onClick={handlePayPalCheckout}
-                className="w-full h-11 rounded-[6px] bg-[#FFC439] hover:bg-[#F4B92E] text-[#003087] font-semibold text-[14px] flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.98]"
+                className="w-full h-11 rounded-[6px] bg-[#FFC439] hover:bg-[#F4B92E] text-[#003087] font-semibold text-[14px] flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 {isLoading ? (
                   <span>Connecting to PayPal...</span>

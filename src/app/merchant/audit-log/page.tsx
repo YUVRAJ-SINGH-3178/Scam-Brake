@@ -48,20 +48,17 @@ export default function MerchantAuditLogPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[#DFE2DF]">
           <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#697078]">
-              Governance
-            </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F] mt-0.5">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
               Cryptographic Audit Log
             </h1>
-            <p className="text-[13px] text-[#697078] mt-1">
+            <p className="text-[13px] text-[#525860] mt-1">
               Append-only tamper-evident ledger tracking every authorization hold, verification step, and void decision.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-[#1A7A64] bg-[#EAF4F1] px-2.5 py-1 rounded-[4px] border border-[#1A7A64]/20 flex items-center gap-1.5 font-medium">
-              <ShieldCheck size={13} />
+            <span className="text-[12px] text-[#1A7A64] bg-[#EAF4F1] px-2.5 py-1 rounded-[4px] border border-[#1A7A64]/20 flex items-center gap-1.5 font-medium">
+              <ShieldCheck size={14} />
               <span>Merkle Seal: Intact</span>
             </span>
             <button
@@ -74,7 +71,7 @@ export default function MerchantAuditLogPage() {
                 a.download = `scambrake_audit_chain_${new Date().toISOString().slice(0, 10)}.json`;
                 a.click();
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[12px] font-medium text-[#697078] hover:text-[#171A1F] rounded-[6px] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] hover:bg-[#F6F6F3] text-[13px] font-medium text-[#525860] hover:text-[#171A1F] rounded-[6px] transition-colors cursor-pointer"
             >
               <Download size={13} />
               <span>Export Signed JSON</span>
@@ -83,37 +80,37 @@ export default function MerchantAuditLogPage() {
         </div>
 
         {/* Informational Banner */}
-        <div className="bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] p-4 text-[12px] text-[#697078] flex items-center justify-between">
+        <div className="bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] p-4 text-[13px] text-[#525860] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck size={15} className="text-[#171A1F]" />
+            <ShieldCheck size={15} className="text-[#171A1F] shrink-0" />
             <span>
               All transactions generate a deterministic SHA-256 state seal incorporating the PayPal order authorization ID, customer consent timestamps, and external directory responses.
             </span>
           </div>
-          <span className="font-mono text-[11px] text-[#171A1F] shrink-0 ml-4">
-            Total Entries: {logs.length}
+          <span className="text-[12px] text-[#171A1F] shrink-0 ml-4">
+            Total Entries: <code>{logs.length}</code>
           </span>
         </div>
 
         {/* Filter Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-80">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#697078]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#525860]" />
             <input
               type="text"
               placeholder="Search by hash, payment ID, event..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full text-[12px] pl-8 pr-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] focus:outline-none focus:border-[#171A1F]"
+              className="w-full text-[13px] pl-8 pr-3 py-1.5 bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] focus:outline-none focus:border-[#171A1F]"
             />
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-[12px] text-[#697078]">Actor:</span>
+            <span className="text-[13px] text-[#525860]">Actor:</span>
             <select
               value={filterActor}
               onChange={(e) => setFilterActor(e.target.value)}
-              className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-[#171A1F]"
+              className="text-[13px] bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-[#171A1F]"
             >
               <option value="ALL">All Actors</option>
               <option value="CUSTOMER">Customer Action</option>
@@ -127,8 +124,8 @@ export default function MerchantAuditLogPage() {
         {/* Audit Log Table */}
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-[12px]">
-              <thead className="bg-[#F6F6F3] border-b border-[#DFE2DF] text-[#697078] font-medium font-mono text-[11px]">
+            <table className="w-full text-left text-[13px]">
+              <thead className="bg-[#F6F6F3] border-b border-[#DFE2DF] text-[#525860] font-medium text-[12px]">
                 <tr>
                   <th className="py-2.5 px-4 font-normal">Timestamp</th>
                   <th className="py-2.5 px-4 font-normal">Event Type</th>
@@ -142,19 +139,19 @@ export default function MerchantAuditLogPage() {
               <tbody className="divide-y divide-[#DFE2DF]">
                 {filteredLogs.map((entry) => (
                   <tr key={entry.id} className="hover:bg-[#F6F6F3]/50 transition-colors">
-                    <td className="py-3 px-4 font-mono text-[11px] text-[#697078] whitespace-nowrap">
-                      {new Date(entry.timestamp).toLocaleString()}
+                    <td className="py-3 px-4 text-[#525860] whitespace-nowrap text-[12px]">
+                      <code className="font-mono">{new Date(entry.timestamp).toLocaleString()}</code>
                     </td>
                     <td className="py-3 px-4 whitespace-nowrap">
-                      <span className="font-mono text-[11px] font-medium text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[3px]">
+                      <code className="font-mono text-[12px] font-medium text-[#171A1F] bg-[#F6F6F3] border border-[#DFE2DF] px-2 py-0.5 rounded-[3px]">
                         {entry.eventType}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-[#171A1F] whitespace-nowrap">
-                      {entry.paymentId}
+                      </code>
                     </td>
                     <td className="py-3 px-4 whitespace-nowrap">
-                      <span className="text-[11px] text-[#697078] font-medium">
+                      <code className="font-mono text-[12px] text-[#171A1F]">{entry.paymentId}</code>
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <span className="text-[12px] text-[#525860] font-medium">
                         {entry.actor}
                       </span>
                     </td>
@@ -162,26 +159,26 @@ export default function MerchantAuditLogPage() {
                       {entry.summary}
                     </td>
                     <td className="py-3 px-4 whitespace-nowrap">
-                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#697078]">
-                        <span>
+                      <div className="flex items-center gap-1.5 text-[12px] text-[#525860]">
+                        <code className="font-mono">
                           {(entry.sha256Hash || entry.immutableHash).slice(0, 10)}...
                           {(entry.sha256Hash || entry.immutableHash).slice(-6)}
-                        </span>
+                        </code>
                         <button
                           onClick={() => copyToClipboard(entry.sha256Hash || entry.immutableHash)}
                           className="hover:text-[#171A1F] p-0.5 rounded cursor-pointer"
                           title="Copy full hash"
                         >
-                          <Copy size={11} />
+                          <Copy size={12} />
                         </button>
                       </div>
                     </td>
                     <td className="py-3 px-4 text-right whitespace-nowrap">
                       <button
                         onClick={() => setSelectedLog(entry)}
-                        className="text-[11px] text-[#171A1F] hover:text-[#1A7A64] hover:underline font-medium inline-flex items-center gap-1 cursor-pointer"
+                        className="text-[12px] text-[#171A1F] hover:text-[#1A7A64] hover:underline font-medium inline-flex items-center gap-1 cursor-pointer"
                       >
-                        <Code2 size={12} />
+                        <Code2 size={13} />
                         <span>Inspect</span>
                       </button>
                     </td>
@@ -201,26 +198,26 @@ export default function MerchantAuditLogPage() {
                   <h3 className="text-[14px] font-semibold text-[#171A1F]">
                     Audit Record: {selectedLog.eventType}
                   </h3>
-                  <div className="font-mono text-[11px] text-[#697078] mt-0.5">
-                    Hash: {selectedLog.sha256Hash || selectedLog.immutableHash}
+                  <div className="text-[12px] text-[#525860] mt-0.5">
+                    Hash: <code className="font-mono">{selectedLog.sha256Hash || selectedLog.immutableHash}</code>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedLog(null)}
-                  className="text-[12px] text-[#697078] hover:text-[#171A1F] px-2 py-1 rounded-[4px] border border-[#DFE2DF] hover:bg-[#F6F6F3] cursor-pointer"
+                  className="text-[12px] text-[#525860] hover:text-[#171A1F] px-2 py-1 rounded-[4px] border border-[#DFE2DF] hover:bg-[#F6F6F3] cursor-pointer"
                 >
                   Close
                 </button>
               </div>
 
-              <div className="space-y-2 text-[12px]">
-                <div className="text-[#697078]">Summary:</div>
+              <div className="space-y-2 text-[13px]">
+                <div className="text-[#525860]">Summary:</div>
                 <div className="p-2.5 bg-[#F6F6F3] border border-[#DFE2DF] rounded-[4px] text-[#171A1F]">
                   {selectedLog.summary}
                 </div>
 
-                <div className="text-[#697078] pt-2">Structured Event Payload:</div>
-                <pre className="p-3 bg-[#F6F6F3] text-[#171A1F] border border-[#DFE2DF] rounded-[4px] font-mono text-[11px] overflow-x-auto max-h-64">
+                <div className="text-[#525860] pt-2">Structured Event Payload:</div>
+                <pre className="p-3 bg-[#F6F6F3] text-[#171A1F] border border-[#DFE2DF] rounded-[4px] font-mono text-[12px] overflow-x-auto max-h-64">
                   {JSON.stringify(selectedLog.details, null, 2)}
                 </pre>
               </div>
@@ -228,7 +225,7 @@ export default function MerchantAuditLogPage() {
               <div className="pt-2 flex justify-end">
                 <button
                   onClick={() => setSelectedLog(null)}
-                  className="px-4 py-1.5 bg-[#171A1F] text-white text-[12px] font-medium rounded-[6px] hover:bg-[#2B303A] cursor-pointer"
+                  className="px-4 py-1.5 bg-[#171A1F] text-white text-[13px] font-medium rounded-[6px] hover:bg-[#2B303A] cursor-pointer"
                 >
                   Done
                 </button>

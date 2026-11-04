@@ -18,7 +18,7 @@ export default function DemoPage() {
           <div className="space-y-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-[12px] text-[#697078] hover:text-[#171A1F] transition-colors"
+              className="inline-flex items-center gap-1.5 text-[13px] text-[#525860] hover:text-[#171A1F] transition-colors"
             >
               <ArrowLeft size={13} />
               <span>Back to Overview</span>
@@ -26,7 +26,7 @@ export default function DemoPage() {
             <h1 className="text-3xl sm:text-4xl font-semibold text-[#171A1F] tracking-tight">
               Interactive Protection Simulator
             </h1>
-            <p className="text-[14px] text-[#697078]">
+            <p className="text-[14px] text-[#525860]">
               Simulate customer checkout, PayPal authorization hold, verification check-in, and deterministic void/capture resolution.
             </p>
           </div>
