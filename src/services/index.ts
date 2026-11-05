@@ -20,7 +20,6 @@ import {
   SPONSORS,
 } from '@/data/seedData';
 
-// In-memory reactive state for demonstration
 class ScamBrakeMockStore {
   private payments: Payment[] = [...SEED_PAYMENTS];
   private interventions: Record<string, InterventionSession> = JSON.parse(
@@ -28,7 +27,6 @@ class ScamBrakeMockStore {
   );
   private auditLogs: AuditEvent[] = [...SEED_AUDIT_LOGS];
 
-  // Payments
   getPayments(filter?: {
     search?: string;
     riskLevel?: RiskLevel;
@@ -442,5 +440,4 @@ class ScamBrakeMockStore {
   }
 }
 
-// Global Singleton Store for the app
 export const mockStore = new ScamBrakeMockStore();

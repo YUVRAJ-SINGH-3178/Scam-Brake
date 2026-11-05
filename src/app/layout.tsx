@@ -4,6 +4,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Scam Brake — Pre-Capture Payment Verification',
   description: 'AI-assisted verification hold between PayPal authorization and settlement capture.',
+  icons: {
+    icon: '/images/scambrake-logo.png',
+    shortcut: '/images/scambrake-logo.png',
+    apple: '/images/scambrake-logo.png',
+  },
 };
 
 export default function RootLayout({
