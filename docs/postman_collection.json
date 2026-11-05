@@ -1,0 +1,251 @@
+{
+  "info": {
+    "name": "Scam Brake Pre-Capture Protection API Suite",
+    "_postman_id": "scambrake-e2e-collection-2026",
+    "description": "Comprehensive Postman test collection for Scam Brake PayPal pre-capture hold, AI intervention, risk engine, and void/capture lifecycle.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication & Session",
+      "item": [
+        {
+          "name": "Get Current Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/session",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "session"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Has authenticated session', function () { var json = pm.response.json(); pm.expect(json).to.have.property('user'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Checkout & Authorization Lifecycle",
+      "item": [
+        {
+          "name": "Create Protected Checkout Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantId\": \"merch_apex_9812\",\n  \"amount\": 1500.00,\n  \"productName\": \"Apple Gift Card ($500 x 3)\",\n  \"productCategory\": \"Digital Gift Cards\",\n  \"isGiftCard\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/checkout/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "checkout", "create"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201 or 200', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Returned valid payment reference', function () { pm.expect(json).to.have.property('paymentReference'); pm.environment.set('paymentId', json.id); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authorize Payment Hold (intent=AUTHORIZE)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentId\": \"{{paymentId}}\",\n  \"clientTelemetry\": {\n    \"remoteDesktopDetected\": true,\n    \"activePhoneCall\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/checkout/authorize",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "checkout", "authorize"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Payment is held for review', function () { pm.expect(json.authorizationStatus).to.be.oneOf(['HOLD_ACTIVE', 'PENDING_REVIEW']); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Customer Intervention & AI Check-in",
+      "item": [
+        {
+          "name": "Send Conversational Message (IRS Coercion)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"The IRS agent told me I have a warrant and must buy Apple cards right now to clear my bond.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/intervention/{{paymentId}}/message",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "intervention", "{{paymentId}}", "message"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('AI detects impersonation', function () { pm.expect(json.coercionIndicatorsDetected).to.include('AUTHORITY_IMPERSONATION'); });",
+                  "pm.test('AI recommends verification', function () { pm.expect(json.reply).to.include('IRS'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Query Kernel Independent Directory",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/intervention/verify-directory?query=IRS",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "intervention", "verify-directory"],
+              "query": [{ "key": "query", "value": "IRS" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Authentic switchboard returned', function () { pm.expect(json.officialPhone).to.eql('1-800-829-1040'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Pre-Capture Void & Capture Actions",
+      "item": [
+        {
+          "name": "Execute Pre-Capture Void ($0 Fee)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idempotencyKey\": \"idem_void_test_8819\",\n  \"reason\": \"Customer recognized IRS impersonation fraud during check-in.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/{{paymentId}}/void",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "{{paymentId}}", "void"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Authorization is VOIDED', function () { pm.expect(json.authorizationStatus).to.eql('VOIDED'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Merchant Intelligence & Webhooks",
+      "item": [
+        {
+          "name": "Get Merchant Analytics Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/merchant/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "merchant", "metrics"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Mathematical ledger totals valid', function () { pm.expect(json.totalProtectedVolume).to.be.above(0); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Simulate PayPal Webhook Delivery",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "paypal-transmission-id", "value": "wh_trans_test_123" },
+              { "key": "paypal-transmission-sig", "value": "test_sig_mock" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"WH-2026-TEST-EVENT\",\n  \"event_type\": \"PAYMENT.AUTHORIZATION.VOIDED\",\n  \"resource\": {\n    \"id\": \"2C872190JA981244A\",\n    \"status\": \"VOIDED\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/webhooks/paypal",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "webhooks", "paypal"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.test('Webhook handled idempotently', function () { pm.expect(json.received).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

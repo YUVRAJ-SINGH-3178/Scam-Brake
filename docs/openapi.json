@@ -1,0 +1,194 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Scam Brake API",
+    "version": "1.0.0",
+    "description": "AI-Powered Pre-Capture Payment Protection Protocol between PayPal Authorization and Settlement Capture.",
+    "contact": {
+      "name": "Scam Brake Engineering",
+      "url": "https://scambrake.internal",
+      "email": "api@scambrake.internal"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local Development / Sandbox Server"
+    },
+    {
+      "url": "https://scambrake.onrender.com/api",
+      "description": "Render Production Cloud Server"
+    }
+  ],
+  "paths": {
+    "/checkout/create": {
+      "post": {
+        "summary": "Create Protected Checkout Session",
+        "description": "Initializes a checkout session and pre-evaluates transaction risk context.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["merchantId", "amount", "productName", "productCategory"],
+                "properties": {
+                  "merchantId": { "type": "string" },
+                  "amount": { "type": "number", "example": 1500.00 },
+                  "currency": { "type": "string", "default": "USD" },
+                  "productName": { "type": "string", "example": "Apple Store Digital Gift Card ($500 x 3)" },
+                  "productCategory": { "type": "string", "example": "Digital Gift Cards" },
+                  "isGiftCard": { "type": "boolean", "default": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Checkout session initialized"
+          }
+        }
+      }
+    },
+    "/checkout/authorize": {
+      "post": {
+        "summary": "Create and Authorize PayPal Order (intent=AUTHORIZE)",
+        "description": "Places an uncaptured pre-capture authorization hold via PayPal Orders v2 API.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["checkoutSessionId", "amount"],
+                "properties": {
+                  "checkoutSessionId": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "clientTelemetry": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorization hold active"
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "summary": "List Merchant Payments",
+        "description": "Retrieves financial records with risk filtering, search, and status grouping.",
+        "parameters": [
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          { "name": "riskLevel", "in": "query", "schema": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] } },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["PENDING_REVIEW", "HOLD_ACTIVE", "CAPTURED", "VOIDED", "EXPIRED"] } }
+        ],
+        "responses": {
+          "200": { "description": "Filtered payment records" }
+        }
+      }
+    },
+    "/payments/{id}": {
+      "get": {
+        "summary": "Get Payment Detail",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Payment detail and telemetry" },
+          "404": { "description": "Payment not found" }
+        }
+      }
+    },
+    "/payments/{id}/capture": {
+      "post": {
+        "summary": "Capture Authorized Payment",
+        "description": "Executes final capture of authorized funds after safety verification.",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idempotencyKey": { "type": "string" },
+                  "notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Payment successfully captured" }
+        }
+      }
+    },
+    "/payments/{id}/void": {
+      "post": {
+        "summary": "Void Authorized Payment ($0 fee, 0 chargeback)",
+        "description": "Executes pre-capture void on PayPal authorization, terminating hold instantly.",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idempotencyKey": { "type": "string" },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authorization voided" }
+        }
+      }
+    },
+    "/intervention/{paymentId}/message": {
+      "post": {
+        "summary": "Process Customer Intervention Chat Message",
+        "parameters": [
+          { "name": "paymentId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["message"],
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Empathetic AI reply with analysis" }
+        }
+      }
+    },
+    "/webhooks/paypal": {
+      "post": {
+        "summary": "PayPal Webhook Receiver",
+        "description": "Receives and cryptographically verifies PAYMENT.AUTHORIZATION.* and PAYMENT.CAPTURE.* events.",
+        "responses": {
+          "200": { "description": "Webhook received and processed" },
+          "400": { "description": "Invalid signature or payload" }
+        }
+      }
+    }
+  }
+}
+

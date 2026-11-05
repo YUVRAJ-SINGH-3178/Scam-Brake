@@ -1,0 +1,541 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -------------------------------------------------------------
+// 1. Identity & Merchant Models
+// -------------------------------------------------------------
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  name         String
+  passwordHash String
+  role         String        @default("OPERATOR") // ADMIN | RISK_ANALYST | OPERATOR | VIEWER
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  merchantUsers MerchantUser[]
+}
+
+model Merchant {
+  id                 String               @id @default(uuid())
+  name               String
+  slug               String               @unique
+  category           String
+  apiKey             String               @unique
+  webhookSecret      String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  merchantUsers      MerchantUser[]
+  riskPolicy         MerchantRiskPolicy?
+  checkoutSessions   CheckoutSession[]
+  payments           Payment[]
+  automationEndpoints AutomationEndpoint[]
+  investigators      Investigator[]
+  investigationCases InvestigationCase[]
+}
+
+model MerchantUser {
+  id         String   @id @default(uuid())
+  merchantId String
+  userId     String
+  role       String   @default("OPERATOR")
+  createdAt  DateTime @default(now())
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, userId])
+}
+
+// -------------------------------------------------------------
+// 2. Customer & Session Models
+// -------------------------------------------------------------
+
+model Customer {
+  id                String            @id @default(uuid())
+  name              String
+  email             String
+  phone             String?
+  accountAgeMonths  Int               @default(12)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  customerSessions  CustomerSession[]
+  trustedContacts   TrustedContact[]
+  payments          Payment[]
+}
+
+model CustomerSession {
+  id               String            @id @default(uuid())
+  customerId       String?
+  sessionToken     String            @unique
+  ipAddress        String?
+  userAgent        String?
+  clientTelemetry  Json?
+  expiresAt        DateTime
+  createdAt        DateTime          @default(now())
+  customer         Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  checkoutSessions CheckoutSession[]
+}
+
+model CheckoutSession {
+  id                String          @id @default(uuid())
+  merchantId        String
+  customerSessionId String?
+  clientReference   String          @unique
+  amount            Decimal         @db.Decimal(10, 2)
+  currency          String          @default("USD")
+  productName       String
+  productCategory   String
+  isGiftCard        Boolean         @default(false)
+  status            String          @default("INITIALIZED") // INITIALIZED | COMPLETED | ABANDONED | EXPIRED
+  expiresAt         DateTime
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  merchant          Merchant        @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  customerSession   CustomerSession? @relation(fields: [customerSessionId], references: [id], onDelete: SetNull)
+  payments          Payment[]
+}
+
+// -------------------------------------------------------------
+// 3. Payment Core & PayPal Models
+// -------------------------------------------------------------
+
+model Payment {
+  id                       String               @id @default(uuid())
+  paymentReference         String               @unique // e.g. pay_sb_881901
+  merchantId               String
+  checkoutSessionId        String?
+  customerId               String?
+  amount                   Decimal              @db.Decimal(10, 2)
+  currency                 String               @default("USD")
+  productName              String
+  productCategory          String
+  // State Machine Local States:
+  // CREATED | BUYER_APPROVED | AUTHORIZING | AUTHORIZED | REVIEW_PENDING | AWAITING_CUSTOMER | CAPTURE_PENDING | CAPTURED | VOID_PENDING | VOIDED | AUTHORIZATION_DENIED | AUTHORIZATION_EXPIRED | CAPTURE_DENIED | PROCESSING_ERROR
+  state                    String               @default("CREATED")
+  authorizationStatus      String               @default("PENDING_REVIEW") // PENDING_REVIEW | HOLD_ACTIVE | CAPTURED | VOIDED | EXPIRED
+  interventionStatus       String               @default("NOT_REQUIRED")  // NOT_REQUIRED | ACTIVE_INTERVENTION | VERIFIED_SAFE | SCAM_CONFIRMED | ABANDONED
+  riskScore                Int                  @default(0) // 0 - 100
+  riskLevel                String               @default("LOW") // LOW | MEDIUM | HIGH | CRITICAL
+  authorizedAt             DateTime?
+  holdExpiresAt            DateTime?
+  resolvedAt               DateTime?
+  resolutionNotes          String?
+  concurrencyLock          String?              // For atomic payment operations
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+
+  merchant                 Merchant             @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  checkoutSession          CheckoutSession?     @relation(fields: [checkoutSessionId], references: [id], onDelete: SetNull)
+  customer                 Customer?            @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  paypalOrder              PayPalOrder?
+  paymentAuthorization     PaymentAuthorization?
+  paymentCapture           PaymentCapture?
+  paymentOperations        PaymentOperation[]
+  riskAssessments          RiskAssessment[]
+  interventionSession      InterventionSession?
+  auditLogs                AuditLog[]
+  investigationCase        InvestigationCase?
+
+  @@index([merchantId])
+  @@index([state])
+  @@index([authorizationStatus])
+  @@index([paymentReference])
+}
+
+model PayPalOrder {
+  id                String    @id @default(uuid())
+  paymentId         String    @unique
+  paypalOrderId     String    @unique // PayPal Order ID (e.g. 5O190127TN364715T)
+  intent            String    @default("AUTHORIZE")
+  status            String    // CREATED | SAVED | APPROVED | VOIDED | COMPLETED | PAYER_ACTION_REQUIRED
+  amount            Decimal   @db.Decimal(10, 2)
+  currency          String    @default("USD")
+  rawResponse       Json?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  payment           Payment   @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model PaymentAuthorization {
+  id                    String    @id @default(uuid())
+  paymentId             String    @unique
+  paypalAuthorizationId String    @unique // e.g. 2C872190JA981244A
+  status                String    // CREATED | CAPTURED | DENIED | EXPIRED | PARTIALLY_CAPTURED | VOIDED | PENDING
+  amount                Decimal   @db.Decimal(10, 2)
+  currency              String    @default("USD")
+  expirationTime        DateTime?
+  sellerProtection      Json?
+  rawResponse           Json?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  payment               Payment   @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model PaymentCapture {
+  id              String    @id @default(uuid())
+  paymentId       String    @unique
+  paypalCaptureId String    @unique // e.g. 9P834910KD382104B
+  status          String    // COMPLETED | DECLINED | PARTIALLY_REFUNDED | PENDING | REFUNDED | FAILED
+  amount          Decimal   @db.Decimal(10, 2)
+  currency        String    @default("USD")
+  finalCapture    Boolean   @default(true)
+  rawResponse     Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  payment         Payment   @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model PaymentOperation {
+  id             String    @id @default(uuid())
+  paymentId      String
+  operationType  String    // CREATE_ORDER | AUTHORIZE | CAPTURE | VOID | RECONCILE | TIMEOUT_VOID
+  idempotencyKey String    @unique
+  status         String    // PENDING | SUCCESS | FAILED
+  requestPayload Json?
+  responsePayload Json?
+  errorMessage   String?
+  executedBy     String    @default("SYSTEM") // SYSTEM | CUSTOMER | MERCHANT | WORKER
+  createdAt      DateTime  @default(now())
+  payment        Payment   @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([idempotencyKey])
+}
+
+// -------------------------------------------------------------
+// 4. Risk Intelligence & Policies
+// -------------------------------------------------------------
+
+model RiskAssessment {
+  id                 String       @id @default(uuid())
+  paymentId          String
+  riskScore          Int          // 0 - 100
+  riskLevel          String       // LOW | MEDIUM | HIGH | CRITICAL
+  policyOutcome      String       // NORMAL_PROCESSING | REQUIRE_INTERVENTION | REQUIRE_MORE_INFORMATION | CUSTOMER_CONFIRMATION_REQUIRED | HUMAN_REVIEW | RECOMMEND_CANCELLATION
+  aiHypothesis       String?
+  aiConfidence       Float?       // 0.0 - 1.0
+  telemetrySnapshot  Json?
+  signals            RiskSignal[]
+  createdAt          DateTime     @default(now())
+  payment            Payment      @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+}
+
+model RiskSignal {
+  id               String          @id @default(uuid())
+  riskAssessmentId String
+  category         String          // IMPERSONATION | SECRECY_COERCION | URGENCY_THREAT | UNUSUAL_GIFT_CARD | REMOTE_ACCESS_ACTIVE | ANOMALOUS_VELOCITY
+  severity         String          // LOW | MEDIUM | HIGH | CRITICAL
+  title            String
+  description      String
+  source           String          // CHANNEL3_ENRICHMENT | ELASTIC_PATTERN_MATCH | CHECKOUT_METADATA | INTERVENTION_CONVERSATION
+  confidence       Float           @default(0.8)
+  metadata         Json?
+  detectedAt       DateTime        @default(now())
+  riskAssessment   RiskAssessment  @relation(fields: [riskAssessmentId], references: [id], onDelete: Cascade)
+
+  @@index([riskAssessmentId])
+}
+
+model MerchantRiskPolicy {
+  id                           String    @id @default(uuid())
+  merchantId                   String    @unique
+  autoHoldThreshold            Int       @default(60) // Risk score to trigger intervention
+  autoCaptureThreshold         Int       @default(25) // Risk score under which immediate capture is allowed
+  interventionTimeoutMinutes   Int       @default(10) // 5 to 60 minutes
+  timeoutAction                String    @default("VOID") // VOID | MANUAL_REVIEW | ESCALATE
+  requireTrustedContactOver    Decimal?  @db.Decimal(10, 2) // e.g. $1000 USD
+  prohibitRemoteDesktopGiftCard Boolean  @default(true)
+  updatedAt                    DateTime  @updatedAt
+  merchant                     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+}
+
+// -------------------------------------------------------------
+// 5. Intervention Session & Conversation
+// -------------------------------------------------------------
+
+model InterventionSession {
+  id                   String                       @id @default(uuid())
+  paymentId            String                       @unique
+  status               String                       @default("INITIALIZING") // INITIALIZING | AWAITING_CUSTOMER | IN_CONVERSATION | VERIFICATION_PENDING | TRUSTED_CONTACT_NOTIFIED | RESOLVED_VOID | RESOLVED_CAPTURE
+  scamHypothesis       String?
+  coercionIndicators   Json?                        // String array
+  confidenceScore      Float                        @default(0.0)
+  customerDecision     String?                      // CANCEL_PAYMENT | PROCEED_PAYMENT | TIMED_OUT
+  startedAt            DateTime                     @default(now())
+  completedAt          DateTime?
+  messages             ConversationMessage[]
+  trustedContactConsent TrustedContactConsent?
+  independentVerification IndependentVerification?
+  payment              Payment                      @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model ConversationMessage {
+  id                    String              @id @default(uuid())
+  interventionSessionId String
+  sender                String              // AI_ASSISTANT | CUSTOMER | SYSTEM
+  content               String
+  quickReplies          Json?               // String array
+  flaggedKeywords       Json?               // String array
+  metadata              Json?
+  timestamp             DateTime            @default(now())
+  interventionSession   InterventionSession @relation(fields: [interventionSessionId], references: [id], onDelete: Cascade)
+
+  @@index([interventionSessionId])
+}
+
+model IndependentVerification {
+  id                    String              @id @default(uuid())
+  interventionSessionId String              @unique
+  provider              String              @default("KERNEL_VERIFY")
+  targetOrganization    String
+  officialPhone         String
+  officialDomain        String?
+  status                String              @default("PENDING") // PENDING | PASSED | FAILED | SKIPPED
+  verificationRef       String?
+  notes                 String?
+  retrievedAt           DateTime            @default(now())
+  interventionSession   InterventionSession @relation(fields: [interventionSessionId], references: [id], onDelete: Cascade)
+}
+
+// -------------------------------------------------------------
+// 6. Trusted Contact System
+// -------------------------------------------------------------
+
+model TrustedContact {
+  id           String                       @id @default(uuid())
+  customerId   String
+  name         String
+  relationship String
+  phone        String
+  email        String?
+  isVerified   Boolean                      @default(true)
+  createdAt    DateTime                     @default(now())
+  updatedAt    DateTime                     @updatedAt
+  customer     Customer                     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  consents     TrustedContactConsent[]
+  notifications TrustedContactNotification[]
+
+  @@index([customerId])
+}
+
+model TrustedContactConsent {
+  id                    String                       @id @default(uuid())
+  interventionSessionId String                       @unique
+  trustedContactId      String
+  consentGranted        Boolean                      @default(false)
+  grantedAt             DateTime?
+  revokedAt             DateTime?
+  ipAddress             String?
+  interventionSession   InterventionSession          @relation(fields: [interventionSessionId], references: [id], onDelete: Cascade)
+  trustedContact        TrustedContact               @relation(fields: [trustedContactId], references: [id], onDelete: Cascade)
+  notifications         TrustedContactNotification[]
+}
+
+model TrustedContactNotification {
+  id                      String                @id @default(uuid())
+  trustedContactConsentId String
+  trustedContactId        String
+  channel                 String                @default("SMS") // SMS | EMAIL | WEBHOOK
+  status                  String                @default("DISPATCHED") // DISPATCHED | DELIVERED | FAILED | RESPONDED
+  dispatchReference       String?
+  payloadSummary          String
+  sentAt                  DateTime              @default(now())
+  deliveredAt             DateTime?
+  respondedAt             DateTime?
+  responseOutcome         String?               // CONFIRMED_SCAM | APPROVED | NO_RESPONSE
+  trustedContactConsent   TrustedContactConsent @relation(fields: [trustedContactConsentId], references: [id], onDelete: Cascade)
+  trustedContact          TrustedContact        @relation(fields: [trustedContactId], references: [id], onDelete: Cascade)
+
+  @@index([trustedContactId])
+}
+
+// -------------------------------------------------------------
+// 7. Webhook & Audit Log Models
+// -------------------------------------------------------------
+
+model WebhookEvent {
+  id            String    @id @default(uuid())
+  provider      String    @default("PAYPAL") // PAYPAL | ZAPIER | CHANNEL3 | KERNEL
+  eventId       String    @unique            // Provider event ID (e.g. WH-...)
+  eventType     String                       // PAYMENT.AUTHORIZATION.CREATED, etc.
+  resourceId    String?                      // Authorization ID or Capture ID
+  status        String    @default("PENDING") // PENDING | PROCESSED | FAILED | DUPLICATE
+  signatureValid Boolean  @default(false)
+  payload       Json
+  processedAt   DateTime?
+  errorMessage  String?
+  createdAt     DateTime  @default(now())
+
+  @@index([eventId])
+  @@index([resourceId])
+  @@index([status])
+}
+
+model AuditLog {
+  id            String    @id @default(uuid())
+  paymentId     String?
+  eventType     String    // AUTH_HOLD_INITIATED | RISK_ASSESSMENT_COMPLETED | INTERVENTION_TRIGGERED | ...
+  actor         String    // CUSTOMER | PAYPAL_SYSTEM | SCAM_BRAKE_AI | MERCHANT_POLICY | SYSTEM_WORKER
+  summary       String
+  details       Json?
+  immutableHash String    // SHA-256 seal chaining previous hash
+  prevHash      String?
+  createdAt     DateTime  @default(now())
+  payment       Payment?  @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  @@index([paymentId])
+  @@index([immutableHash])
+}
+
+// -------------------------------------------------------------
+// 8. Sponsor Knowledge, Simulation & Operations Scheduling
+// -------------------------------------------------------------
+
+model ScamKnowledgeReference {
+  id          String   @id @default(uuid())
+  source      String   @default("ELASTIC_INDEX") // ELASTIC_INDEX | FTC_GUIDANCE | IC3_BULLETIN
+  clusterName String
+  title       String
+  description String
+  keywords    Json     // Array of trigger keywords
+  sourceUrl   String
+  updatedAt   DateTime @default(now())
+}
+
+model SimulationScenario {
+  id                  String          @id @default(uuid())
+  scenarioKey         String          @unique // TAX_OFFICER_SCAM | BANK_IMPERSONATION | LEGITIMATE_PURCHASE ...
+  title               String
+  riskLevel           String
+  coercionVector      String
+  shortDescription    String
+  merchantName        String
+  productName         String
+  amount              Decimal         @db.Decimal(10, 2)
+  expectedOutcome     String          // VOID | CAPTURE
+  sampleConversation  Json
+  investigationFindings Json
+  runs                SimulationRun[]
+}
+
+model SimulationRun {
+  id                   String             @id @default(uuid())
+  simulationScenarioId String
+  paymentId            String?
+  status               String             // RUNNING | COMPLETED | FAILED
+  actualOutcome        String?            // VOID | CAPTURE
+  logs                 Json?
+  executedAt           DateTime           @default(now())
+  scenario             SimulationScenario @relation(fields: [simulationScenarioId], references: [id], onDelete: Cascade)
+}
+
+model SponsorIntegration {
+  id              String   @id @default(uuid())
+  sponsorKey      String   @unique // paypal, ag_grid, apimatic, astropods, bryntum, channel3, elastic, kernel, postman, render, zapier
+  name            String
+  category        String
+  status          String   @default("MOCK_ACTIVE") // REAL_INTEGRATION | MOCK_MODE | CONFIGURED_UNVERIFIED | UNAVAILABLE | OPTIONAL_NOT_USED
+  purpose         String
+  interfaceMethod String
+  docsUrl         String
+  latencyMs       Int      @default(30)
+  lastHealthCheck DateTime @default(now())
+  healthStatus    String   @default("HEALTHY")
+}
+
+model BackgroundJob {
+  id           String    @id @default(uuid())
+  jobType      String    // TIMEOUT_CHECK | RECONCILIATION | WEBHOOK_RETRY | NOTIFICATION_DELIVERY | ZAPIER_DISPATCH
+  payload      Json
+  status       String    @default("QUEUED") // QUEUED | PROCESSING | COMPLETED | FAILED
+  attempts     Int       @default(0)
+  maxAttempts  Int       @default(3)
+  nextRunAt    DateTime  @default(now())
+  lockedAt     DateTime?
+  lockedBy     String?
+  errorMessage String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status, nextRunAt])
+}
+
+model AutomationEndpoint {
+  id          String               @id @default(uuid())
+  merchantId  String
+  name        String
+  url         String
+  secretKey   String
+  events      Json                 // Array of subscribed event types
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  merchant    Merchant             @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  deliveries  AutomationDelivery[]
+}
+
+model AutomationDelivery {
+  id                   String             @id @default(uuid())
+  automationEndpointId String
+  eventType            String
+  payload              Json
+  statusCode           Int?
+  status               String             @default("PENDING") // PENDING | SUCCESS | FAILED
+  attempts             Int                @default(1)
+  error                String?
+  sentAt               DateTime           @default(now())
+  endpoint             AutomationEndpoint @relation(fields: [automationEndpointId], references: [id], onDelete: Cascade)
+
+  @@index([automationEndpointId])
+}
+
+// Bryntum scheduler & investigation assignment models
+model Investigator {
+  id          String                 @id @default(uuid())
+  merchantId  String
+  name        String
+  email       String
+  role        String                 @default("FRAUD_ANALYST")
+  isAvailable Boolean                @default(true)
+  assignments ScheduledAssignment[]
+  merchant    Merchant               @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+}
+
+model InvestigationCase {
+  id               String                 @id @default(uuid())
+  merchantId       String
+  paymentId        String                 @unique
+  caseReference    String                 @unique // e.g. CASE-881901
+  status           String                 @default("OPEN") // OPEN | IN_PROGRESS | ESCALATED | RESOLVED
+  priority         String                 @default("HIGH") // LOW | MEDIUM | HIGH | URGENT
+  hypothesis       String
+  assignedToId     String?
+  deadlineAt       DateTime
+  resolvedAt       DateTime?
+  assignments      ScheduledAssignment[]
+  payment          Payment                @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  merchant         Merchant               @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+}
+
+model ScheduledAssignment {
+  id                  String            @id @default(uuid())
+  investigationCaseId String
+  investigatorId      String
+  startTime           DateTime
+  endTime             DateTime
+  status              String            @default("SCHEDULED") // SCHEDULED | ACTIVE | COMPLETED
+  notes               String?
+  investigationCase   InvestigationCase @relation(fields: [investigationCaseId], references: [id], onDelete: Cascade)
+  investigator        Investigator      @relation(fields: [investigatorId], references: [id], onDelete: Cascade)
+
+  @@index([investigatorId])
+  @@index([investigationCaseId])
+}
+

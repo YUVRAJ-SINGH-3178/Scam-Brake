@@ -1,11 +1,11 @@
-import {
+import type {
   Payment,
   InterventionSession,
   AuditEvent,
   SimulationScenario,
   SponsorIntegration,
   DashboardMetrics,
-} from '@/types';
+} from '../types/index.ts';
 
 export const SEED_PAYMENTS: Payment[] = [
   {

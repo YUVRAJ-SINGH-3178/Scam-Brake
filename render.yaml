@@ -1,0 +1,74 @@
+services:
+  # Next.js Full-Stack Web Application
+  - type: web
+    name: scambrake-app
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scambrake-db
+          property: connectionString
+      - key: PAYPAL_ENVIRONMENT
+        value: sandbox
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ASTROPODS_API_KEY
+        sync: false
+      - key: ELASTICSEARCH_URL
+        sync: false
+      - key: ELASTICSEARCH_API_KEY
+        sync: false
+      - key: CHANNEL3_API_KEY
+        sync: false
+      - key: KERNEL_API_KEY
+        sync: false
+      - key: ZAPIER_WEBHOOK_SECRET
+        generateValue: true
+
+  # Background Worker (Durable Payment Timeout & Reconciliation Engine)
+  - type: worker
+    name: scambrake-background-worker
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npx prisma generate
+    startCommand: node dist/server/worker/scheduler.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scambrake-db
+          property: connectionString
+      - key: PAYPAL_ENVIRONMENT
+        value: sandbox
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+
+databases:
+  # Managed PostgreSQL Database
+  - name: scambrake-db
+    plan: starter
+    region: oregon
+    databaseName: scambrake
+    user: scambrake_user
+

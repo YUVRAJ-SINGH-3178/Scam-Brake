@@ -85,6 +85,15 @@ class ScamBrakeMockStore {
       details: { amount: payment.amount, notes },
     });
 
+    // Sync with real backend state machine if in browser
+    if (typeof window !== 'undefined') {
+      fetch(`/api/payments/${encodeURIComponent(payment.id)}/capture`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes }),
+      }).catch((e) => console.warn('[API SYNC] Background capture call failed:', e));
+    }
+
     return { ...payment };
   }
 
@@ -105,6 +114,15 @@ class ScamBrakeMockStore {
       summary: `Authorization voided for ${payment.paymentReference} ($${payment.amount.toFixed(2)} USD). Funds released.`,
       details: { amount: payment.amount, reason },
     });
+
+    // Sync with real backend state machine if in browser
+    if (typeof window !== 'undefined') {
+      fetch(`/api/payments/${encodeURIComponent(payment.id)}/void`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason }),
+      }).catch((e) => console.warn('[API SYNC] Background void call failed:', e));
+    }
 
     return { ...payment };
   }
@@ -269,6 +287,15 @@ class ScamBrakeMockStore {
 
     session.messages.push(aiMsg);
 
+    // Sync with backend AI & message store
+    if (typeof window !== 'undefined') {
+      fetch(`/api/intervention/${encodeURIComponent(session.paymentId)}/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: content }),
+      }).catch((e) => console.warn('[API SYNC] Background message call failed:', e));
+    }
+
     return { session: { ...session }, aiResponse: aiMsg };
   }
 
@@ -308,6 +335,19 @@ class ScamBrakeMockStore {
       summary: `Customer granted explicit consent to notify trusted contact: ${session.trustedContact.name}. Notification dispatched via SMS.`,
       details: { contact: session.trustedContact.name, phone: session.trustedContact.maskedPhone },
     });
+
+    // Sync with backend trusted contact manager
+    if (typeof window !== 'undefined') {
+      fetch(`/api/intervention/${encodeURIComponent(session.paymentId)}/consent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ consentGranted: true }),
+      }).catch((e) => console.warn('[API SYNC] Consent sync failed:', e));
+
+      fetch(`/api/intervention/${encodeURIComponent(session.paymentId)}/notify-contact`, {
+        method: 'POST',
+      }).catch((e) => console.warn('[API SYNC] Notify sync failed:', e));
+    }
 
     return { ...session.trustedContact };
   }

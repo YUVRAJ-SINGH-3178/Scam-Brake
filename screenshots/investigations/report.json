@@ -1,0 +1,1448 @@
+{
+ "url": "http://localhost:3000/merchant/investigations/pay_sb_881901",
+ "at": "2026-11-04T19:39:04.987Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.83,
+    0.79
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1352,
+     "screens": 1.5,
+     "words": 351,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 24,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 182,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "lines": 1,
+     "size": 24,
+     "font": "Switzer"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.09,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      24
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 13,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.1
+     },
+     "measureChars": 105,
+     "max": {
+      "size": 24,
+      "vw": 1.7,
+      "font": "Switzer",
+      "text": "Martha Stephenson — Coercion Risk Assess"
+     },
+     "monoShare": 0.09,
+     "monoProseShare": 0.01,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [
+      "AD",
+      "AUTH_THEN_CAPTURE"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.05,
+     "centerShare": 0.11,
+     "smallText": 19
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 48,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.53
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.31
+      },
+      {
+       "color": "#697078",
+       "share": 0.07
+      },
+      {
+       "color": "#c53030",
+       "share": 0.03
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#525860"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 4,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search authorizations, cases, or press ⌘",
+      "Investigation Cases",
+      "Confirm Scam & Void Auth",
+      "Clear Hold & Capture"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header.h-12.bg-[#FFFFFF] 1440px",
+      "aside.w-[230px].bg-[#F6F6F3] 230px",
+      "div.flex.flex-col 1096px",
+      "div.border-b.border-[#DFE2DF] 1146px"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 372
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 2,
+     "fixed": false,
+     "height": 48,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1352,
+    "margins": {
+     "left": 22,
+     "right": 66
+    },
+    "sections": [
+     {
+      "sel": "div.bg-[#FFFFFF].border",
+      "tag": "div",
+      "top": 127,
+      "height": 442,
+      "words": 89,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Martha Stephenson",
+       "size": 24,
+       "tag": "h1"
+      },
+      "left": 287,
+      "right": 57,
+      "textLeft": 287,
+      "textRight": 71,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.grid.grid-cols-1",
+      "tag": "div",
+      "top": 649,
+      "height": 671,
+      "words": 182,
+      "media": 0,
+      "middle": 75,
+      "heading": {
+       "text": "Behavioral & Coercion Hypothesis",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 283,
+      "right": 152,
+      "textLeft": 283,
+      "textRight": 152,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Martha Stephenson — Coercion Risk Assessment",
+      "size": 24,
+      "top": 182,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 283,
+      "n": 2
+     },
+     {
+      "x": 306,
+      "n": 1
+     },
+     {
+      "x": 496,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.06,
+    "voidBox": {
+     "x": 180,
+     "y": 240,
+     "w": 1260,
+     "h": 60
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": {
+     "w": 230,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.16
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 32,
+     "right": 57
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 182,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 13,
+     "radii": [
+      [
+       6,
+       11
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.36,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      24
+     ]
+    },
+    "title": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "size": 24,
+     "top": 182
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 1024,
+   "height": 768,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.86,
+    0.71,
+    0.73
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "page": {
+     "height": 1560,
+     "screens": 2,
+     "words": 351,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 24,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 2,
+     "size": 24,
+     "vw": 2.3,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 182,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "lines": 2,
+     "size": 24,
+     "font": "Switzer"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.09,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      24
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 13,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.1
+     },
+     "measureChars": 62,
+     "max": {
+      "size": 24,
+      "vw": 2.3,
+      "font": "Switzer",
+      "text": "Martha Stephenson — Coercion Risk Assess"
+     },
+     "monoShare": 0.09,
+     "monoProseShare": 0.01,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [
+      "AD",
+      "AUTH_THEN_CAPTURE"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.05,
+     "centerShare": 0.11,
+     "smallText": 19
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 48,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.53
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.31
+      },
+      {
+       "color": "#697078",
+       "share": 0.07
+      },
+      {
+       "color": "#c53030",
+       "share": 0.03
+      },
+      {
+       "color": "#1a7a64",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#525860"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 4,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search authorizations, cases, or press ⌘",
+      "Investigation Cases",
+      "Confirm Scam & Void Auth",
+      "Clear Hold & Capture"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header.h-12.bg-[#FFFFFF] 1024px",
+      "aside.w-[230px].bg-[#F6F6F3] 230px",
+      "div.flex.flex-col 680px",
+      "div.border-b.border-[#DFE2DF] 730px"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 424
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 2,
+     "fixed": false,
+     "height": 48,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "pageH": 1560,
+    "margins": {
+     "left": 22,
+     "right": 51
+    },
+    "sections": [
+     {
+      "sel": "div.bg-[#FFFFFF].border",
+      "tag": "div",
+      "top": 127,
+      "height": 530,
+      "words": 89,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Martha Stephenson",
+       "size": 24,
+       "tag": "h1"
+      },
+      "left": 287,
+      "right": 57,
+      "textLeft": 287,
+      "textRight": 75,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.grid.grid-cols-1",
+      "tag": "div",
+      "top": 756,
+      "height": 772,
+      "words": 182,
+      "media": 0,
+      "middle": 75,
+      "heading": {
+       "text": "Behavioral & Coercion Hypothesis",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 283,
+      "right": 51,
+      "textLeft": 283,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Martha Stephenson — Coercion Risk Assessment",
+      "size": 24,
+      "top": 182,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 283,
+      "n": 3
+     },
+     {
+      "x": 306,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.07,
+    "voidBox": {
+     "x": 0,
+     "y": 614,
+     "w": 1024,
+     "h": 51
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1024,
+     "h": 768
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": {
+     "w": 230,
+     "tag": "aside",
+     "links": 13,
+     "share": 0.22
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 32,
+     "right": 48
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 2,
+     "size": 24,
+     "vw": 2.3,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 182,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 14,
+     "radii": [
+      [
+       6,
+       11
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       4,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.36,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      24
+     ]
+    },
+    "title": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "size": 24,
+     "top": 182
+    },
+    "colourShare": 0.002
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.95,
+    0.88,
+    0.99,
+    0.89
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2768,
+     "screens": 3.3,
+     "words": 294,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 24,
+     "sections": 0,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 2,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 215,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "lines": 2,
+     "size": 24,
+     "font": "Switzer"
+    },
+    "headings": [
+     {
+      "text": "Martha Stephenson — Coercion Risk Assessment",
+      "words": 6,
+      "chars": 44,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Switzer",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 215,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Switzer",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "CommitMono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      24
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Switzer",
+      "size": 13,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.1
+     },
+     "measureChars": 43,
+     "max": {
+      "size": 24,
+      "vw": 6.2,
+      "font": "Switzer",
+      "text": "Martha Stephenson — Coercion Risk Assess"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "CommitMono"
+     ],
+     "monoSamples": [
+      "AD"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.05,
+     "centerShare": 0.11,
+     "smallText": 9
+    },
+    "eyebrows": [
+     {
+      "text": "Investigation case file",
+      "above": "Martha Stephenson — Coercion Risk Assess",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 185
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f6f6f3",
+     "bodyBgHsl": {
+      "h": 60,
+      "s": 0.14,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f6f3",
+       "top": 0,
+       "hsl": {
+        "h": 60,
+        "s": 0.14,
+        "l": 0.96
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 48,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525860",
+       "share": 0.58
+      },
+      {
+       "color": "#171a1f",
+       "share": 0.33
+      },
+      {
+       "color": "#c53030",
+       "share": 0.04
+      },
+      {
+       "color": "#784d00",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#c53030"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": 6,
+     "height": 34,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Confirm Scam & Void Auth",
+      "Clear Hold & Capture"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "header.h-12.bg-[#FFFFFF] 390px",
+      "div.flex.flex-col 308px",
+      "div.border-b.border-[#DFE2DF] 358px"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 597
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": false,
+     "height": 48,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "switzer",
+     "commitmono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2768,
+    "margins": {
+     "left": 16,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div.bg-[#FFFFFF].border",
+      "tag": "div",
+      "top": 160,
+      "height": 1028,
+      "words": 89,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Martha Stephenson",
+       "size": 24,
+       "tag": "h1"
+      },
+      "left": 41,
+      "right": 41,
+      "textLeft": 41,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.md:col-span-2.space-y-6",
+      "tag": "div",
+      "top": 1327,
+      "height": 930,
+      "words": 152,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Behavioral & Coercion Hypothesis",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 37,
+      "right": 41,
+      "textLeft": 37,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.space-y-6",
+      "tag": "div",
+      "top": 2280,
+      "height": 472,
+      "words": 30,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Protected Customer",
+       "size": 13,
+       "tag": "h3"
+      },
+      "left": 37,
+      "right": 128,
+      "textLeft": 37,
+      "textRight": 128,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Martha Stephenson — Coercion Risk Assessment",
+      "size": 24,
+      "top": 215,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 37,
+      "n": 3
+     },
+     {
+      "x": 56,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f6f6f3",
+    "sidebar": null,
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 16,
+     "right": 23
+    },
+    "hero": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "words": 6,
+     "chars": 44,
+     "lines": 2,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Switzer",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.33,
+     "top": 215,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 5,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 12,
+     "radii": [
+      [
+       6,
+       11
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#171a1f on #f6f6f3 (16.11:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.36,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      24
+     ]
+    },
+    "title": {
+     "text": "Martha Stephenson — Coercion Risk Assessment",
+     "size": 24,
+     "top": 215
+    },
+    "colourShare": 0.002
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 1024,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\satis\\OneDrive\\Desktop\\ScamBrake\\screenshots\\investigations\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}
