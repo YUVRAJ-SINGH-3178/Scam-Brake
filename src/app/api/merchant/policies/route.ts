@@ -1,38 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { dbRepository } from '@/server/db/repository';
+import { getMerchantSession, hasMerchantPermission } from '@/server/auth/session';
 
-const PolicyUpdateSchema = z.object({
-  autoHoldThreshold: z.number().min(10).max(90).optional(),
-  autoCaptureThreshold: z.number().min(0).max(50).optional(),
-  interventionTimeoutMinutes: z.number().min(5).max(60).optional(),
-  timeoutAction: z.enum(['VOID', 'MANUAL_REVIEW', 'ESCALATE']).optional(),
-  requireTrustedContactOver: z.number().nullable().optional(),
-  prohibitRemoteDesktopGiftCard: z.boolean().optional(),
-});
-
-export async function GET() {
-  const policy = await dbRepository.getRiskPolicy();
-  return NextResponse.json(policy);
+export async function GET(req: NextRequest) {
+  const session = getMerchantSession(req);
+  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  return NextResponse.json({ error: 'Tenant-scoped policy storage is not available in this release.' }, { status: 501 });
 }
 
-export async function PUT(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const validated = PolicyUpdateSchema.parse(body);
-
-    const updated = await dbRepository.updateRiskPolicy(validated);
-
-    await dbRepository.recordAuditLog({
-      eventType: 'RISK_ASSESSMENT_COMPLETED',
-      actor: 'MERCHANT_POLICY',
-      summary: `Merchant risk policy parameters updated (Hold threshold: ${updated.autoHoldThreshold}, Timeout: ${updated.interventionTimeoutMinutes}m).`,
-      details: { updated },
-    });
-
-    return NextResponse.json({ success: true, policy: updated });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Invalid policy update' }, { status: 400 });
+export async function PUT(request: NextRequest) {
+  const session = getMerchantSession(request);
+  if (!session || !hasMerchantPermission(session, ['OWNER', 'ADMIN'])) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
+  return NextResponse.json({ error: 'Tenant-scoped policy persistence is not available in this release.' }, { status: 501 });
 }
 

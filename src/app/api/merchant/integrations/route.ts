@@ -1,8 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dbRepository } from '@/server/db/repository';
+import { getMerchantSession } from '@/server/auth/session';
+import { SPONSORS } from '@/data/seedData';
 
-export async function GET() {
-  const sponsors = await dbRepository.getSponsors();
+export async function GET(req: NextRequest) {
+  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const statuses: Record<string, 'UNAVAILABLE' | 'CONFIGURED_NOT_DEPLOYED' | 'IMPLEMENTED_UNVERIFIED' | 'MOCK_ONLY' | 'NOT_USED'> = {
+    spon_ag_grid: 'NOT_USED',
+    spon_apimatic: 'NOT_USED',
+    spon_astropods: 'IMPLEMENTED_UNVERIFIED',
+    spon_bryntum: 'MOCK_ONLY',
+    spon_channel3: 'IMPLEMENTED_UNVERIFIED',
+    spon_elastic: 'IMPLEMENTED_UNVERIFIED',
+    spon_kernel: 'IMPLEMENTED_UNVERIFIED',
+    spon_postman: 'IMPLEMENTED_UNVERIFIED',
+    spon_render: 'CONFIGURED_NOT_DEPLOYED',
+    spon_zapier: 'IMPLEMENTED_UNVERIFIED',
+  };
+  const sponsors = SPONSORS.map((sponsor) => ({ ...sponsor, status: statuses[sponsor.id] || 'UNAVAILABLE' }));
   return NextResponse.json({
     integrations: sponsors,
     total: sponsors.length,
@@ -10,14 +24,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    const { sponsorKey } = await req.json();
-    // Simulate test ping
-    const latency = Math.floor(15 + Math.random() * 25);
-    const updated = await dbRepository.updateSponsorStatus(sponsorKey, 'CONNECTED', latency);
-    return NextResponse.json({ success: true, integration: updated });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 400 });
-  }
+  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  return NextResponse.json({ error: 'Sponsor status cannot be marked connected by a simulated ping.' }, { status: 501 });
 }
 

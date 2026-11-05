@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const files = [
+  path.join(__dirname, 'unit', 'auth.test.mjs'),
   path.join(__dirname, 'unit', 'riskEngine.test.mjs'),
   path.join(__dirname, 'unit', 'paymentStateMachine.test.mjs'),
   path.join(__dirname, 'integration', 'sponsorAdapters.test.mjs'),
@@ -15,7 +16,7 @@ const files = [
 
 console.log('====================================================');
 console.log('  SCAM BRAKE AUTOMATED TEST SUITE');
-console.log('  Testing Risk Engine, State Machine, PayPal, Sponsors & E2E');
+console.log('  Testing Risk Engine, State Machine, Provider Adapters & Local Mock Scenarios');
 console.log('====================================================\n');
 
 run({ files })

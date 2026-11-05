@@ -1,5 +1,7 @@
 # SCAM BRAKE: PAYMENT LIFECYCLE SPECIFICATION
 
+> **Status (2026-11-05):** Design-only lifecycle. This repository does not complete buyer approval or a verified PayPal authorization/capture/void flow. Examples are not transaction evidence; fees, hold-release timing, and customer outcomes are not guaranteed. See [FINAL_AUDIT_BASELINE.md](FINAL_AUDIT_BASELINE.md).
+
 This document details the exact PayPal two-step authorization hold and settlement lifecycle.
 
 ---

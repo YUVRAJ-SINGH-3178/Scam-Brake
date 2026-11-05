@@ -54,9 +54,10 @@ export class BackgroundWorker {
                 reason: 'INTERVENTION_TIMEOUT_EXPIRED',
               },
             });
-          } catch (err: any) {
-            console.error(`[WORKER] Failed to execute timeout void on ${payment.id}:`, err);
-            errors.push(`${payment.id}: ${err.message}`);
+          } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Unknown worker error';
+            console.error(`[WORKER] Failed to execute timeout void on ${payment.id}.`);
+            errors.push(`${payment.id}: ${message}`);
           }
         }
       }
@@ -87,8 +88,3 @@ export class BackgroundWorker {
 }
 
 export const backgroundWorker = new BackgroundWorker();
-
-// Standalone execution entrypoint when run as a worker process
-if (require.main === module) {
-  backgroundWorker.start(30000);
-}

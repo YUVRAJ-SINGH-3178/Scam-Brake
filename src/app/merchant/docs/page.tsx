@@ -73,7 +73,7 @@ const ENDPOINTS: Endpoint[] = [
     path: '/v1/authorizations/{id}/void',
     summary: 'Void Uncaptured Authorization',
     description:
-      'Executes pre-capture void via PayPal Orders API (`/v2/payments/authorizations/{id}/void`), terminating the payment hold with $0 fee and zero chargeback record.',
+      'Prototype contract for a PayPal authorization void. The current checkout is disabled and no transaction outcome is claimed.',
     requestBody: `{
   "reason": "Social-engineering coercion confirmed by customer during intervention.",
   "actor": "CUSTOMER_DECLINE"
@@ -81,7 +81,7 @@ const ENDPOINTS: Endpoint[] = [
     responseBody: `{
   "status": "VOIDED",
   "voided_at": "2026-11-04T10:36:01Z",
-  "chargeback_fee": 0.00,
+  "chargeback_fee": null,
   "customer_fund_release": "INSTANT"
 }`,
   },
@@ -130,18 +130,18 @@ export default function MerchantDocsPage() {
           </p>
 
           <pre className="bg-[#171A1F] text-[#F6F6F3] p-4 rounded-[6px] font-mono text-[12px] overflow-x-auto leading-relaxed">
-            <span className="text-[#525860] block">// PayPal JS SDK Button Implementation</span>
+            <span className="text-[#525860] block">{'// PayPal JS SDK Button Implementation'}</span>
             <span className="text-[#93C5FD]">paypal.Buttons</span>(&#123;{'\n'}
             {'  '}<span className="text-[#6EE7B7]">createOrder</span>: (data, actions) =&gt; &#123;{'\n'}
             {'    '}return actions.order.create(&#123;{'\n'}
-            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#525860]">// Enables pre-capture hold</span>{'\n'}
+            {'      '}<span className="text-[#FBBF24]">intent</span>: <span className="text-[#F472B6]">&apos;AUTHORIZE&apos;</span>, <span className="text-[#525860]">{'// Enables pre-capture hold'}</span>{'\n'}
             {'      '}purchase_units: [&#123; amount: &#123; value: cart.total &#125; &#125;]{'\n'}
             {'    '}&#125;);{'\n'}
             {'  '}&#125;,{'\n'}
             {'  '}<span className="text-[#6EE7B7]">onApprove</span>: async (data, actions) =&gt; &#123;{'\n'}
-            {'    '}<span className="text-[#525860]">// 1. Customer authorized hold in PayPal popup</span>{'\n'}
+            {'    '}<span className="text-[#525860]">{'// 1. Customer authorized hold in PayPal popup'}</span>{'\n'}
             {'    '}const authorization = await actions.order.authorize();{'\n'}
-            {'    '}<span className="text-[#525860]">// 2. Post authorization to Scam Brake for risk evaluation</span>{'\n'}
+            {'    '}<span className="text-[#525860]">{'// 2. Post authorization to Scam Brake for risk evaluation'}</span>{'\n'}
             {'    '}const check = await fetch(&apos;/api/scambrake/evaluate&apos;, &#123; ... &#125;);{'\n'}
             {'  '}&#125;{'\n'}
             &#125;);

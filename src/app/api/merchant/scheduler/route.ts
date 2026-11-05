@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { bryntumSchedulerManager } from '@/server/bryntum/scheduler';
+import { getMerchantSession, hasMerchantPermission, hasSameOrigin } from '@/server/auth/session';
+import { errorMessage } from '@/server/errors';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const data = bryntumSchedulerManager.getSchedulerData();
   const status = bryntumSchedulerManager.getStatus();
   return NextResponse.json({
@@ -15,6 +18,11 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const session = getMerchantSession(req);
+  if (!hasSameOrigin(req)) return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 });
+  if (!session || !hasMerchantPermission(session, ['OWNER', 'ADMIN', 'RISK_ANALYST'])) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
   try {
     const body = await req.json();
     const updatedEvent = bryntumSchedulerManager.assignCase({
@@ -24,8 +32,8 @@ export async function POST(req: NextRequest) {
       endTime: body.endTime,
     });
     return NextResponse.json({ success: true, event: updatedEvent });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 400 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: errorMessage(error, 'Unable to assign case') }, { status: 400 });
   }
 }
 

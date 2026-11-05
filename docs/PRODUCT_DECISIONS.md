@@ -1,5 +1,7 @@
 # SCAM BRAKE: ARCHITECTURAL & PRODUCT DECISIONS (ADR)
 
+> **Status (2026-11-05):** Historical design rationale only. Fee, dispute, registry, and audit claims below are not verified product outcomes. See [FINAL_AUDIT_BASELINE.md](FINAL_AUDIT_BASELINE.md).
+
 This document records the foundational product and technical decisions established for Scam Brake Phase 1.
 
 ---

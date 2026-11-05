@@ -1,5 +1,7 @@
 # SCAM BRAKE: SYSTEM ARCHITECTURE SPECIFICATION
 
+> **Status (2026-11-05):** Historical target architecture, not an implementation description. Checkout and customer intervention are disabled; no PayPal Sandbox transaction, AI provider, or sponsor integration has been verified. See [FINAL_AUDIT_BASELINE.md](FINAL_AUDIT_BASELINE.md).
+
 **Tagline:** Stop. Verify. Stay protected.  
 **Category:** AI-powered, merchant-integrated pre-capture payment protection protocol.
 

@@ -59,7 +59,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     description: 'Occurs if an unexpected exception interrupts risk pipeline evaluation.',
     icon: ServerCrash,
     suggestedAction: 'Retry Authorization Check',
-    userMessage: 'An internal error occurred while processing telemetry. Customer funds remain held safely in PayPal.',
+    userMessage: 'Example only: the app cannot confirm payment status. Check the merchant or PayPal directly.',
   },
   {
     id: 'STATE-OFFLINE',
@@ -89,7 +89,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     description: 'Customer closes browser or leaves safety conversation idle past 30-minute threshold.',
     icon: Clock,
     suggestedAction: 'Resume Verification Session',
-    userMessage: 'Your safety check-in session timed out. For your security, funds were kept in pre-capture hold.',
+    userMessage: 'Example only: this prototype has no active payment authorization or check-in session.',
   },
   {
     id: 'STATE-INVALID-CHECKOUT',
@@ -109,7 +109,7 @@ const SYSTEM_STATES: SystemStateDemo[] = [
     description: 'PayPal default 29-day authorization lifespan expired without capture or void.',
     icon: ShieldX,
     suggestedAction: 'Re-initiate Checkout Order',
-    userMessage: 'The temporary PayPal authorization hold has expired. No funds were debited from customer account.',
+    userMessage: 'Example only: authorization expiry and fund availability must be confirmed with PayPal and the funding institution.',
   },
   {
     id: 'STATE-CAPTURE-FAIL',

@@ -85,7 +85,7 @@ export default function MerchantAnalyticsPage() {
             <div className="text-[22px] font-semibold text-[#C53030] mt-0.5 tabular-nums">
               <code className="font-mono">${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
-            <div className="text-[12px] text-[#C53030] mt-0.5 font-medium">100% pre-capture, $0 dispute fees</div>
+            <div className="text-[12px] text-[#C53030] mt-0.5 font-medium">Seeded prototype data; no live transactions</div>
           </div>
 
           <div>
@@ -140,7 +140,7 @@ export default function MerchantAnalyticsPage() {
                     tickFormatter={(val) => `$${val / 1000}k`}
                   />
                   <Tooltip
-                    formatter={(value: any) => [`$${Number(value).toLocaleString()}`, '']}
+                    formatter={(value) => [`$${Number(value).toLocaleString()}`, '']}
                     contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#DFE2DF', fontSize: '12px', borderRadius: '4px' }}
                   />
                   <Area

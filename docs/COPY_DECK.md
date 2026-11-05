@@ -1,5 +1,7 @@
 # SCAM BRAKE: MASTER COPY DECK & VOICE GUIDELINES
 
+> **Status (2026-11-05):** Archived proposed copy. Do not use publicly; payment, verified-directory, customer-outcome, fee, and chargeback claims are unverified. Current positioning is in [README.md](../README.md).
+
 **Product Tagline:** Stop. Verify. Stay protected.  
 **Tone of Voice:**
 - Public Website: Institutional, authoritative, analytical, rigorous.

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { dbRepository } from '@/server/db/repository';
+import { errorMessage } from '@/server/errors';
 import { PaymentStateMachine } from '@/server/payments/stateMachine';
 import { Payment } from '@/types';
 
@@ -9,6 +10,9 @@ const ScenarioRunSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  if (process.env.NODE_ENV === 'production' || process.env.PAYMENT_MODE !== 'demo') {
+    return NextResponse.json({ error: 'Scenario simulations are available only in explicit local demo mode.' }, { status: 404 });
+  }
   try {
     const body = await req.json().catch(() => ({}));
     const validated = ScenarioRunSchema.parse(body);
@@ -51,8 +55,8 @@ export async function POST(req: NextRequest) {
     const simulatedPayment: Payment = {
       id: simRef,
       paymentReference: simRef,
-      paypalOrderId: `5O${Math.floor(100000000000000 + Math.random() * 900000000000000)}T`,
-      paypalAuthorizationId: `2C${Math.floor(100000000000000 + Math.random() * 900000000000000)}A`,
+      paypalOrderId: `SIMULATED_ORDER_${simRef}`,
+      paypalAuthorizationId: `SIMULATED_AUTH_${simRef}`,
       merchantId: 'merch_apex_9812',
       merchantName: 'Apex Electronics Direct',
       merchantCategory: 'Consumer Electronics & Hardware',
@@ -103,31 +107,31 @@ export async function POST(req: NextRequest) {
         reason: 'Customer completed intervention check-in, identified coercion, and clicked Cancel Payment.',
         idempotencyKey: `sim_void_${simRef}`,
       });
-      resolutionNotes = 'Pre-capture void executed. Hold released with $0 fee and 0 chargebacks.';
+      resolutionNotes = 'Simulated state transition to VOIDED. No PayPal request was made and no funds or fees were involved.';
     } else {
       await PaymentStateMachine.executeCapture({
         paymentId: simRef,
         actor: 'MERCHANT_POLICY',
-        notes: 'Customer confirmed purchase volition without caller coercion. Captured successfully.',
+        notes: 'Simulated customer confirmation. No PayPal request was made.',
         idempotencyKey: `sim_cap_${simRef}`,
       });
-      resolutionNotes = 'Payment verified safe and captured into merchant settlement balance.';
+      resolutionNotes = 'Simulated state transition to CAPTURED. No PayPal request was made and no settlement occurred.';
     }
 
     const finalPayment = await dbRepository.getPaymentById(simRef);
 
     return NextResponse.json({
       success: true,
+      simulated: true,
       scenarioKey: key,
       expectedOutcome,
       actualOutcome: finalPayment?.authorizationStatus,
       payment: finalPayment,
       resolutionNotes,
-      fee: 0.0,
-      chargebackRecorded: false,
+      providerRequestMade: false,
     });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 400 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: errorMessage(error, 'Simulation failed') }, { status: 400 });
   }
 }
 

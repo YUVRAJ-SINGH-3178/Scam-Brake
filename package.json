@@ -1,11 +1,12 @@
 {
-  "name": "temp-app",
-  "version": "0.1.0",
+  "name": "scambrake",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "worker": "node --experimental-strip-types src/server/worker/entry.ts",
     "lint": "eslint",
     "test": "node --experimental-strip-types tests/runAllTests.mjs",
     "prisma:generate": "prisma generate",

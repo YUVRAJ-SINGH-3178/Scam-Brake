@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre-Capture Voided', async () => {
+test('Local mock scenario: tax impersonation risk signals and simulated void transition', async () => {
   const { paypalClient } = await import('../../src/server/paypal/client.ts');
   const { RiskIntelligenceEngine } = await import('../../src/server/risk/engine.ts');
   const { PaymentStateMachine } = await import('../../src/server/payments/stateMachine.ts');
@@ -10,7 +10,7 @@ test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre
   const { dbRepository } = await import('../../src/server/db/repository.ts');
   const { zapierAutomationRelay } = await import('../../src/server/zapier/relay.ts');
 
-  console.log('\n--- STARTING DEMO 1: $2,000 IRS TAX OFFICIAL SCAM INTERVENTION ---');
+  console.log('\n--- LOCAL MOCK SCENARIO: TAX IMPERSONATION ---');
 
   // Step 1: Customer visits checkout with $2,000 in gift cards while on phone with fake officer
   const cart = {
@@ -47,7 +47,7 @@ test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre
   });
 
   assert.equal(ppOrder.intent, 'AUTHORIZE');
-  console.log(`✓ Step 3: PayPal order created with intent=AUTHORIZE (Order ID: ${ppOrder.id}).`);
+  console.log(`✓ Step 3: Mock adapter returned an order-shaped result (${ppOrder.id}); no PayPal request was made.`);
 
   // Step 4: Customer approves in PayPal wallet -> Server authorizes hold
   const ppAuth = await paypalClient.authorizeOrder(ppOrder.id);
@@ -55,7 +55,7 @@ test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre
   const authId = authResource.id;
 
   assert.ok(authId.startsWith('2C'), 'Valid authorization ID');
-  console.log(`✓ Step 4: PayPal funds temporarily held under Authorization ID ${authId}. No settlement captured.`);
+  console.log(`✓ Step 4: Mock adapter returned authorization-shaped data (${authId}); no funds were held.`);
 
   // Step 5: Scam Brake initiates safety intervention and pauses capture
   const paymentRecord = {
@@ -113,10 +113,10 @@ test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre
   // Step 7: Independent Out-of-Band Verification via Kernel
   const officialIrs = await kernelVerificationClient.lookupOfficialDirectory('IRS');
   assert.equal(officialIrs.officialPhone, '1-800-829-1040');
-  console.log(`✓ Step 7: Certified public switchboard retrieved via Kernel: ${officialIrs.officialPhone}. Advised customer caller ID is spoofed.`);
+  console.log(`✓ Step 7: Local fixture returned a directory value (${officialIrs.officialPhone}); no live verification was performed.`);
 
   // Step 8: Customer decides to cancel payment
-  console.log(`✓ Step 8: Customer taps "Cancel & Void Payment". Executing PayPal Void Authorization API.`);
+  console.log('✓ Step 8: Test invokes the local simulated state transition; no PayPal request is made.');
 
   const voidResult = await PaymentStateMachine.executeVoid({
     paymentId: orderRef,
@@ -127,13 +127,12 @@ test('E2E Demonstration 1: $2,000 Gift-Card Fake Tax Official Scam Stopped & Pre
 
   assert.equal(voidResult.authorizationStatus, 'VOIDED');
   assert.equal(voidResult.interventionStatus, 'SCAM_CONFIRMED');
-  console.log(`✓ Step 9: Authorization voided on PayPal. Hold released immediately.`);
-  console.log(`✓ Mathematical outcome: $2,000.00 saved. Merchant chargeback fee: $0.00. Dispute count: 0.`);
+  console.log('✓ Step 9: Local state changed to VOIDED; there was no provider authorization or held balance.');
 
   // Verify Audit Log was sealed with SHA-256
   const logs = await dbRepository.getAuditLogs(orderRef);
   assert.ok(logs.length >= 2);
   assert.ok(logs[0].immutableHash.length === 64, 'Valid SHA-256 Merkle seal present');
-  console.log(`✓ Step 10: Immutable cryptographic SHA-256 audit seal generated: ${logs[0].immutableHash.substring(0, 16)}...`);
-  console.log('--- DEMO 1 COMPLETED SUCCESSFULLY ---\n');
+  console.log(`✓ Step 10: Local audit entry contains a SHA-256 value: ${logs[0].immutableHash.substring(0, 16)}...`);
+  console.log('--- LOCAL MOCK SCENARIO COMPLETED ---\n');
 });

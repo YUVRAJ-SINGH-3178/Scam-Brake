@@ -118,9 +118,11 @@ class ElasticScamEngine {
         });
 
         if (res.ok) {
-          const data = await res.json();
+          const data = await res.json() as {
+            hits?: { hits?: Array<{ _source: unknown; _score?: number; highlight?: Record<string, string[]> }> };
+          };
           const hits = data.hits?.hits || [];
-          return hits.map((hit: any) => ({
+          return hits.map((hit) => ({
             document: hit._source as ScamPatternDocument,
             score: hit._score ? Math.min(1.0, hit._score / 10) : 0.9,
             matchedKeywords: hit.highlight ? Object.values(hit.highlight).flat() : [],

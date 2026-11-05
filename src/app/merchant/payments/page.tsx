@@ -29,7 +29,7 @@ export default function MerchantPaymentsPage() {
     if (updated) {
       setPayments(mockStore.getPayments());
       setSelectedPayment(updated);
-      setNotification(`Authorization ${updated.paymentReference} successfully captured.`);
+      setNotification('Payment actions are disabled in this prototype; no provider request was made.');
       setTimeout(() => setNotification(null), 4000);
     }
   };
@@ -39,7 +39,7 @@ export default function MerchantPaymentsPage() {
     if (updated) {
       setPayments(mockStore.getPayments());
       setSelectedPayment(updated);
-      setNotification(`Authorization ${updated.paymentReference} voided before capture.`);
+      setNotification('Payment actions are disabled in this prototype; no provider request was made.');
       setTimeout(() => setNotification(null), 4000);
     }
   };
@@ -240,8 +240,7 @@ export default function MerchantPaymentsPage() {
         {/* Footnote on Pre-Capture Hold Architecture */}
         <div className="text-[12px] text-[#697078] pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-[#DFE2DF]">
           <p>
-            Authorizations are temporary holds created via PayPal Orders API (`intent: AUTHORIZE`).
-            Voiding an uncaptured authorization releases funds without transaction fees or chargebacks.
+            This ledger contains seeded sample records only. No PayPal transactions have been created, captured, or voided.
           </p>
           <span className="font-mono text-[11px] text-[#697078] shrink-0">
             Displaying {filteredPayments.length} of {payments.length} transactions

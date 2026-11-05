@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   CreditCard,
@@ -31,6 +31,7 @@ interface AppShellProps {
 
 const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navGroups = [
@@ -39,7 +40,7 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
       items: [
         { label: 'Overview', href: '/merchant', icon: LayoutDashboard },
         { label: 'Protected Payments', href: '/merchant/payments', icon: CreditCard },
-        { label: 'Active Interventions', href: '/merchant/interventions', icon: AlertTriangle, badge: '2 Active' },
+        { label: 'Active Interventions', href: '/merchant/interventions', icon: AlertTriangle },
         { label: 'Investigation Cases', href: '/merchant/investigations/pay_sb_881901', icon: Shield },
       ],
     },
@@ -125,12 +126,8 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
 
           <div className="h-4 w-px bg-[#DFE2DF] hidden lg:block" />
 
-          <button
-            className="p-1.5 text-[#697078] hover:text-[#171A1F] relative rounded-[4px] hover:bg-[#F6F6F3] transition-colors"
-            aria-label="Alerts"
-          >
+          <button disabled className="p-1.5 text-[#697078] relative rounded-[4px] cursor-not-allowed" aria-label="Alerts unavailable">
             <Bell size={16} />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#9A6700]" />
           </button>
 
           <div className="flex items-center gap-2 pl-2 border-l border-[#DFE2DF]">
@@ -139,12 +136,22 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
             </div>
             <div className="hidden md:flex flex-col text-left">
               <span className="text-[12px] font-medium leading-none text-[#171A1F]">
-                Apex Digital
+                Authenticated merchant
               </span>
-              <span className="text-[11px] text-[#1A7A64] font-medium leading-none mt-1">
-                PayPal Partner Active
+              <span className="text-[11px] text-[#784D00] font-medium leading-none mt-1">
+                Provider unverified
               </span>
             </div>
+            <button
+              type="button"
+              onClick={async () => {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                router.replace('/login');
+              }}
+              className="text-[11px] text-[#525860] hover:text-[#171A1F] underline"
+            >
+              Sign out
+            </button>
           </div>
         </div>
       </header>
@@ -189,11 +196,6 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
                         />
                         <span>{item.label}</span>
                       </div>
-                      {item.badge && (
-                        <span className="text-[11px] px-1.5 py-0.5 rounded-[4px] bg-[#FAF2E4] text-[#784D00] border border-[#784D00]/25 font-semibold">
-                          {item.badge}
-                        </span>
-                      )}
                     </Link>
                   );
                 })}
@@ -205,11 +207,11 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
           <div className="pt-3 mt-4 border-t border-[#DFE2DF] text-[12px] text-[#525860] px-2 space-y-2">
             <div className="flex items-center justify-between">
               <span>Environment</span>
-              <span className="text-[#1A7A64] font-medium">Live Sandbox</span>
+              <span className="text-[#784D00] font-medium">Sandbox unverified</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Hold Capture Mode</span>
-              <span className="font-mono text-[#171A1F]">AUTH_THEN_CAPTURE</span>
+              <span className="font-mono text-[#171A1F]">CHECKOUT_DISABLED</span>
             </div>
             <div className="pt-2">
               <Link
@@ -225,6 +227,9 @@ const AppShellInner: React.FC<AppShellProps> = ({ children, activeItem }) => {
         {/* The Inset White Work Sheet */}
         <main className="flex-1 overflow-y-auto bg-[#FFFFFF] p-4 md:p-8">
           <div className="max-w-6xl mx-auto">
+            <div role="status" className="mb-5 border border-[#784D00]/30 bg-[#FAF2E4] text-[#5C3B00] rounded-[4px] px-3 py-2 text-xs">
+              Prototype data only. Payment controls are disabled; no real PayPal authorization, capture, or void is represented here.
+            </div>
             {children}
           </div>
         </main>

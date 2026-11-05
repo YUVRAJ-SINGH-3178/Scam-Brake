@@ -56,7 +56,7 @@ export default function MerchantDashboardPage() {
               Which protected payments need attention now?
             </h1>
             <p className="text-[14px] text-[#525860] mt-1">
-              Currently holding <strong className="text-[#171A1F] font-semibold">{activeHolds.length} uncaptured authorizations</strong> undergoing customer verification.
+              Sample dashboard data only. This prototype has no active PayPal authorizations.
             </p>
           </div>
 
@@ -91,42 +91,42 @@ export default function MerchantDashboardPage() {
         {/* 2. Structured Financial Metrics (Clean Hairline Grid) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-[6px] border border-[#DFE2DF] bg-[#F6F6F3]">
           <div>
-            <div className="text-[13px] text-[#525860]">Total Protected Volume</div>
+            <div className="text-[13px] text-[#525860]">Sample Protected Volume</div>
             <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5 tabular-nums">
               <code>${metrics.totalProtectedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
             <div className="text-[12px] text-[#525860] mt-0.5">
-              {metrics.totalTransactionsReviewed} authorizations reviewed
+              {metrics.totalTransactionsReviewed} sample transactions
             </div>
           </div>
 
           <div>
-            <div className="text-[13px] text-[#525860]">Active Holds (In Review)</div>
+            <div className="text-[13px] text-[#525860]">Sample Holds (In Review)</div>
             <div className="text-[22px] font-semibold text-[#784D00] mt-0.5 tabular-nums">
               <code>${metrics.activeHoldAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
             <div className="text-[12px] text-[#784D00] mt-0.5 font-medium">
-              {metrics.activeHoldCount} holds pending decision
+              {metrics.activeHoldCount} sample holds
             </div>
           </div>
 
           <div>
-            <div className="text-[13px] text-[#525860]">Fraud Voided (Protected)</div>
+            <div className="text-[13px] text-[#525860]">Illustrative Voids</div>
             <div className="text-[22px] font-semibold text-[#C53030] mt-0.5 tabular-nums">
               <code>${metrics.voidedFraudAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
             <div className="text-[12px] text-[#C53030] mt-0.5 font-medium">
-              {metrics.voidedFraudCount} scam payments prevented
+              {metrics.voidedFraudCount} sample records
             </div>
           </div>
 
           <div>
-            <div className="text-[13px] text-[#525860]">Captured Legitimate Volume</div>
+            <div className="text-[13px] text-[#525860]">Illustrative Captures</div>
             <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5 tabular-nums">
               <code>${metrics.capturedLegitimateAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</code>
             </div>
             <div className="text-[12px] text-[#1A7A64] mt-0.5 font-medium">
-              {metrics.capturedLegitimateCount} clean orders settled
+              {metrics.capturedLegitimateCount} sample records
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function MerchantDashboardPage() {
               Recent Protected Payments
             </h2>
             <div className="text-[12px] text-[#697078]">
-              All recorded PayPal authorization holds
+              Seeded sample records only
             </div>
           </div>
 

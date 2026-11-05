@@ -32,13 +32,12 @@ function MerchantPaymentDetailContent() {
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
 
   useEffect(() => {
-    if (paymentId) {
+    const frame = requestAnimationFrame(() => {
       const found = mockStore.getPaymentById(paymentId);
-      if (found) {
-        setPayment(found);
-      }
+      if (found) setPayment(found);
       setLoading(false);
-    }
+    });
+    return () => cancelAnimationFrame(frame);
   }, [paymentId]);
 
   const handleCapture = () => {

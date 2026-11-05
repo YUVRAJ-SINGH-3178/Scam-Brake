@@ -8,27 +8,27 @@ export default function FAQPage() {
   const faqs = [
     {
       q: 'What is Scam Brake?',
-      a: 'Scam Brake is an AI-guided checkout security platform that creates a safe verification pause between PayPal payment authorization and final capture. It is purpose-built to stop voluntary social-engineering scams before money leaves the victim’s account.',
+      a: 'Scam Brake is a prototype exploring a merchant verification pause between PayPal authorization and capture. This build does not accept payments or provide a live protection service.',
     },
     {
       q: 'How does Scam Brake know when to trigger an intervention?',
-      a: 'Scam Brake evaluates transaction metadata (such as unusual gift card volumes, high velocity, or remote desktop software running in the background) alongside real-time scam vectors matched via Elastic semantic search.',
+      a: 'The prototype includes risk-scoring and search adapters. They have not been verified against live merchant signals or an external Elastic deployment.',
     },
     {
       q: 'Does Scam Brake work on any website or only integrated merchants?',
-      a: 'Scam Brake operates at participating merchants who have integrated our checkout SDK with PayPal Partner APIs. We are not a browser extension and we do not intercept payments outside our partner merchant network.',
+      a: 'The intended product would operate only at participating merchants. A production checkout SDK and verified PayPal partner integration are not available in this build.',
     },
     {
       q: 'What happens if a customer does not reply to the check-in?',
-      a: 'If a transaction has high critical risk and the hold window lapses without verification, merchant policy defaults to voiding the uncaptured authorization to guarantee the consumer’s funds remain completely safe.',
+      a: 'The timeout policy is prototype code. The deployed checkout and worker lifecycle have not been verified; this build cannot create or release a PayPal authorization.',
     },
     {
       q: 'Can the AI void or capture the payment on its own?',
-      a: 'No. The AI provides calm conversational assistance and context gathering. The actual execution of a PayPal Void or Capture is strictly governed by merchant risk policies, customer decisions, and cryptographic audit parameters.',
+      a: 'The AI adapter has no direct payment permissions. Capture and void routes require merchant authentication, but buyer approval and end-to-end payment controls are not yet available.',
     },
     {
       q: 'How do merchants benefit from integrating Scam Brake?',
-      a: 'Merchants reduce friendly fraud disputes, eliminate non-refundable gift card chargeback losses, and safeguard elderly and vulnerable customers without adding friction for legitimate buyers.',
+      a: 'The product hypothesis is that an independent verification pause could help identify social-engineering pressure. No fraud reduction, chargeback savings, or customer outcome has been measured.',
     },
   ];
 
@@ -42,7 +42,7 @@ export default function FAQPage() {
             Frequently Asked Questions
           </h1>
           <p className="text-[17px] text-[#171A1F] leading-relaxed max-w-2xl">
-            Detailed answers regarding payment authorization holds, AI safety boundaries, and merchant integration.
+            Prototype scope, intended boundaries, and current implementation limits.
           </p>
         </div>
 

@@ -1,13 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { ShieldCheck, Lock, Info } from 'lucide-react';
 
 export default function CheckoutPage() {
-  const router = useRouter();
   const [selectedProduct, setSelectedProduct] = useState<'gift_cards' | 'camera' | 'tokens'>('gift_cards');
-  const [isLoading, setIsLoading] = useState(false);
 
   const products = {
     gift_cards: {
@@ -28,13 +25,6 @@ export default function CheckoutPage() {
       price: 700.0,
       note: 'Simulates bank impersonation token coercion.',
     },
-  };
-
-  const handlePayPalCheckout = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      router.push(`/checkout/authorizing?product=${selectedProduct}`);
-    }, 500);
   };
 
   const current = products[selectedProduct];
@@ -72,7 +62,7 @@ export default function CheckoutPage() {
               Checkout Sandbox
             </h1>
             <p className="text-[14px] text-[#525860]">
-              Select an item to simulate how Scam Brake protects PayPal authorization holds.
+              Preview only. This page does not create a PayPal order or move money.
             </p>
           </div>
 
@@ -150,24 +140,17 @@ export default function CheckoutPage() {
               </div>
 
               <button
-                disabled={isLoading}
-                onClick={handlePayPalCheckout}
-                className="w-full h-11 rounded-[6px] bg-[#FFC439] hover:bg-[#F4B92E] text-[#003087] font-semibold text-[14px] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                disabled
+                aria-disabled="true"
+                className="w-full h-11 rounded-[6px] bg-[#DFE2DF] text-[#525860] font-semibold text-[14px] flex items-center justify-center gap-2 cursor-not-allowed"
               >
-                {isLoading ? (
-                  <span>Connecting to PayPal...</span>
-                ) : (
-                  <>
-                    <span className="font-bold italic">PayPal</span>
-                    <span className="text-[#003087]/80 text-[13px] font-normal">Check out</span>
-                  </>
-                )}
+                PayPal Sandbox checkout unavailable
               </button>
 
               <div className="p-3 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[12px] text-[#525860] flex items-start gap-2">
                 <Lock size={14} className="text-[#1A7A64] shrink-0 mt-0.5" />
                 <span>
-                  This checkout uses Scam Brake pre-capture hold protection. Funds remain safe in your account during review.
+                  A real buyer approval, authorization, and persistent checkout flow are not available in this release. No payment is being attempted.
                 </span>
               </div>
             </div>

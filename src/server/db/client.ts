@@ -13,24 +13,20 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-let isDbConnected: boolean | null = null;
-
 /**
  * Checks whether PostgreSQL is reachable via Prisma.
  */
 export async function checkDatabaseConnection(): Promise<boolean> {
-  if (isDbConnected !== null) return isDbConnected;
   if (!process.env.DATABASE_URL) {
-    isDbConnected = false;
+    if (process.env.NODE_ENV === 'production') throw new Error('DATABASE_URL is required in production.');
     return false;
   }
   try {
     await prisma.$queryRaw`SELECT 1`;
-    isDbConnected = true;
     return true;
-  } catch (error) {
-    console.warn('[DB] PostgreSQL connection check failed, using persistent fallback repository:', error);
-    isDbConnected = false;
+  } catch {
+    if (process.env.NODE_ENV === 'production') throw new Error('PostgreSQL is unavailable. Refusing non-persistent repository fallback.');
+    console.warn('[DB] PostgreSQL connection check failed; development fallback repository is active.');
     return false;
   }
 }

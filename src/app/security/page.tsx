@@ -42,7 +42,7 @@ export default function SecurityPrivacyPage() {
               Pre-Capture Voiding vs. Chargeback Disputes
             </h2>
             <p className="text-[15px] text-[#171A1F] leading-relaxed">
-              Because funds are only authorized (held) and not yet captured, a voided authorization releases the bank reservation instantly. No credit card disputes, zero merchant chargeback fees, and zero credit score damage.
+              A pre-capture void can terminate an authorization according to PayPal state and issuer timing. This prototype has no live payment flow, and makes no fee, dispute, or credit-score outcome guarantee.
             </p>
           </div>
 
@@ -83,7 +83,7 @@ export default function SecurityPrivacyPage() {
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-[#1A7A64] shrink-0 mt-0.5" />
-              <span>Automated hold expiration guarantees funds are freed if uncaptured</span>
+            <span>Hold expiration and fund availability depend on PayPal and the funding institution; this prototype does not operate authorizations.</span>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-[#1A7A64] shrink-0 mt-0.5" />

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { paypalClient } from '@/server/paypal/client';
 import { dbRepository } from '@/server/db/repository';
 import { PaymentStateMachine } from '@/server/payments/stateMachine';
+import { errorMessage } from '@/server/errors';
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,23 +40,26 @@ export async function POST(req: NextRequest) {
     }
 
     const resource = event.resource || {};
-    const authorizationId = resource.id;
+    const resourceId = resource.id;
+    const authorizationId = eventType === 'PAYMENT.CAPTURE.COMPLETED'
+      ? resource.supplementary_data?.related_ids?.authorization_id
+      : resourceId;
 
     // 3. Reconcile Payment State based on PayPal Event
     if (eventType === 'PAYMENT.AUTHORIZATION.VOIDED') {
-      const payment = await dbRepository.getPaymentById(authorizationId);
+      const payment = authorizationId ? await dbRepository.getPaymentById(authorizationId) : undefined;
       if (payment) {
         await PaymentStateMachine.reconcile(payment.id, 'VOIDED', eventId);
       }
     } else if (eventType === 'PAYMENT.CAPTURE.COMPLETED') {
-      const payment = await dbRepository.getPaymentById(authorizationId);
+      const payment = authorizationId ? await dbRepository.getPaymentById(authorizationId) : undefined;
       if (payment) {
         await PaymentStateMachine.reconcile(payment.id, 'CAPTURED', eventId);
       }
     }
 
     // 4. Mark Webhook Processed
-    await dbRepository.markWebhookProcessed(eventId, eventType, authorizationId);
+    await dbRepository.markWebhookProcessed(eventId, eventType, resourceId);
 
     // 5. Audit Log
     await dbRepository.recordAuditLog({
@@ -63,13 +67,13 @@ export async function POST(req: NextRequest) {
       eventType: eventType === 'PAYMENT.AUTHORIZATION.VOIDED' ? 'AUTHORIZATION_VOIDED' : 'AUTHORIZATION_CAPTURED',
       actor: 'PAYPAL_SYSTEM',
       summary: `Verified PayPal webhook processed: ${eventType} (Event ID: ${eventId}).`,
-      details: { eventId, eventType, resourceId: authorizationId },
+      details: { eventId, eventType, resourceId, authorizationId },
     });
 
     return NextResponse.json({ received: true, eventId, eventType });
-  } catch (err: any) {
-    console.error('[WEBHOOK ERROR] Error handling PayPal webhook:', err);
-    return NextResponse.json({ error: err.message || 'Webhook processing failed' }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('[WEBHOOK ERROR] Error handling PayPal webhook.');
+    return NextResponse.json({ error: errorMessage(error, 'Webhook processing failed') }, { status: 500 });
   }
 }
 

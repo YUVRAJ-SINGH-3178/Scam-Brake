@@ -7,7 +7,7 @@ services:
     region: oregon
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npm run start
-    healthCheckPath: /api/health
+    healthCheckPath: /api/health/ready
     envVars:
       - key: NODE_ENV
         value: production
@@ -17,6 +17,8 @@ services:
           property: connectionString
       - key: PAYPAL_ENVIRONMENT
         value: sandbox
+      - key: PAYMENT_MODE
+        value: paypal_sandbox
       - key: PAYPAL_CLIENT_ID
         sync: false
       - key: PAYPAL_CLIENT_SECRET
@@ -26,6 +28,8 @@ services:
       - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
         sync: false
       - key: SESSION_SECRET
+        generateValue: true
+      - key: INTERNAL_WORKER_SECRET
         generateValue: true
       - key: OPENAI_API_KEY
         sync: false
@@ -49,7 +53,7 @@ services:
     plan: starter
     region: oregon
     buildCommand: npm install && npx prisma generate
-    startCommand: node dist/server/worker/scheduler.js
+    startCommand: npm run worker
     envVars:
       - key: NODE_ENV
         value: production
@@ -59,10 +63,17 @@ services:
           property: connectionString
       - key: PAYPAL_ENVIRONMENT
         value: sandbox
+      - key: PAYMENT_MODE
+        value: paypal_sandbox
       - key: PAYPAL_CLIENT_ID
         sync: false
       - key: PAYPAL_CLIENT_SECRET
         sync: false
+      - key: INTERNAL_WORKER_SECRET
+        fromService:
+          type: web
+          name: scambrake-app
+          envVarKey: INTERNAL_WORKER_SECRET
 
 databases:
   # Managed PostgreSQL Database

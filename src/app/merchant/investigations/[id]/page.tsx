@@ -38,14 +38,15 @@ function MerchantInvestigationCaseContent() {
   const [actionNotice, setActionNotice] = useState<string | null>(null);
 
   useEffect(() => {
-    if (paymentId) {
+    const frame = requestAnimationFrame(() => {
       const p = mockStore.getPaymentById(paymentId);
       if (p) {
         setPayment(p);
         const s = mockStore.getInterventionSession(p.interventionSessionId || `session_${p.id}`);
         setSession(s || null);
       }
-    }
+    });
+    return () => cancelAnimationFrame(frame);
   }, [paymentId]);
 
   const handleCapture = () => {
@@ -142,17 +143,17 @@ function MerchantInvestigationCaseContent() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
               <button
                 onClick={handleVoid}
-                disabled={payment.authorizationStatus === 'VOIDED'}
+                disabled
                 className="px-3.5 py-1.5 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] text-[13px] font-medium rounded-[6px] hover:bg-[#FDE8E8] disabled:opacity-50 cursor-pointer"
               >
-                Confirm Scam & Void Auth
+                Void Unavailable
               </button>
               <button
                 onClick={handleCapture}
-                disabled={payment.authorizationStatus === 'CAPTURED'}
+                disabled
                 className="px-3.5 py-1.5 bg-[#171A1F] text-white text-[13px] font-medium rounded-[6px] hover:bg-[#2B303A] disabled:opacity-50 cursor-pointer"
               >
-                Clear Hold & Capture
+                Capture Unavailable
               </button>
             </div>
           </div>
@@ -270,7 +271,7 @@ function MerchantInvestigationCaseContent() {
                     <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#784D00]" />
                     <code className="text-[#525860] font-mono text-[12px]">10:32:04 AM</code>
                     <div className="font-medium text-[#171A1F]">Authorization Created: Hold Placed</div>
-                    <p className="text-[#525860]">PayPal authorized payment; Scam Brake intercepted capture trigger due to high risk score (88/100).</p>
+                    <p className="text-[#525860]">Sample investigation fixture. No PayPal authorization or capture interception occurred.</p>
                   </div>
                   <div className="relative">
                     <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#171A1F]" />
