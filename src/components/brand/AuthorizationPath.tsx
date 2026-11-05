@@ -89,7 +89,7 @@ export const AuthorizationPath: React.FC<AuthorizationPathProps> = ({
       label: effectiveStage === 'VOID' ? 'Pre-Capture Void' : 'Final Capture',
       sublabel:
         effectiveStage === 'VOID'
-          ? 'Hold terminated, $0 dispute fee'
+          ? 'Illustrative void state'
           : 'Funds captured to merchant settlement',
       state:
         effectiveStage === 'CAPTURE' || effectiveStage === 'VOID'
@@ -203,9 +203,9 @@ export const AuthorizationPath: React.FC<AuthorizationPathProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[#1A7A64]">Dispute Exposure: $0.00</span>
+          <span className="text-[#1A7A64]">Dispute outcome: Not measured</span>
           <span>•</span>
-          <span>Chargeback Mark: None</span>
+          <span>Chargeback data: not connected</span>
         </div>
       </div>
     </div>

@@ -25,10 +25,10 @@ export default function InterventionSummaryPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
-              Payment Certificate & Audit Summary
+              Sample Intervention Summary
             </h1>
             <p className="text-[13px] text-[#697078]">
-              Official record of pre-capture authorization intervention and void release.
+              Illustrative fixture only. This is not a payment certificate or transaction record.
             </p>
           </div>
           <Button
@@ -40,6 +40,10 @@ export default function InterventionSummaryPage() {
             <Download size={13} />
             <span>Print PDF</span>
           </Button>
+        </div>
+
+        <div role="status" className="bg-[#FAF2E4] text-[#5C3B00] border border-[#784D00]/20 rounded px-3 py-2 text-xs">
+          Sample names, references, amounts, outcomes, and hashes below are not real provider events.
         </div>
 
         {/* Certificate Card */}

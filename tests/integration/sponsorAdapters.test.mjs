@@ -25,6 +25,19 @@ test('PayPal Adapter — Orders v2 intent=AUTHORIZE & Lifecycle', async () => {
   assert.equal(voidRes.status, 'VOIDED');
 });
 
+test('PayPal webhook verification fails closed without a configured webhook ID', async () => {
+  const { paypalClient } = await import('../../src/server/paypal/client.ts');
+  const verified = await paypalClient.verifyWebhookSignature({
+    transmissionId: 'untrusted',
+    transmissionTime: new Date().toISOString(),
+    certUrl: 'https://example.test/cert',
+    authAlgo: 'SHA256withRSA',
+    transmissionSig: 'present-but-unverified',
+    webhookEvent: { id: 'untrusted-event' },
+  });
+  assert.equal(verified, false);
+});
+
 test('Elastic Knowledge Engine — Semantic & Pattern Grounding', async () => {
   const { elasticScamEngine } = await import('../../src/server/elastic/search.ts');
 
@@ -66,19 +79,34 @@ test('Channel3 Client — Digital Commodity Enrichment', async () => {
 });
 
 test('Zapier Relay — HMAC Signatures and Outbound Events', async () => {
-  const { zapierAutomationRelay } = await import('../../src/server/zapier/relay.ts');
+  const previousSecret = process.env.ZAPIER_WEBHOOK_SECRET;
+  const previousUrl = process.env.ZAPIER_WEBHOOK_URL;
+  const previousFetch = globalThis.fetch;
+  process.env.ZAPIER_WEBHOOK_SECRET = 'test-only-secret-with-at-least-32-bytes';
+  process.env.ZAPIER_WEBHOOK_URL = 'https://hooks.example.test/scambrake';
+  globalThis.fetch = async () => new Response(null, { status: 200 });
+  const { ZapierAutomationRelay } = await import('../../src/server/zapier/relay.ts');
 
-  const signature = zapierAutomationRelay.generateSignature('{"test":"payload"}');
-  assert.ok(signature.length === 64, 'Valid SHA-256 HMAC generated');
+  try {
+    const relay = new ZapierAutomationRelay();
+    const signature = relay.generateSignature('{"test":"payload"}');
+    assert.ok(signature.length === 64, 'Valid SHA-256 HMAC generated');
 
-  const result = await zapierAutomationRelay.triggerEvent({
-    eventType: 'HIGH_RISK_INTERVENTION_CREATED',
-    paymentId: 'pay_test_zap_01',
-    payload: { amount: 2000.0, riskScore: 94 },
-  });
-
-  assert.ok(result.deliveryId.startsWith('zap_del_'));
-  assert.equal(result.eventType, 'HIGH_RISK_INTERVENTION_CREATED');
+    const result = await relay.triggerEvent({
+      eventType: 'HIGH_RISK_INTERVENTION_CREATED',
+      paymentId: 'pay_test_zap_01',
+      payload: { amount: 2000.0, riskScore: 94 },
+    });
+    assert.ok(result.deliveryId.startsWith('zap_del_'));
+    assert.equal(result.eventType, 'HIGH_RISK_INTERVENTION_CREATED');
+    assert.equal(result.status, 'DELIVERED');
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousSecret === undefined) delete process.env.ZAPIER_WEBHOOK_SECRET;
+    else process.env.ZAPIER_WEBHOOK_SECRET = previousSecret;
+    if (previousUrl === undefined) delete process.env.ZAPIER_WEBHOOK_URL;
+    else process.env.ZAPIER_WEBHOOK_URL = previousUrl;
+  }
 });
 
 test('Bryntum Scheduler Manager — Investigation Case Allocation', async () => {

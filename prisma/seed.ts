@@ -1,4 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
+import crypto from 'node:crypto';
+import { hashPassword } from '../src/server/auth/password.ts';
 import {
   SEED_PAYMENTS,
   SEED_INTERVENTIONS,
@@ -10,28 +12,26 @@ import {
 const prisma = new PrismaClient();
 
 export async function main() {
+  if (process.env.NODE_ENV === 'production' || process.env.DEMO_AUTH_ENABLED !== 'true') {
+    throw new Error('Seeding is local-demo only. Set DEMO_AUTH_ENABLED=true outside production.');
+  }
+  const demoPassword = process.env.DEMO_ADMIN_PASSWORD;
+  if (!demoPassword || demoPassword.length < 16) {
+    throw new Error('Set DEMO_ADMIN_PASSWORD to a unique password of at least 16 characters before seeding.');
+  }
+  const demoEmail = process.env.DEMO_ADMIN_EMAIL || 'admin@scambrake.local';
+  const demoPasswordHash = await hashPassword(demoPassword);
   console.log('Seeding Scam Brake database...');
 
   // 1. Create Default Users
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@scambrake.internal' },
-    update: {},
+    where: { email: demoEmail },
+    update: { passwordHash: demoPasswordHash, role: 'ADMIN' },
     create: {
-      email: 'admin@scambrake.internal',
-      name: 'System Administrator',
-      passwordHash: '$2b$10$ep/0kS6hHk9U5o9b.OqgG.aT6Mv.7B67Z5o9jP2N6CqF6vW4K8oGa', // 'AdminPass2026!'
+      email: demoEmail,
+      name: 'Local Demo Administrator',
+      passwordHash: demoPasswordHash,
       role: 'ADMIN',
-    },
-  });
-
-  const analystUser = await prisma.user.upsert({
-    where: { email: 'analyst@scambrake.internal' },
-    update: {},
-    create: {
-      email: 'analyst@scambrake.internal',
-      name: 'Sarah Chen (Lead Risk Analyst)',
-      passwordHash: '$2b$10$ep/0kS6hHk9U5o9b.OqgG.aT6Mv.7B67Z5o9jP2N6CqF6vW4K8oGa',
-      role: 'RISK_ANALYST',
     },
   });
 
@@ -44,8 +44,8 @@ export async function main() {
       name: 'Apex Electronics Direct',
       slug: 'apex-electronics',
       category: 'Consumer Electronics & Hardware',
-      apiKey: 'sb_live_key_apex9812_47bf92',
-      webhookSecret: 'whsec_apex9812_secure_hash_2026',
+      apiKey: `sb_demo_${crypto.randomBytes(32).toString('hex')}`,
+      webhookSecret: crypto.randomBytes(32).toString('hex'),
       riskPolicy: {
         create: {
           autoHoldThreshold: 60,
@@ -59,10 +59,14 @@ export async function main() {
       merchantUsers: {
         create: [
           { userId: adminUser.id, role: 'ADMIN' },
-          { userId: analystUser.id, role: 'ANALYST' },
         ],
       },
     },
+  });
+  await prisma.merchantUser.upsert({
+    where: { merchantId_userId: { merchantId: apexMerchant.id, userId: adminUser.id } },
+    update: { role: 'ADMIN' },
+    create: { merchantId: apexMerchant.id, userId: adminUser.id, role: 'ADMIN' },
   });
 
   // 3. Create Investigators & Assignments (Bryntum Scheduler)
@@ -131,8 +135,8 @@ export async function main() {
         productName: scenario.productName,
         amount: scenario.amount,
         expectedOutcome: scenario.expectedOutcome,
-        sampleConversation: scenario.sampleConversation as any,
-        investigationFindings: scenario.investigationFindings as any,
+        sampleConversation: JSON.parse(JSON.stringify(scenario.sampleConversation)) as Prisma.InputJsonValue,
+        investigationFindings: JSON.parse(JSON.stringify(scenario.investigationFindings)) as Prisma.InputJsonValue,
       },
       create: {
         scenarioKey: scenario.id,
@@ -144,8 +148,8 @@ export async function main() {
         productName: scenario.productName,
         amount: scenario.amount,
         expectedOutcome: scenario.expectedOutcome,
-        sampleConversation: scenario.sampleConversation as any,
-        investigationFindings: scenario.investigationFindings as any,
+        sampleConversation: JSON.parse(JSON.stringify(scenario.sampleConversation)) as Prisma.InputJsonValue,
+        investigationFindings: JSON.parse(JSON.stringify(scenario.investigationFindings)) as Prisma.InputJsonValue,
       },
     });
   }
@@ -226,14 +230,12 @@ export async function main() {
   console.log('Seeding completed successfully!');
 }
 
-if (require.main === module) {
-  main()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-}
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 

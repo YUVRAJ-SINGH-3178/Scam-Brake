@@ -179,22 +179,22 @@ export default function MerchantRiskIntelligencePage() {
           <div>
             <div className="text-[13px] text-[#525860]">Classified Scam Types</div>
             <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5"><code>18 Clusters</code></div>
-            <div className="text-[12px] text-[#525860] mt-0.5">Updated daily from global feeds</div>
+            <div className="text-[12px] text-[#525860] mt-0.5">Illustrative taxonomy; no live feeds connected</div>
           </div>
           <div>
             <div className="text-[13px] text-[#525860]">Coercion Accuracy</div>
-            <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5"><code>98.4%</code></div>
-            <div className="text-[12px] text-[#1A7A64] mt-0.5">&lt;0.2% false positive holds</div>
+            <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5"><code>Not measured</code></div>
+            <div className="text-[12px] text-[#1A7A64] mt-0.5">No live outcome data</div>
           </div>
           <div>
             <div className="text-[13px] text-[#525860]">Average Hold Window</div>
-            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5"><code>8.5 min</code></div>
-            <div className="text-[12px] text-[#525860] mt-0.5">To customer resolution</div>
+            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5"><code>Not measured</code></div>
+            <div className="text-[12px] text-[#525860] mt-0.5">No live interventions</div>
           </div>
           <div>
             <div className="text-[13px] text-[#525860]">Dispute Chargebacks</div>
-            <div className="text-[22px] font-semibold text-[#1A7A64] mt-0.5"><code>$0.00</code></div>
-            <div className="text-[12px] text-[#1A7A64] mt-0.5">Pre-capture voids incur zero fees</div>
+            <div className="text-[22px] font-semibold text-[#171A1F] mt-0.5"><code>Not measured</code></div>
+            <div className="text-[12px] text-[#525860] mt-0.5">No live payment records</div>
           </div>
         </div>
 

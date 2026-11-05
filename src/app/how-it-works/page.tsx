@@ -69,7 +69,7 @@ export default function HowItWorksPage() {
                 PayPal Authorization Hold
               </h3>
               <p className="text-[16px] text-[#171A1F] leading-relaxed max-w-3xl">
-                PayPal places a temporary hold on the approved amount (up to 24 to 72 hours). No funds have moved to the merchant balance. If fraud is stopped now, no chargeback dispute is needed.
+                In the intended flow, PayPal would place an authorization hold before capture. This prototype does not create a hold; timing and availability depend on PayPal and the funding source.
               </p>
             </div>
 
@@ -93,7 +93,7 @@ export default function HowItWorksPage() {
                 Deterministic Decision: Void vs. Capture
               </h3>
               <p className="text-[16px] text-[#171A1F] leading-relaxed max-w-3xl">
-                If the customer identifies coercion or a trusted contact alerts them, Scam Brake calls the PayPal Void Authorization API. The hold evaporates and the customer’s funds remain completely safe. If verified safe, the merchant calls the Capture API to fulfill the order.
+                The intended server flow would call PayPal to void or capture after checks. Buyer approval and these customer actions are not available in this build.
               </p>
             </div>
           </div>

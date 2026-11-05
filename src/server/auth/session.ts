@@ -1,95 +1,108 @@
 import crypto from 'crypto';
+import type { NextRequest } from 'next/server';
 
-const SESSION_SECRET = process.env.SESSION_SECRET || 'scambrake_session_secret_default_development_key_32bytes!';
+const SESSION_COOKIE = 'sb_merchant_session';
+const SESSION_TTL_SECONDS = 8 * 60 * 60;
+
+export type MerchantRole = 'OWNER' | 'ADMIN' | 'RISK_ANALYST' | 'OPERATOR' | 'VIEWER';
 
 export interface AuthSession {
   userId: string;
   email: string;
   name: string;
-  role: 'ADMIN' | 'RISK_ANALYST' | 'OPERATOR' | 'VIEWER';
+  role: MerchantRole;
   merchantId: string;
-  createdAt: number;
-  expiresAt: number;
+  iat: number;
+  exp: number;
+  jti: string;
 }
 
-export interface CustomerSession {
-  sessionId: string;
-  paymentReference?: string;
-  createdAt: number;
-  expiresAt: number;
+function getSessionSecret(): string | null {
+  const secret = process.env.SESSION_SECRET;
+  return secret && Buffer.byteLength(secret, 'utf8') >= 32 ? secret : null;
 }
 
-/**
- * Creates a signed HMAC session token
- */
-export function createSignedToken(payload: Record<string, unknown>, expiresInHours = 24): string {
-  const data = {
-    ...payload,
-    exp: Date.now() + expiresInHours * 60 * 60 * 1000,
-  };
-  const json = JSON.stringify(data);
-  const b64Payload = Buffer.from(json).toString('base64url');
-  const signature = crypto
-    .createHmac('sha256', SESSION_SECRET)
-    .update(b64Payload)
-    .digest('base64url');
-  return `${b64Payload}.${signature}`;
+export function createSignedToken(payload: Omit<AuthSession, 'iat' | 'exp' | 'jti'>, ttlSeconds = SESSION_TTL_SECONDS): string {
+  const secret = getSessionSecret();
+  if (!secret) throw new Error('SESSION_SECRET must contain at least 32 bytes.');
+  const now = Math.floor(Date.now() / 1000);
+  const data: AuthSession = { ...payload, iat: now, exp: now + ttlSeconds, jti: crypto.randomUUID() };
+  const encoded = Buffer.from(JSON.stringify(data)).toString('base64url');
+  const signature = crypto.createHmac('sha256', secret).update(encoded).digest('base64url');
+  return `${encoded}.${signature}`;
 }
 
-/**
- * Verifies a signed HMAC session token
- */
-export function verifySignedToken<T = any>(token: string): T | null {
-  if (!token || !token.includes('.')) return null;
-  const [b64Payload, signature] = token.split('.');
-  const expectedSig = crypto
-    .createHmac('sha256', SESSION_SECRET)
-    .update(b64Payload)
-    .digest('base64url');
-
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig))) {
+export function verifySignedToken(token: string): AuthSession | null {
+  const secret = getSessionSecret();
+  if (!secret) return null;
+  const [encoded, signature, extra] = token.split('.');
+  if (!encoded || !signature || extra) return null;
+  const expected = crypto.createHmac('sha256', secret).update(encoded).digest();
+  let actual: Buffer;
+  try {
+    actual = Buffer.from(signature, 'base64url');
+  } catch {
     return null;
   }
+  if (actual.length !== expected.length || !crypto.timingSafeEqual(actual, expected)) return null;
 
   try {
-    const json = Buffer.from(b64Payload, 'base64url').toString('utf8');
-    const data = JSON.parse(json);
-    if (data.exp && Date.now() > data.exp) {
-      return null; // Expired
-    }
-    return data as T;
+    const data = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as Partial<AuthSession>;
+    const roles: MerchantRole[] = ['OWNER', 'ADMIN', 'RISK_ANALYST', 'OPERATOR', 'VIEWER'];
+    const now = Math.floor(Date.now() / 1000);
+    if (typeof data.userId !== 'string' || typeof data.merchantId !== 'string' ||
+      typeof data.email !== 'string' || typeof data.name !== 'string' ||
+      typeof data.exp !== 'number' || typeof data.iat !== 'number' || typeof data.jti !== 'string' ||
+      !roles.includes(data.role as MerchantRole) || data.exp <= now || data.iat > now + 60) return null;
+    return data as AuthSession;
   } catch {
     return null;
   }
 }
 
-/**
- * Default merchant demo session for development and preview
- */
-export const DEFAULT_DEMO_MERCHANT_SESSION: AuthSession = {
-  userId: 'usr_sarah_chen',
-  email: 'analyst@scambrake.internal',
-  name: 'Sarah Chen (Lead Risk Analyst)',
-  role: 'RISK_ANALYST',
-  merchantId: 'merch_apex_9812',
-  createdAt: Date.now(),
-  expiresAt: Date.now() + 86400000,
-};
-
-// In-memory sliding window rate limiter
-const ipRequestCounts = new Map<string, { count: number; resetAt: number }>();
-
-export function checkRateLimit(ip: string, maxRequests = 100, windowMs = 60000): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const entry = ipRequestCounts.get(ip);
-  if (!entry || now > entry.resetAt) {
-    ipRequestCounts.set(ip, { count: 1, resetAt: now + windowMs });
-    return { allowed: true, remaining: maxRequests - 1 };
-  }
-  if (entry.count >= maxRequests) {
-    return { allowed: false, remaining: 0 };
-  }
-  entry.count++;
-  return { allowed: true, remaining: maxRequests - entry.count };
+export function getMerchantSession(request: NextRequest): AuthSession | null {
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  return token ? verifySignedToken(token) : null;
 }
 
+export function hasMerchantPermission(session: AuthSession, allowed: MerchantRole[]): boolean {
+  return allowed.includes(session.role);
+}
+
+export function workerAuthorized(request: NextRequest): boolean {
+  const expected = process.env.INTERNAL_WORKER_SECRET;
+  const supplied = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? '';
+  if (!expected) return false;
+  const expectedBuffer = Buffer.from(expected);
+  const suppliedBuffer = Buffer.from(supplied);
+  if (expectedBuffer.length < 32 || suppliedBuffer.length !== expectedBuffer.length) return false;
+  return crypto.timingSafeEqual(suppliedBuffer, expectedBuffer);
+}
+
+const loginAttempts = new Map<string, { count: number; resetAt: number }>();
+
+export function allowLoginAttempt(ip: string): boolean {
+  const now = Date.now();
+  const current = loginAttempts.get(ip);
+  if (!current || current.resetAt <= now) {
+    loginAttempts.set(ip, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    return true;
+  }
+  current.count += 1;
+  return current.count <= 8;
+}
+
+export function hasSameOrigin(request: NextRequest): boolean {
+  const origin = request.headers.get('origin');
+  if (!origin) return false;
+  try {
+    return new URL(origin).origin === new URL(request.url).origin;
+  } catch {
+    return false;
+  }
+}
+
+export const merchantSessionCookie = {
+  name: SESSION_COOKIE,
+  maxAge: SESSION_TTL_SECONDS,
+};

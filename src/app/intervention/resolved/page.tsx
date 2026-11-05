@@ -23,9 +23,12 @@ function InterventionResolvedContent() {
           </span>
         </div>
         <div className="text-[12px] text-[#525860] font-medium">
-          Outcome Confirmation
+          Local outcome preview
         </div>
       </header>
+      <div role="status" className="bg-[#FAF2E4] text-[#5C3B00] border-b border-[#784D00]/20 px-4 py-2 text-xs text-center">
+        Illustrative screen only. No PayPal payment was authorized, captured, or voided.
+      </div>
 
       <main className="flex-1 max-w-2xl mx-auto w-full p-6 py-12 space-y-6">
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 space-y-6 text-center">
@@ -44,13 +47,13 @@ function InterventionResolvedContent() {
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
               {isVoid
-                ? 'Payment Safely Canceled'
-                : 'Payment Verified & Captured'}
+                ? 'Simulated Void Scenario'
+                : 'Simulated Capture Scenario'}
             </h1>
             <p className="text-[13px] text-[#525860] leading-relaxed max-w-md mx-auto">
               {isVoid
-                ? 'The PayPal authorization hold has been voided. Zero funds were captured or transferred. Your account balance remains completely intact.'
-                : 'Your confirmation has been recorded. Merchant capture has completed and your order is proceeding normally.'}
+                ? 'This local preview illustrates a void decision. No provider request was made.'
+                : 'This local preview illustrates a capture decision. No provider request was made.'}
             </p>
           </div>
 
@@ -65,15 +68,15 @@ function InterventionResolvedContent() {
 
           <div className="p-4 rounded-[6px] bg-[#F6F6F3] border border-[#DFE2DF] text-left text-[13px] space-y-2">
             <div className="flex justify-between">
-              <span className="text-[#525860]">PayPal Authorization Reference:</span>
-              <code className="font-mono text-[#171A1F]">AUTH-HLD-99120</code>
+              <span className="text-[#525860]">Sample reference:</span>
+              <code className="font-mono text-[#171A1F]">DEMO-ONLY</code>
             </div>
             <div className="flex justify-between">
               <span className="text-[#525860]">Resolution Timestamp:</span>
               <span className="text-[#171A1F]">{new Date().toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#525860]">Final Financial Debit:</span>
+              <span className="text-[#525860]">Illustrative amount:</span>
               <span className="font-semibold text-[#171A1F] tabular-nums">
                 <code className="font-mono">{isVoid ? '$0.00 USD' : '$1,500.00 USD'}</code>
               </span>

@@ -1,5 +1,7 @@
 # SCAM BRAKE: PRODUCT SPECIFICATION (PHASE 1)
 
+> **Status (2026-11-05):** Historical product concept, not a statement of shipped capability. Metrics, outcomes, sponsor references, and provider lifecycle descriptions below are illustrative and unverified. See [FINAL_AUDIT_BASELINE.md](FINAL_AUDIT_BASELINE.md).
+
 **Product Name:** SCAM BRAKE  
 **Tagline:** Stop. Verify. Stay protected.  
 **Product Category:** AI-powered, merchant-integrated payment protection.  

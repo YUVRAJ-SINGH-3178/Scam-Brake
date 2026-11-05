@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   X,
   ShieldAlert,
@@ -21,7 +21,6 @@ import { RiskBadge, AuthStatusBadge, InterventionBadge } from '@/components/ui/B
 import { Button } from '@/components/ui/Button';
 import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 import { mockStore } from '@/services';
-import { toast } from 'sonner';
 
 interface PaymentDetailDrawerProps {
   payment: Payment | null;
@@ -40,34 +39,12 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
   onCapture,
   onVoid,
 }) => {
-  const [isProcessing, setIsProcessing] = useState(false);
-
   if (!payment) return null;
 
   const auditEvents = mockStore.getAuditLogs(payment.id);
   const interventionSession = payment.interventionSessionId
     ? mockStore.getInterventionById(payment.interventionSessionId)
     : undefined;
-
-  const handleCapture = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      mockStore.capturePayment(payment.id, 'Manual merchant review approved capture.');
-      toast.success(`Authorization captured for ${payment.paymentReference}`);
-      setIsProcessing(false);
-      onPaymentUpdated?.();
-    }, 400);
-  };
-
-  const handleVoid = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      mockStore.voidPayment(payment.id, 'Coercive risk confirmed by merchant operations.');
-      toast.success(`Authorization voided for ${payment.paymentReference}`);
-      setIsProcessing(false);
-      onPaymentUpdated?.();
-    }, 400);
-  };
 
   // Determine stage on the Authorization Path
   const currentPathStage =
@@ -126,28 +103,26 @@ export const PaymentDetailDrawer: React.FC<PaymentDetailDrawerProps> = ({
               Merchant Settlement Controls
             </div>
             <p className="text-[12px] text-[#697078] leading-relaxed">
-              Funds are currently frozen under a PayPal Authorization Hold. They have not been deducted as a final charge.
+              Sample record only. No PayPal authorization or held funds are associated with this preview.
             </p>
             <div className="grid grid-cols-2 gap-2 pt-1">
               <Button
                 variant="danger"
                 size="md"
-                isLoading={isProcessing}
-                onClick={handleVoid}
+                disabled
                 className="w-full text-[13px]"
               >
                 <XCircle size={15} />
-                <span>Void Authorization</span>
+                <span>Void Unavailable</span>
               </Button>
               <Button
                 variant="primary"
                 size="md"
-                isLoading={isProcessing}
-                onClick={handleCapture}
+                disabled
                 className="w-full text-[13px]"
               >
                 <CheckCircle2 size={15} />
-                <span>Capture Hold</span>
+                <span>Capture Unavailable</span>
               </Button>
             </div>
           </div>

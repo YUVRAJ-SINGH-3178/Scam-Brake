@@ -135,8 +135,10 @@ export interface AuditEvent {
     | 'TRUSTED_CONTACT_NOTIFIED'
     | 'AUTHORIZATION_VOIDED'
     | 'AUTHORIZATION_CAPTURED'
+  | 'PAYMENT_CAPTURED'
+  | 'TRUSTED_CONTACT_ALERT_DISPATCHED'
     | 'HOLD_EXPIRED';
-  actor: 'CUSTOMER' | 'PAYPAL_SYSTEM' | 'SCAM_BRAKE_AI' | 'MERCHANT_POLICY';
+  actor: 'CUSTOMER' | 'PAYPAL_SYSTEM' | 'SCAM_BRAKE_AI' | 'MERCHANT_POLICY' | 'SYSTEM_WORKER';
   summary: string;
   timestamp: string;
   details: Record<string, unknown>;
@@ -169,7 +171,7 @@ export interface SponsorIntegration {
   id: string;
   name: string;
   category: string;
-  status: 'SANDBOX_READY' | 'MOCK_ACTIVE' | 'CONTRACT_VALIDATED' | 'CONNECTED';
+  status: 'SANDBOX_READY' | 'MOCK_ACTIVE' | 'CONTRACT_VALIDATED' | 'CONNECTED' | 'UNAVAILABLE' | 'CONFIGURED_UNVERIFIED' | 'CONFIGURED_NOT_DEPLOYED' | 'IMPLEMENTED_UNVERIFIED' | 'MOCK_ONLY' | 'NOT_USED';
   purpose: string;
   interfaceMethod: string;
   docsUrl: string;

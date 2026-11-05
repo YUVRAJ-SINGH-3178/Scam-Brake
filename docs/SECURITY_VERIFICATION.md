@@ -1,0 +1,28 @@
+# Security verification matrix
+
+This is a practical verification record aligned with relevant OWASP ASVS 5.0.0 Level 1 controls and selected Level 2 expectations for payment and administrative operations. It is not an ASVS certification. Test status reflects checks actually run in this repository.
+
+| Control area | Requirement | Implementation / location | Test case | Result | Remaining limitation |
+|---|---|---|---|---|---|
+| Authentication | Unauthenticated requests must not receive an authenticated identity | `src/app/api/auth/session/route.ts`, `login/route.ts`; `src/server/auth/password.ts` | Request session endpoint without cookie; valid/invalid database credentials | Implemented, runtime request NOT RUN | Seed-only account creation; no email verification or password reset. |
+| Session integrity | Signed tokens use expiry, HTTP-only SameSite cookies and constant-time MAC comparison | `src/server/auth/session.ts`, `src/app/api/auth/login/route.ts` | `tests/unit/auth.test.mjs`: tamper, expiry, unknown role | PASSED | No durable revocation registry; a stolen token remains usable until expiry. |
+| Authorization | Protected payment operations require an authenticated merchant role | `src/app/api/payments/[id]/capture/route.ts`, `void/route.ts` | Anonymous request, insufficient role, allowed role | NOT RUN | No session issuer means valid role flow cannot be exercised end to end. |
+| Tenant isolation | Payment and audit access is scoped to the signed merchant ID | `src/app/api/payments/route.ts`, `[id]/route.ts`, `merchant/audit-log/route.ts`, `merchant/metrics/route.ts` | Merchant A reads Merchant B record | NOT RUN | No two-tenant database fixture; repository persistence is incomplete. |
+| Payment eligibility | Capture and void require a local active authorization | `src/server/payments/stateMachine.ts` | Capture/void from non-authorized and terminal states | Existing unit tests cover terminal/invalid transitions; new eligibility cases NOT RUN | State is not reconciled from a provider read before every operation. |
+| Payment result | Capture only reports complete after PayPal `COMPLETED` | `src/server/payments/stateMachine.ts` | Provider returns PENDING/DECLINED/COMPLETED | NOT RUN | No sandbox credentials; error recovery and durable pending state remain incomplete. |
+| Sandbox boundary | Live PayPal environment is rejected; demo mode cannot run in production | `src/server/paypal/client.ts`, `.env.example`, `render.yaml` | Constructor with live/demo-production configuration | NOT RUN | Configuration validation needs dedicated tests and deployment verification. |
+| Webhook authenticity | Reject events without PayPal verification configuration | `src/server/paypal/client.ts`, `src/app/api/webhooks/paypal/route.ts` | Missing webhook ID, invalid signature, valid sandbox signature | NOT RUN | No sandbox webhook ID or delivery evidence; event schema and replay/race behavior need tests. |
+| Webhook reconciliation | Capture event maps through related authorization ID | `src/app/api/webhooks/paypal/route.ts` | Capture ID differs from authorization ID | NOT RUN | Durable atomic deduplication and capture-record linkage are incomplete. |
+| Worker access | Internal tick endpoint requires a separate 32-byte bearer secret | `src/app/api/worker/tick/route.ts`, `src/server/auth/session.ts` | `tests/unit/auth.test.mjs`: missing and valid bearer secret | PASSED | Production secret wiring and worker process health have not been verified. |
+| Data durability | Production refuses missing/unavailable PostgreSQL rather than using memory | `src/server/db/client.ts` | Production with missing/broken database | NOT RUN | Prisma repository operations are incomplete; migrations were not exercised against PostgreSQL. |
+| CSRF | Cookie-authenticated state changes need origin/CSRF protection | `hasSameOrigin` on login/logout, capture/void and scheduler mutation | `tests/unit/auth.test.mjs`: same and cross origin helper | PARTIAL / PASSED | Not applied uniformly; no CSRF token strategy for all mutations. |
+| Rate limiting | Login and sensitive operations resist abuse across instances | `allowLoginAttempt` in `src/server/auth/session.ts` | Brute force and distributed bypass | NOT RUN | Process-local IP window only; no shared store or account-level throttling. |
+| Trusted-contact consent | Consent must be explicit, bound to a customer and auditable | Consent/notification API routes currently return 503 | Forged consent, replay, cross-customer request | Blocked by disabled routes | Customer identity, verified contact and durable consent are absent. |
+| Information disclosure | Health endpoint must expose liveness without sponsor claims or configuration | `src/app/api/health/route.ts`; `/api/health/ready` | Inspect response for secret/config details and DB readiness | NOT RUN | Runtime endpoint smoke test pending. |
+| SSRF | External URL adapters must constrain targets and redirects | `src/server/kernel/client.ts` | SSRF adapter unit test exists | PASSED in initial adapter suite | Re-review required for all outbound adapters and redirect behavior. |
+| Dependency security | Audit production dependencies | `package-lock.json` | `npm.cmd audit --omit=dev --audit-level=high` | PASSED, 0 reported | Development dependencies excluded; audit should be repeated at release. |
+| Secret handling | Real secrets must not be committed or logged | `.gitignore`, `.env.example` | Current tree/history secret scan | NOT RUN | Rotate any credential found in Git history; history scan result is pending. |
+
+## Verification rule
+
+Rows marked NOT RUN, FAILED / OPEN, or blocked are unresolved release items. No ASVS compliance claim should be made from this matrix.

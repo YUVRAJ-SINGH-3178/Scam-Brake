@@ -200,13 +200,13 @@ export const InteractiveDemo: React.FC = () => {
           <div className="space-y-4">
             <div>
               <span className="text-[13px] text-[#784D00] font-semibold">
-                PHASE 2: PRE-CAPTURE HOLD ESTABLISHED
+                PHASE 2: SIMULATED HOLD PREVIEW
               </span>
               <h3 className="text-[18px] font-semibold text-[#171A1F] mt-1">
-                PayPal Authorizes Hold (Capture Paused by Scam Brake)
+                Mock Authorization Scenario
               </h3>
               <p className="text-[15px] text-[#525860] mt-1 max-w-xl leading-relaxed">
-                PayPal confirms available balance and establishes an authorization hold. Scam Brake prevents immediate settlement capture because coercion markers were flagged.
+                This scripted preview shows an illustrative authorization. The current build makes no PayPal request and does not hold funds.
               </p>
             </div>
 
@@ -214,10 +214,10 @@ export const InteractiveDemo: React.FC = () => {
               <Clock size={18} className="text-[#784D00] shrink-0 mt-0.5" />
               <div className="text-[14px]">
                 <div className="font-semibold text-[#784D00]">
-                  Pre-Capture Verification Hold Active
+                  Simulated Pre-Capture Hold Preview
                 </div>
                 <div className="text-[#525860] text-[13px] leading-relaxed mt-0.5">
-                  Funds remain earmarked in PayPal. The merchant capture trigger is paused until the customer completes independent verification.
+                  Illustrative scenario only. No PayPal order exists, and no funds are held or moved.
                 </div>
               </div>
             </div>
@@ -341,14 +341,14 @@ export const InteractiveDemo: React.FC = () => {
                   }`}
                 >
                   {selectedScenario.expectedOutcome === 'VOID'
-                    ? 'Loss Prevented: $' + selectedScenario.amount.toFixed(2) + ' USD ($0 dispute fees)'
-                    : 'Verified Safe: $' + selectedScenario.amount.toFixed(2) + ' USD Captured'}
+                    ? 'Simulated void scenario: $' + selectedScenario.amount.toFixed(2) + ' USD'
+                    : 'Simulated capture scenario: $' + selectedScenario.amount.toFixed(2) + ' USD'}
                 </span>
               </div>
               <p className="text-[14px] text-[#525860] leading-relaxed">
                 {selectedScenario.expectedOutcome === 'VOID'
-                  ? 'Coercion scheme confirmed by customer. Scam Brake executed a pre-capture void via PayPal Orders API (`/v2/payments/authorizations/{id}/void`). The authorization terminated immediately with no chargeback record.'
-                  : 'Independent verification confirmed the customer intended this transaction with zero remote desktop or impersonation indicators. Settlement captured cleanly.'}
+                  ? 'This local-only simulation shows the void decision path. It does not call PayPal or record a real payment.'
+                  : 'This local-only simulation shows the capture decision path. It does not call PayPal or record a real payment.'}
               </p>
             </div>
 

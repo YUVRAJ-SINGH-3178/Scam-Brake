@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { DEFAULT_DEMO_MERCHANT_SESSION } from '@/server/auth/session';
+import { getMerchantSession } from '@/server/auth/session';
+import type { NextRequest } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const user = getMerchantSession(request);
   return NextResponse.json({
-    authenticated: true,
-    user: DEFAULT_DEMO_MERCHANT_SESSION,
+    authenticated: Boolean(user),
+    user: user ? { userId: user.userId, email: user.email, name: user.name, role: user.role, merchantId: user.merchantId } : null,
   });
 }
 

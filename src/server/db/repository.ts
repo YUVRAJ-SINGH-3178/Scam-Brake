@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma, checkDatabaseConnection } from './client.ts';
 import type {
   Payment,
@@ -6,6 +7,9 @@ import type {
   AuditEvent,
   DashboardMetrics,
   RiskLevel,
+  InterventionStatus,
+  SignalCategory,
+  RiskSignal,
   AuthorizationStatus,
   SponsorIntegration,
   SimulationScenario,
@@ -20,7 +24,7 @@ import {
 } from '../../data/seedData.ts';
 import crypto from 'crypto';
 
-// In-memory persistent transactional fallback store
+// In-memory development fallback store; data is neither persistent nor transactional.
 class FallbackRepository {
   public payments: Payment[] = JSON.parse(JSON.stringify(SEED_PAYMENTS));
   public interventions: Record<string, InterventionSession> = JSON.parse(
@@ -54,6 +58,11 @@ class FallbackRepository {
 }
 
 const fallback = new FallbackRepository();
+
+function handleDatabaseFailure(error: unknown, message: string): void {
+  if (process.env.NODE_ENV === 'production') throw new Error(message, { cause: error });
+  console.error(`[DB] ${message}; development fallback is active.`);
+}
 
 /**
  * Computes deterministic Merkle-style SHA-256 seal for an audit event
@@ -109,7 +118,7 @@ export const dbRepository = {
           riskScore: r.riskScore,
           riskLevel: r.riskLevel as RiskLevel,
           authorizationStatus: r.authorizationStatus as AuthorizationStatus,
-          interventionStatus: r.interventionStatus as any,
+          interventionStatus: r.interventionStatus as InterventionStatus,
           customer: {
             id: r.customer?.id || 'cust_unknown',
             name: r.customer?.name || 'Customer',
@@ -125,11 +134,11 @@ export const dbRepository = {
           resolutionNotes: r.resolutionNotes || undefined,
           riskSignals: (r.riskAssessments[0]?.signals || []).map((s) => ({
             id: s.id,
-            category: s.category as any,
-            severity: s.severity as any,
+            category: s.category as SignalCategory,
+            severity: s.severity as RiskLevel,
             title: s.title,
             description: s.description,
-            source: s.source as any,
+            source: s.source as RiskSignal['source'],
             confidence: s.confidence,
             detectedAt: s.detectedAt.toISOString(),
           })),
@@ -154,8 +163,8 @@ export const dbRepository = {
           results = results.filter((p) => p.authorizationStatus === filter.status);
         }
         return results;
-      } catch (err) {
-        console.error('[DB] Error querying Postgres payments, falling back to local store:', err);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to query PostgreSQL payments');
       }
     }
 
@@ -225,8 +234,8 @@ export const dbRepository = {
             resolutionNotes: payment.resolutionNotes,
           },
         });
-      } catch (err) {
-        console.error('[DB] Postgres savePayment error:', err);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to save payment to PostgreSQL');
       }
     }
 
@@ -252,8 +261,8 @@ export const dbRepository = {
           where: { idempotencyKey },
         });
         return !!op;
-      } catch (e) {
-        console.error('[DB] checkIdempotency error:', e);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to check payment idempotency');
       }
     }
     return fallback.operations.some((op) => op.idempotencyKey === idempotencyKey);
@@ -264,8 +273,8 @@ export const dbRepository = {
     operationType: string;
     idempotencyKey: string;
     status: string;
-    requestPayload?: any;
-    responsePayload?: any;
+    requestPayload?: Prisma.InputJsonValue;
+    responsePayload?: Prisma.InputJsonValue;
     errorMessage?: string;
     executedBy?: string;
   }) {
@@ -284,8 +293,8 @@ export const dbRepository = {
             executedBy: data.executedBy || 'SYSTEM',
           },
         });
-      } catch (e) {
-        console.error('[DB] recordOperation error:', e);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to persist payment operation');
       }
     }
     fallback.operations.push({
@@ -303,7 +312,7 @@ export const dbRepository = {
   // --------------------------------------------------------------------------
   async recordAuditLog(event: {
     paymentId?: string;
-    eventType: string;
+    eventType: AuditEvent['eventType'];
     actor: 'CUSTOMER' | 'PAYPAL_SYSTEM' | 'SCAM_BRAKE_AI' | 'MERCHANT_POLICY' | 'SYSTEM_WORKER';
     summary: string;
     details?: Record<string, unknown>;
@@ -322,8 +331,8 @@ export const dbRepository = {
     const logEntry: AuditEvent = {
       id: `audit_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       paymentId: event.paymentId || 'global',
-      eventType: event.eventType as any,
-      actor: event.actor as any,
+      eventType: event.eventType,
+      actor: event.actor,
       summary: event.summary,
       timestamp,
       details: event.details || {},
@@ -341,13 +350,13 @@ export const dbRepository = {
             eventType: event.eventType,
             actor: event.actor,
             summary: event.summary,
-            details: event.details ? (event.details as any) : undefined,
+            details: event.details ? (event.details as Prisma.InputJsonValue) : undefined,
             immutableHash: hash,
             prevHash,
           },
         });
-      } catch (err) {
-        console.error('[DB] recordAuditLog error:', err);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to persist audit event');
       }
     }
 
@@ -394,8 +403,8 @@ export const dbRepository = {
   // --------------------------------------------------------------------------
   // METRICS & DASHBOARD
   // --------------------------------------------------------------------------
-  async getMetrics(): Promise<DashboardMetrics> {
-    const payments = await this.getPayments();
+  async getMetrics(merchantId?: string): Promise<DashboardMetrics> {
+    const payments = await this.getPayments({ merchantId });
 
     let totalProtectedVolume = 0;
     let activeHoldCount = 0;
@@ -489,8 +498,8 @@ export const dbRepository = {
           where: { eventId },
         });
         return !!found && found.status === 'PROCESSED';
-      } catch (err) {
-        console.error('[DB] isWebhookProcessed error:', err);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to check webhook deduplication');
       }
     }
     return fallback.webhooks.some((w) => w.eventId === eventId);
@@ -513,8 +522,8 @@ export const dbRepository = {
             processedAt: new Date(),
           },
         });
-      } catch (err) {
-        console.error('[DB] markWebhookProcessed error:', err);
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to persist webhook event');
       }
     }
     fallback.webhooks.push({

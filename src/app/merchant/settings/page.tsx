@@ -86,10 +86,10 @@ export default function MerchantSettingsPage() {
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-6 space-y-4">
           <h2 className="text-[14px] font-semibold text-[#171A1F] flex items-center gap-2">
             <Key size={15} className="text-[#171A1F]" />
-            <span>Production API Secret</span>
+            <span>Sample API Key Preview</span>
           </h2>
           <p className="text-[13px] text-[#525860]">
-            Use this secret key in your server-side PayPal authorization evaluation hooks. Keep this key strictly confidential.
+            This placeholder is not a credential and cannot authorize requests. API key issuance is not implemented.
           </p>
 
           <div className="flex items-center gap-2 text-[13px]">
@@ -113,7 +113,7 @@ export default function MerchantSettingsPage() {
             <span>Outbound Webhook Delivery</span>
           </h2>
           <p className="text-[13px] text-[#525860]">
-            Scam Brake delivers signed HTTP POST events when authorizations are placed on hold, verified safe, or voided.
+            The Zapier adapter can send signed HTTP POST events when configured. No live destination has been verified.
           </p>
 
           <div className="space-y-1.5 text-[13px]">

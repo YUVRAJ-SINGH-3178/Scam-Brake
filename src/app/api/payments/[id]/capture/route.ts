@@ -2,19 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { PaymentStateMachine } from '@/server/payments/stateMachine';
 import { zapierAutomationRelay } from '@/server/zapier/relay';
+import { getMerchantSession, hasMerchantPermission, hasSameOrigin } from '@/server/auth/session';
+import { dbRepository } from '@/server/db/repository';
+import { errorMessage } from '@/server/errors';
 
 const CaptureSchema = z.object({
   idempotencyKey: z.string().optional(),
   notes: z.string().optional(),
-  actor: z.enum(['CUSTOMER', 'MERCHANT_POLICY', 'SYSTEM_WORKER']).default('MERCHANT_POLICY'),
 });
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const session = getMerchantSession(req);
+  if (!hasSameOrigin(req)) return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 });
+  if (!session || !hasMerchantPermission(session, ['OWNER', 'ADMIN'])) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const { id } = await params;
+    const payment = await dbRepository.getPaymentById(id);
+    if (!payment || payment.merchantId !== session.merchantId) {
+      return NextResponse.json({ error: 'Payment not found' }, { status: 404 });
+    }
     const body = await req.json().catch(() => ({}));
     const validated = CaptureSchema.parse(body);
 
@@ -22,7 +33,7 @@ export async function POST(
 
     const updatedPayment = await PaymentStateMachine.executeCapture({
       paymentId: id,
-      actor: validated.actor,
+      actor: 'MERCHANT_POLICY',
       notes: validated.notes || 'Verified safe; PayPal pre-capture hold released to settlement capture.',
       idempotencyKey,
     });
@@ -45,8 +56,8 @@ export async function POST(
       interventionStatus: updatedPayment.interventionStatus,
       resolvedAt: updatedPayment.resolvedAt,
     });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Capture failed' }, { status: 400 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: errorMessage(error, 'Capture failed') }, { status: 400 });
   }
 }
 

@@ -88,9 +88,9 @@ export default function MerchantInterventionsQueuePage() {
         <div className="bg-[#F6F6F3] border border-[#DFE2DF] rounded-[6px] p-4 text-[13px] text-[#171A1F] flex items-start gap-3">
           <Clock size={16} className="text-[#784D00] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <span className="font-semibold text-[#171A1F]">Zero-Dispute Protection Window</span>
+            <span className="font-semibold text-[#171A1F]">Prototype Intervention Preview</span>
             <p className="text-[#525860] leading-relaxed">
-              When high coercion risk is detected, funds are held in PayPal authorized state for 30 minutes. The customer interacts with Scam Brake&apos;s calm verification workflow. If social engineering is confirmed or the customer cancels, the authorization is voided at \$0 fee with zero chargeback record.
+              This screen shows sample intervention records. The current prototype does not create PayPal authorizations or process customer decisions.
             </p>
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function MerchantInterventionsQueuePage() {
             </div>
             <h3 className="text-[14px] font-semibold text-[#171A1F]">Queue Is Clean</h3>
             <p className="text-[13px] text-[#525860] max-w-sm mx-auto">
-              No active payments currently require emergency verification hold. All pending checkouts have either been verified or released.
+              No live payment data is connected. Sample records in this prototype do not represent customer checkouts.
             </p>
           </div>
         ) : (

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import {
   ShieldAlert,
   Send,
@@ -15,14 +15,12 @@ import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { mockStore } from '@/services';
 
 function CustomerInterventionChatContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const paymentId = searchParams.get('paymentId') || 'pay_sb_881901';
 
   const [payment] = useState(() => mockStore.getPaymentById(paymentId) || mockStore.getPaymentById('pay_sb_881901')!);
   const [session, setSession] = useState(() => mockStore.getInterventionById(payment.interventionSessionId || 'int_sess_881901')!);
   const [inputValue, setInputValue] = useState('');
-  const [isResolving, setIsResolving] = useState(false);
 
   const handleSendMessage = (textToSend?: string) => {
     const text = textToSend || inputValue;
@@ -33,28 +31,6 @@ function CustomerInterventionChatContent() {
     if (res) {
       setSession({ ...res.session });
     }
-  };
-
-  const handleVoidPayment = () => {
-    setIsResolving(true);
-    setTimeout(() => {
-      mockStore.voidPayment(
-        payment.id,
-        'Customer acknowledged coercion markers during AI conversational check-in and cancelled authorization.'
-      );
-      router.push(`/intervention/resolved?action=voided&paymentId=${payment.id}`);
-    }, 600);
-  };
-
-  const handleProceedPayment = () => {
-    setIsResolving(true);
-    setTimeout(() => {
-      mockStore.capturePayment(
-        payment.id,
-        'Customer reviewed safety check, confirmed independent volition, and authorized capture.'
-      );
-      router.push(`/intervention/resolved?action=captured&paymentId=${payment.id}`);
-    }, 600);
   };
 
   return (
@@ -86,6 +62,9 @@ function CustomerInterventionChatContent() {
           </span>
         </div>
       </header>
+      <div role="status" className="bg-[#FAF2E4] text-[#5C3B00] border-b border-[#784D00]/20 px-4 py-2 text-xs text-center">
+        Local conversation preview only. No PayPal transaction exists; do not enter personal information.
+      </div>
 
       {/* Main Chat Flow */}
       <main className="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 flex flex-col justify-between space-y-4">
@@ -98,7 +77,7 @@ function CustomerInterventionChatContent() {
             </h1>
           </div>
           <p className="leading-relaxed">
-            PayPal has temporarily authorized this hold so that you can verify this transaction in complete privacy. No money will leave your account without your explicit confirmation.
+            This preview does not create a PayPal authorization or move money.
           </p>
         </div>
 
@@ -192,15 +171,13 @@ function CustomerInterventionChatContent() {
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
-                onClick={handleVoidPayment}
-                disabled={isResolving}
+                disabled
                 className="flex-1 sm:flex-none px-4 py-2 bg-[#FFFFFF] border border-[#C53030]/40 text-[#C53030] hover:bg-[#FDE8E8] text-[13px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
-                Cancel & Void Payment ($0 fee)
+                Payment decision unavailable in this preview
               </button>
               <button
-                onClick={handleProceedPayment}
-                disabled={isResolving}
+                disabled
                 className="flex-1 sm:flex-none px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[13px] font-medium rounded-[6px] transition-colors cursor-pointer"
               >
                 Confirm & Capture Payment

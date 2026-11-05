@@ -3,15 +3,13 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle2, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { ScamBrakeMark } from '@/components/brand/ScamBrakeMark';
 import { Button } from '@/components/ui/Button';
-import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 
 function CheckoutStatusContent() {
   const searchParams = useSearchParams();
-  const outcome = searchParams.get('outcome') || 'hold';
-  const isCaptured = outcome === 'captured';
+  void searchParams;
 
   return (
     <div className="min-h-screen bg-[#F6F6F3] text-[#171A1F] flex flex-col antialiased">
@@ -30,27 +28,18 @@ function CheckoutStatusContent() {
       <main className="flex-1 max-w-2xl mx-auto w-full p-6 py-12 space-y-6">
         <div className="bg-[#FFFFFF] border border-[#DFE2DF] rounded-[6px] p-8 space-y-6 text-center">
           <div className="w-10 h-10 rounded-full bg-[#EAF4F1] text-[#1A7A64] flex items-center justify-center mx-auto border border-[#1A7A64]/20">
-            {isCaptured ? <CheckCircle2 size={20} /> : <Clock size={20} className="text-[#784D00]" />}
+            <Clock size={20} className="text-[#784D00]" />
           </div>
 
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
-              {isCaptured ? 'Payment Captured Successfully' : 'Authorization In Review'}
+              No payment status is available
             </h1>
             <p className="text-[13px] text-[#525860] leading-relaxed max-w-md mx-auto">
-              {isCaptured
-                ? 'Your order has been verified and settled through PayPal. The merchant is preparing your fulfillment.'
-                : 'Scam Brake is currently reviewing the pre-capture authorization hold. Funds remain safe in your account.'}
+              This prototype has not created a PayPal order or authorization. Query parameters do not confirm a payment outcome.
             </p>
           </div>
 
-          <div className="pt-2">
-            <AuthorizationPath
-              currentStage={isCaptured ? 'CAPTURE' : 'REVIEW'}
-              variant="app"
-              amount={1499.0}
-            />
-          </div>
 
           <div className="pt-4 flex justify-center gap-3">
             <Link href="/merchant">

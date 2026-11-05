@@ -66,63 +66,15 @@ class ScamBrakeMockStore {
   }
 
   capturePayment(id: string, notes?: string): Payment | null {
-    const payment = this.getPaymentById(id);
-    if (!payment) return null;
-
-    payment.authorizationStatus = 'CAPTURED';
-    payment.interventionStatus = 'VERIFIED_SAFE';
-    payment.resolvedAt = new Date().toISOString();
-    payment.resolutionNotes = notes || 'Customer passed verification check; authorization captured.';
-    payment.authorizationHoldSecondsRemaining = 0;
-
-    this.addAuditLog({
-      paymentId: payment.id,
-      eventType: 'AUTHORIZATION_CAPTURED',
-      actor: 'MERCHANT_POLICY',
-      summary: `Authorization captured for ${payment.paymentReference} ($${payment.amount.toFixed(2)} USD).`,
-      details: { amount: payment.amount, notes },
-    });
-
-    // Sync with real backend state machine if in browser
-    if (typeof window !== 'undefined') {
-      fetch(`/api/payments/${encodeURIComponent(payment.id)}/capture`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notes }),
-      }).catch((e) => console.warn('[API SYNC] Background capture call failed:', e));
-    }
-
-    return { ...payment };
+    void id;
+    void notes;
+    return null;
   }
 
   voidPayment(id: string, reason?: string): Payment | null {
-    const payment = this.getPaymentById(id);
-    if (!payment) return null;
-
-    payment.authorizationStatus = 'VOIDED';
-    payment.interventionStatus = 'SCAM_CONFIRMED';
-    payment.resolvedAt = new Date().toISOString();
-    payment.resolutionNotes = reason || 'Customer intervention identified coercive scam markers. Authorization voided.';
-    payment.authorizationHoldSecondsRemaining = 0;
-
-    this.addAuditLog({
-      paymentId: payment.id,
-      eventType: 'AUTHORIZATION_VOIDED',
-      actor: 'CUSTOMER',
-      summary: `Authorization voided for ${payment.paymentReference} ($${payment.amount.toFixed(2)} USD). Funds released.`,
-      details: { amount: payment.amount, reason },
-    });
-
-    // Sync with real backend state machine if in browser
-    if (typeof window !== 'undefined') {
-      fetch(`/api/payments/${encodeURIComponent(payment.id)}/void`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reason }),
-      }).catch((e) => console.warn('[API SYNC] Background void call failed:', e));
-    }
-
-    return { ...payment };
+    void id;
+    void reason;
+    return null;
   }
 
   createPaymentFromScenario(scenarioId: string): Payment {
@@ -421,7 +373,19 @@ class ScamBrakeMockStore {
   }
 
   getSponsors(): SponsorIntegration[] {
-    return [...SPONSORS];
+    const statuses: Record<string, SponsorIntegration['status']> = {
+      spon_ag_grid: 'NOT_USED',
+      spon_apimatic: 'NOT_USED',
+      spon_astropods: 'IMPLEMENTED_UNVERIFIED',
+      spon_bryntum: 'MOCK_ONLY',
+      spon_channel3: 'IMPLEMENTED_UNVERIFIED',
+      spon_elastic: 'IMPLEMENTED_UNVERIFIED',
+      spon_kernel: 'IMPLEMENTED_UNVERIFIED',
+      spon_postman: 'IMPLEMENTED_UNVERIFIED',
+      spon_render: 'CONFIGURED_NOT_DEPLOYED',
+      spon_zapier: 'IMPLEMENTED_UNVERIFIED',
+    };
+    return SPONSORS.map((sponsor) => ({ ...sponsor, status: statuses[sponsor.id] || 'UNAVAILABLE' }));
   }
 
   getScenarios(): SimulationScenario[] {

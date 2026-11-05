@@ -1,5 +1,7 @@
 # SCAM BRAKE: API REFERENCE
 
+> **Status (2026-11-05):** This reference includes planned endpoints and examples that are not currently operational. Checkout and intervention endpoints fail closed, and payment lifecycle calls have not been externally verified. Treat responses and IDs in examples as illustrative. See [FINAL_AUDIT_BASELINE.md](FINAL_AUDIT_BASELINE.md).
+
 Complete REST endpoint reference for Scam Brake protected checkout, payments, AI interventions, and webhooks.
 
 ---

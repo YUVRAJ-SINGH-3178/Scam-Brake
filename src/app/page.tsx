@@ -36,7 +36,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="text-[17px] text-[#2B303A] leading-relaxed max-w-xl">
-                  Scam Brake introduces a verification hold between PayPal authorization and capture, stopping social-engineering fraud before irreversible settlement.
+                  Scam Brake is a prototype exploring a verification pause between PayPal authorization and capture. Live payment operations are not available in this build.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -62,9 +62,9 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="animate-entrance">
-                    <div className="font-semibold text-[#171A1F] text-[15px]">$0 Dispute Fees</div>
+                    <div className="font-semibold text-[#171A1F] text-[15px]">Sandbox Prototype</div>
                     <div className="text-[15px] mt-1.5 text-[#2B303A] leading-relaxed">
-                      Pre-capture void releases holds with zero chargeback penalty.
+                      No live PayPal orders, authorizations, captures, or voids are processed.
                     </div>
                   </div>
                   <div className="animate-entrance">
@@ -108,6 +108,7 @@ export default function HomePage() {
                       <code>REF: SB-2026-8819</code>
                     </span>
                   </div>
+                  <p className="text-[11px] text-[#784D00]">Illustrative state preview. No provider transaction exists.</p>
 
                   {/* Transaction Overview */}
                   <div className="flex items-baseline justify-between">
@@ -172,7 +173,7 @@ export default function HomePage() {
                             : 'bg-[#FFFFFF] border-[#DFE2DF] text-[#C53030] hover:bg-[#FDE8E8]'
                         }`}
                       >
-                        Simulate Customer Void ($0 fee)
+                        Preview Void Scenario
                       </button>
                       <button
                         onClick={() => setHeroState('CAPTURE')}
@@ -263,10 +264,10 @@ export default function HomePage() {
                     <span>→</span>
                     <span>AI Check-In</span>
                     <span>→</span>
-                    <span className="text-[#1A7A64] font-semibold">Void ($0 Fee)</span>
+                    <span className="text-[#1A7A64] font-semibold">Void Preview</span>
                   </div>
                   <p className="text-[14px] text-[#525860] leading-relaxed">
-                    Funds are temporarily paused in PayPal authorized status. If social engineering is confirmed, the authorization is voided with $0 in merchant processing fees and zero dispute marks.
+                    This diagram illustrates the intended flow. The current build does not create or void PayPal authorizations.
                   </p>
                 </div>
               </div>
@@ -321,7 +322,7 @@ export default function HomePage() {
                 {
                   phase: 'Phase 03',
                   title: 'Pre-Capture Hold',
-                  desc: 'PayPal creates a temporary authorization hold while funds remain safe.',
+                  desc: 'The product concept uses an authorization step before capture; this preview does not call PayPal.',
                 },
                 {
                   phase: 'Phase 04',
@@ -331,7 +332,7 @@ export default function HomePage() {
                 {
                   phase: 'Phase 05',
                   title: 'Clean Resolution',
-                  desc: 'If scam is confirmed, pre-capture void terminates hold at $0 fee. If verified, payment captures.',
+                  desc: 'Prototype illustrates intended decisions; current build cannot create or resolve provider payments.',
                 },
               ].map((item, idx) => (
                 <div key={idx} className="p-6 space-y-2.5 bg-[#F6F6F3] rounded-[6px] animate-entrance">
@@ -423,7 +424,7 @@ export default function HomePage() {
                 {[
                   {
                     q: 'How is an authorization hold different from a completed charge?',
-                    a: 'When an authorization occurs, the customer funding source confirms funds are available and sets them aside, but no money is transferred to the merchant. Scam Brake operates entirely during this temporary hold. If the transaction is canceled, the authorization is voided immediately with zero dispute wait time.',
+                    a: 'A PayPal authorization can temporarily reserve funds before capture. This prototype does not create an authorization, and release timing depends on the provider and funding source.',
                   },
                   {
                     q: 'Does Scam Brake monitor all of my PayPal transactions?',
@@ -431,7 +432,7 @@ export default function HomePage() {
                   },
                   {
                     q: 'Will Scam Brake slow down normal everyday checkouts?',
-                    a: 'For 98%+ of normal e-commerce orders, risk scores remain in the single digits, and the authorization is captured instantly with zero added friction. The safety check-in only triggers when high-risk coercion patterns (such as gift cards combined with active telephone calls or impersonation threats) are detected.',
+                    a: 'No checkout performance or friction results have been measured. The local risk engine is a prototype and has not been evaluated on real merchant traffic.',
                   },
                   {
                     q: 'Who decides whether to void or capture the payment?',

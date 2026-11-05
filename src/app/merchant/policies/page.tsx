@@ -28,16 +28,17 @@ export default function MerchantRiskPoliciesPage() {
               Risk & Hold Policies
             </h1>
             <p className="text-[13px] text-[#525860] mt-1">
-              Configure automated PayPal pre-capture hold windows, risk triggers, and escalation parameters.
+              Illustrative policy controls only. Policy persistence and payment automation are not available in this prototype.
             </p>
           </div>
 
           <button
             onClick={handleSave}
+            disabled
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#171A1F] text-white hover:bg-[#2B303A] text-[13px] font-medium rounded-[6px] transition-colors self-start sm:self-auto cursor-pointer"
           >
             <Save size={13} />
-            <span>Save Policy Rules</span>
+            <span>Policy Saving Unavailable</span>
           </button>
         </div>
 
@@ -95,7 +96,7 @@ export default function MerchantRiskPoliciesPage() {
                 <code className="font-mono font-semibold text-[#784D00]">&gt; {riskThresholdHold} / 100</code>
               </div>
               <p className="text-[#525860] leading-relaxed">
-                Checkouts scoring above this value are held in PayPal authorized status, launching customer verification check-in.
+                Intended behavior only. This prototype does not authorize or hold payments.
               </p>
               <input
                 type="range"
@@ -114,7 +115,7 @@ export default function MerchantRiskPoliciesPage() {
                 <code className="font-mono font-semibold text-[#C53030]">&gt; {riskThresholdAutoVoid} / 100</code>
               </div>
               <p className="text-[#525860] leading-relaxed">
-                Critical checkouts scoring above this threshold with confirmed phone spoofing and extortion scripts are auto-voided.
+                Intended behavior only. Automated decisions and payment actions are not enabled.
               </p>
               <input
                 type="range"
@@ -146,7 +147,7 @@ export default function MerchantRiskPoliciesPage() {
                   Auto-void unverified authorizations when hold window expires
                 </span>
                 <span className="text-[#525860] text-[12px] block mt-0.5">
-                  If the customer abandons the check-in or timer runs out without safe confirmation, the PayPal authorization is released without taking funds.
+                  Intended behavior only. No live authorization timeout or release action is configured.
                 </span>
               </div>
             </label>

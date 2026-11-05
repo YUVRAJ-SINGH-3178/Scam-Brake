@@ -1,4 +1,5 @@
 import type { Payment, AuthorizationStatus } from '../../types/index.ts';
+import { Prisma } from '@prisma/client';
 import { dbRepository } from '../db/repository.ts';
 import { paypalClient } from '../paypal/client.ts';
 
@@ -157,6 +158,9 @@ export class PaymentStateMachine {
       if (payment.authorizationStatus === 'VOIDED') {
         throw new Error(`Cannot capture payment ${params.paymentId} because authorization has already been VOIDED.`);
       }
+      if (payment.authorizationStatus !== 'HOLD_ACTIVE') {
+        throw new Error(`Cannot capture payment ${params.paymentId} unless PayPal confirms an active authorization hold.`);
+      }
 
       // Check idempotency table
       const alreadyRun = await dbRepository.checkIdempotency(params.idempotencyKey);
@@ -171,13 +175,25 @@ export class PaymentStateMachine {
         params.idempotencyKey
       );
 
+      if (captureResult.status !== 'COMPLETED') {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'CAPTURE',
+          idempotencyKey: params.idempotencyKey,
+          status: captureResult.status,
+          responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
+          executedBy: params.actor,
+        });
+        throw new Error(`PayPal capture is not complete (provider status: ${captureResult.status}).`);
+      }
+
       // Record operation
       await dbRepository.recordOperation({
         paymentId: payment.id,
         operationType: 'CAPTURE',
         idempotencyKey: params.idempotencyKey,
         status: captureResult.status,
-        responsePayload: captureResult,
+        responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
         executedBy: params.actor,
       });
 
@@ -214,6 +230,9 @@ export class PaymentStateMachine {
       if (payment.authorizationStatus === 'CAPTURED') {
         throw new Error(`Cannot void payment ${params.paymentId} because it has already been CAPTURED.`);
       }
+      if (payment.authorizationStatus !== 'HOLD_ACTIVE') {
+        throw new Error(`Cannot void payment ${params.paymentId} unless PayPal confirms an active authorization hold.`);
+      }
 
       const alreadyRun = await dbRepository.checkIdempotency(params.idempotencyKey);
       if (alreadyRun) {
@@ -226,13 +245,17 @@ export class PaymentStateMachine {
         params.idempotencyKey
       );
 
+      if (voidResult.status !== 'VOIDED') {
+        throw new Error(`PayPal authorization void is not confirmed (provider status: ${voidResult.status}).`);
+      }
+
       // Record operation
       await dbRepository.recordOperation({
         paymentId: payment.id,
         operationType: 'VOID',
         idempotencyKey: params.idempotencyKey,
         status: voidResult.status,
-        responsePayload: voidResult,
+        responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue,
         executedBy: params.actor,
       });
 

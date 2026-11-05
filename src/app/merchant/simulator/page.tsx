@@ -49,7 +49,7 @@ export default function MerchantSimulatorPage() {
               Simulation Center
             </h1>
             <p className="text-[13px] text-[#525860] mt-1">
-              Test PayPal authorization holds, telemetry evaluation, and customer verification workflows.
+              Explore local sample risk scenarios. The simulator does not contact PayPal or perform a real authorization, capture, or void.
             </p>
           </div>
 

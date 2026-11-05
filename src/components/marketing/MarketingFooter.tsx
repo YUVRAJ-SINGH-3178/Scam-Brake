@@ -17,7 +17,7 @@ export const MarketingFooter: React.FC = () => {
               </span>
             </div>
             <p className="text-[14px] text-[#525860] leading-relaxed max-w-sm">
-              Merchant-integrated payment verification protocol introducing an AI-assisted hold between PayPal authorization and capture.
+              Prototype exploring a merchant-integrated verification pause before payment capture.
             </p>
             <div className="text-[13px] text-[#525860]">
               Stop. Verify. Stay protected.

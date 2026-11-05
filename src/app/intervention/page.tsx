@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Clock,
   PhoneCall,
@@ -15,20 +14,16 @@ import { AuthorizationPath } from '@/components/brand/AuthorizationPath';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { mockStore } from '@/services';
-import { toast } from 'sonner';
 
 export default function CustomerInterventionPage() {
-  const router = useRouter();
 
   // Retrieve seed payment pay_sb_881901 (Martha Stephenson $1,500 gift card hold)
   const [payment] = useState(() => mockStore.getPaymentById('pay_sb_881901')!);
   const [session, setSession] = useState(() => mockStore.getInterventionById('int_sess_881901')!);
   const [inputValue, setInputValue] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isNotifyingContact, setIsNotifyingContact] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
-  const [isResolving, setIsResolving] = useState(false);
 
   const handleSendMessage = (textToSend?: string) => {
     const text = textToSend || inputValue;
@@ -49,36 +44,8 @@ export default function CustomerInterventionPage() {
       if (updated) setSession(updated);
       setIsVerifying(false);
       setShowVerifyModal(false);
-      toast.info('Kernel verification directory check completed.');
+      setShowVerifyModal(false);
     }, 800);
-  };
-
-  const handleTrustedContactNotify = () => {
-    setIsNotifyingContact(true);
-    setTimeout(() => {
-      mockStore.grantTrustedContactConsent(session.id);
-      const updated = mockStore.getInterventionById(session.id);
-      if (updated) setSession(updated);
-      setIsNotifyingContact(false);
-      setShowContactModal(false);
-      toast.success('Trusted contact David Stephenson has been notified via SMS.');
-    }, 700);
-  };
-
-  const handleVoidPayment = () => {
-    setIsResolving(true);
-    setTimeout(() => {
-      mockStore.voidPayment(payment.id, 'Customer canceled during intervention.');
-      router.push('/intervention/resolved?outcome=void');
-    }, 600);
-  };
-
-  const handleProceedPayment = () => {
-    setIsResolving(true);
-    setTimeout(() => {
-      mockStore.capturePayment(payment.id, 'Customer confirmed deliberate purchase.');
-      router.push('/intervention/resolved?outcome=capture');
-    }, 600);
   };
 
   return (
@@ -102,6 +69,9 @@ export default function CustomerInterventionPage() {
           <span>Hold Active</span>
         </div>
       </header>
+      <div role="status" className="bg-[#FAF2E4] text-[#5C3B00] border-b border-[#784D00]/20 px-4 py-2 text-xs text-center">
+        Local intervention preview only. No PayPal authorization exists; verification and trusted-contact dispatch are not live.
+      </div>
 
       {/* Main Intervention Layout */}
       <main className="flex-1 max-w-5xl mx-auto w-full p-4 sm:p-6 py-8 space-y-6">
@@ -116,7 +86,7 @@ export default function CustomerInterventionPage() {
                 Your payment is temporarily protected.
               </h1>
               <p className="text-[14px] text-[#525860] mt-1.5 max-w-2xl leading-relaxed">
-                PayPal has approved the payment authorization, but{' '}
+                This preview has not created a PayPal authorization, but{' '}
                 <strong className="text-[#171A1F] font-semibold">no funds have been transferred</strong> to Apex Digital yet. Your money remains safe in your account while you take a calm moment to verify.
               </p>
             </div>
@@ -314,30 +284,28 @@ export default function CustomerInterventionPage() {
                 Your Decision
               </div>
               <p className="text-[13px] text-[#525860] leading-relaxed">
-                You are completely in control. You may cancel this hold right now with zero dispute wait time, or confirm that you are uncoerced.
+                This local preview has no active hold. Payment decisions are unavailable until customer identity and provider confirmation are implemented.
               </p>
 
               <div className="space-y-2 pt-1">
                 <Button
                   variant="danger"
                   size="lg"
-                  isLoading={isResolving}
-                  onClick={handleVoidPayment}
+                  disabled
                   className="w-full text-[14px]"
                 >
                   <XCircle size={15} />
-                  <span>Void Authorization (Cancel Payment)</span>
+                  <span>Void unavailable in this preview</span>
                 </Button>
 
                 <Button
                   variant="outline"
                   size="md"
-                  isLoading={isResolving}
-                  onClick={handleProceedPayment}
+                  disabled
                   className="w-full text-[13px] text-[#525860] hover:text-[#171A1F]"
                 >
                   <CheckCircle2 size={14} className="text-[#1A7A64]" />
-                  <span>Confirm and Capture Payment</span>
+                  <span>Capture unavailable in this preview</span>
                 </Button>
               </div>
             </div>
@@ -411,10 +379,9 @@ export default function CustomerInterventionPage() {
             <Button
               variant="primary"
               size="sm"
-              isLoading={isNotifyingContact}
-              onClick={handleTrustedContactNotify}
+              disabled
             >
-              Grant Consent &amp; Dispatch
+              Trusted contact dispatch unavailable
             </Button>
           </div>
         </div>

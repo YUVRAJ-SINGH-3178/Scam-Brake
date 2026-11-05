@@ -19,90 +19,63 @@ export interface ZapierDeliveryRecord {
   eventType: string;
   targetUrl: string;
   statusCode?: number;
-  status: 'DELIVERED' | 'FAILED' | 'RETRY_QUEUED';
+  status: 'DELIVERED' | 'FAILED';
   sentAt: string;
 }
 
-class ZapierAutomationRelay {
+export class ZapierAutomationRelay {
   private webhookSecret: string;
   private deliveries: ZapierDeliveryRecord[] = [];
 
   constructor() {
-    this.webhookSecret = process.env.ZAPIER_WEBHOOK_SECRET || 'zapier_relay_secret_default_hash_2026';
+    this.webhookSecret = process.env.ZAPIER_WEBHOOK_SECRET || '';
   }
 
   public getStatus(): { isConfigured: boolean; status: string } {
-    const isConfigured = Boolean(process.env.ZAPIER_WEBHOOK_URL || process.env.ZAPIER_WEBHOOK_SECRET);
-    return {
-      isConfigured,
-      status: isConfigured ? 'REAL_INTEGRATION' : 'MOCK_MODE',
-    };
+    const isConfigured = Boolean(process.env.ZAPIER_WEBHOOK_URL && this.webhookSecret.length >= 32);
+    return { isConfigured, status: isConfigured ? 'CONFIGURED_UNVERIFIED' : 'UNAVAILABLE' };
   }
 
-  /**
-   * Generates HMAC-SHA256 signature for outgoing webhook payload
-   */
   public generateSignature(payloadString: string): string {
-    return crypto
-      .createHmac('sha256', this.webhookSecret)
-      .update(payloadString)
-      .digest('hex');
+    if (this.webhookSecret.length < 32) throw new Error('ZAPIER_WEBHOOK_SECRET must contain at least 32 characters.');
+    return crypto.createHmac('sha256', this.webhookSecret).update(payloadString).digest('hex');
   }
 
-  /**
-   * Triggers an outbound event to configured Zapier webhook endpoints
-   */
   async triggerEvent(event: ZapierEventPayload): Promise<ZapierDeliveryRecord> {
     const deliveryId = `zap_del_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
     const timestamp = event.timestamp || new Date().toISOString();
     const zapierUrl = process.env.ZAPIER_WEBHOOK_URL;
+    const payloadStr = JSON.stringify({ deliveryId, eventType: event.eventType, paymentId: event.paymentId, timestamp, data: event.payload });
+    let status: ZapierDeliveryRecord['status'] = 'FAILED';
+    let statusCode: number | undefined;
 
-    const fullPayload = {
-      deliveryId,
-      eventType: event.eventType,
-      paymentId: event.paymentId,
-      timestamp,
-      data: event.payload,
-    };
-
-    const payloadStr = JSON.stringify(fullPayload);
-    const signature = this.generateSignature(payloadStr);
-
-    let status: ZapierDeliveryRecord['status'] = 'DELIVERED';
-    let statusCode = 200;
-
-    if (zapierUrl) {
+    if (zapierUrl && this.webhookSecret.length >= 32) {
       try {
         const res = await fetch(zapierUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-ScamBrake-Delivery-Id': deliveryId,
-            'X-ScamBrake-Signature': signature,
+            'X-ScamBrake-Signature': this.generateSignature(payloadStr),
             'X-ScamBrake-Event': event.eventType,
           },
           body: payloadStr,
         });
         statusCode = res.status;
-        if (!res.ok) {
-          status = 'RETRY_QUEUED';
-        }
-      } catch (err) {
-        console.warn('[ZAPIER] Outbound dispatch failed, queuing retry:', err);
-        status = 'RETRY_QUEUED';
-        statusCode = 500;
+        if (res.ok) status = 'DELIVERED';
+      } catch (error) {
+        console.warn('[ZAPIER] Outbound dispatch failed:', error);
       }
     }
 
     const record: ZapierDeliveryRecord = {
       deliveryId,
       eventType: event.eventType,
-      targetUrl: zapierUrl || 'https://hooks.zapier.com/hooks/catch/scambrake/default-mock',
+      targetUrl: zapierUrl || '',
       statusCode,
       status,
       sentAt: timestamp,
     };
-
     this.deliveries.unshift(record);
     return record;
   }
@@ -113,4 +86,3 @@ class ZapierAutomationRelay {
 }
 
 export const zapierAutomationRelay = new ZapierAutomationRelay();
-

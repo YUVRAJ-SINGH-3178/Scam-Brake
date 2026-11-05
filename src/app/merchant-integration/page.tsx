@@ -19,7 +19,7 @@ export default function MerchantIntegrationPage() {
             Merchant Integration Architecture
           </h1>
           <p className="text-[17px] text-[#171A1F] leading-relaxed max-w-2xl">
-            Eliminate friendly fraud disputes, recover scam-coerced gift card chargebacks, and protect your brand reputation with three API endpoints.
+            Proposed integration design. This prototype has no production SDK, verified PayPal connection, or measured dispute outcomes.
           </p>
         </div>
 

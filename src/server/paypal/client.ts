@@ -10,11 +10,12 @@
  */
 
 export interface PayPalConfig {
-  environment: 'sandbox' | 'live';
+  environment: 'sandbox';
   clientId: string;
   clientSecret: string;
   webhookId?: string;
   baseUrl: string;
+  paymentMode: 'demo' | 'paypal_sandbox';
 }
 
 export interface PayPalTokenResponse {
@@ -107,20 +108,23 @@ class PayPalClient {
   private cachedToken: { token: string; expiresAt: number } | null = null;
 
   constructor() {
-    const env = (process.env.PAYPAL_ENVIRONMENT || 'sandbox').toLowerCase() as 'sandbox' | 'live';
-    if (env === 'live' && process.env.ALLOW_LIVE_PAYPAL !== 'true') {
-      throw new Error(
-        '[PAYPAL SECURITY] Refusing accidental live PayPal mode. Set ALLOW_LIVE_PAYPAL=true if intended.'
-      );
+    const env = (process.env.PAYPAL_ENVIRONMENT || 'sandbox').toLowerCase();
+    const paymentMode = process.env.PAYMENT_MODE || (process.env.NODE_ENV === 'production' ? 'paypal_sandbox' : 'demo');
+    if (env !== 'sandbox') throw new Error('[PAYPAL SECURITY] This release supports PayPal Sandbox only.');
+    if (paymentMode !== 'demo' && paymentMode !== 'paypal_sandbox') {
+      throw new Error('PAYMENT_MODE must be explicitly set to demo or paypal_sandbox.');
+    }
+    if (paymentMode === 'demo' && process.env.NODE_ENV === 'production') {
+      throw new Error('[PAYPAL SECURITY] Demo payment mode is disabled in production.');
     }
 
     this.config = {
-      environment: env,
+      environment: 'sandbox',
       clientId: process.env.PAYPAL_CLIENT_ID || '',
       clientSecret: process.env.PAYPAL_CLIENT_SECRET || '',
       webhookId: process.env.PAYPAL_WEBHOOK_ID || '',
-      baseUrl:
-        env === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com',
+      baseUrl: 'https://api-m.sandbox.paypal.com',
+      paymentMode,
     };
   }
 
@@ -128,11 +132,12 @@ class PayPalClient {
     return Boolean(this.config.clientId && this.config.clientSecret);
   }
 
-  public getConfig(): { environment: string; isConfigured: boolean; baseUrl: string } {
+  public getConfig(): { environment: string; isConfigured: boolean; baseUrl: string; paymentMode: string } {
     return {
       environment: this.config.environment,
       isConfigured: this.isConfigured(),
       baseUrl: this.config.baseUrl,
+      paymentMode: this.config.paymentMode,
     };
   }
 
@@ -180,8 +185,7 @@ class PayPalClient {
    * Creates an order with intent: 'AUTHORIZE'
    */
   async createOrder(params: PayPalCreateOrderParams, idempotencyKey?: string): Promise<PayPalOrderResponse> {
-    if (!this.isConfigured()) {
-      // Return deterministic simulated PayPal Sandbox Order for demonstration/local testing
+    if (this.config.paymentMode === 'demo') {
       return this.simulateCreateOrder(params);
     }
 
@@ -233,7 +237,7 @@ class PayPalClient {
    * Authorizes an approved order: POST /v2/checkout/orders/{order_id}/authorize
    */
   async authorizeOrder(orderId: string, idempotencyKey?: string): Promise<PayPalAuthorizeResponse> {
-    if (!this.isConfigured()) {
+    if (this.config.paymentMode === 'demo') {
       return this.simulateAuthorizeOrder(orderId);
     }
 
@@ -267,7 +271,7 @@ class PayPalClient {
     amount?: { currency: string; value: number },
     idempotencyKey?: string
   ): Promise<PayPalCaptureResponse> {
-    if (!this.isConfigured()) {
+    if (this.config.paymentMode === 'demo') {
       return this.simulateCapture(authorizationId, amount);
     }
 
@@ -311,7 +315,7 @@ class PayPalClient {
    * Voids an authorized payment: POST /v2/payments/authorizations/{authorization_id}/void
    */
   async voidAuthorization(authorizationId: string, idempotencyKey?: string): Promise<PayPalVoidResponse> {
-    if (!this.isConfigured()) {
+    if (this.config.paymentMode === 'demo') {
       return this.simulateVoid(authorizationId);
     }
 
@@ -354,12 +358,9 @@ class PayPalClient {
     certUrl: string;
     authAlgo: string;
     transmissionSig: string;
-    webhookEvent: any;
+    webhookEvent: unknown;
   }): Promise<boolean> {
-    if (!this.isConfigured() || !this.config.webhookId) {
-      // In sandbox/mock development mode, check presence of signature headers
-      return Boolean(params.transmissionId && params.transmissionSig);
-    }
+    if (!this.isConfigured() || !this.config.webhookId) return false;
 
     const token = await this.getAccessToken();
     const payload = {
