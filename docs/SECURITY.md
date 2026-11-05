@@ -1,36 +1,34 @@
-# SCAM BRAKE: SECURITY & THREAT MODEL SPECIFICATION
+# Scam Brake security status and threat model
 
----
+Updated: 2026-11-05. This document describes the repository as it exists. It is not a security certification or a claim that the product is safe for payment processing. See [SECURITY_VERIFICATION.md](SECURITY_VERIFICATION.md) for test evidence and [RELEASE_REMEDIATION_TRACKER.md](RELEASE_REMEDIATION_TRACKER.md) for open findings.
 
-## 1. Core Threat Model & Attack Vectors
+## Protected assets and trust boundaries
 
-| Attack Vector | Threat Level | Defense & Architectural Control |
-|---|---|---|
-| **Replay & Duplicate Financial Action** | CRITICAL | Mandatory unique `idempotencyKey` stored in `PaymentOperation` ledger. Concurrent requests blocked by in-memory mutex (`PaymentStateMachine.withLock`). |
-| **Unauthorized Capture / Void** | CRITICAL | State machine enforces allowable transitions. Once a payment is `CAPTURED` or `VOIDED`, it reaches a terminal state and cannot be mutated. |
-| **Server-Side Request Forgery (SSRF)** | HIGH | Kernel out-of-band verification enforces strict allowlist (`ALLOWED_DOMAINS`). Private IPs (`127.0.0.1`, `10.*`, `192.168.*`, `169.254.*`) are rejected. |
-| **Prompt Injection in Intervention Chat** | HIGH | Customer input is sanitized and processed strictly via non-evaluating schema extraction. The AI agent has zero tools to trigger PayPal void or capture APIs directly. |
-| **Unsigned Fake Webhook Injection** | HIGH | PayPal webhooks are cryptographically validated against PayPal’s public certificates via `POST /v1/notifications/verify-webhook-signature`. Unsigned or fake payloads return HTTP 400. |
-| **Insecure Direct Object Reference (IDOR)** | MEDIUM | Payment records are bound to specific `merchantId` and signed customer session tokens (`src/server/auth/session.ts`). |
-| **Eavesdropping / PII Leakage** | HIGH | Telemetry is strictly limited to cart and session attributes. Customer phone numbers and emails are masked in memory and audit logs (`e***@gmail.com`). We never record phone calls. |
+- Merchant users, merchant membership, payments and audit events are tenant-sensitive.
+- PayPal order, authorization, capture and void status must be provider-confirmed.
+- Customer decisions, contact information, consent and conversation history require a customer-bound identity.
+- Browser input, AI output, webhook payloads, and external directory content are untrusted until validated.
+- PostgreSQL is intended to be authoritative. The development fallback is process memory and must not be used for real payment data.
 
----
+## Controls implemented in the current branch
 
-## 2. Cryptographic State Audit Seals
+- Merchant list, detail, metric and audit repository queries can apply `merchantId` predicates. The payment API passes the authenticated tenant into detail, capture, void and audit lookups. The fallback rejects writes that collide with another merchant's payment ID or reference.
+- Payment capture now rejects a payment with an active or otherwise unresolved intervention. Checkout and customer decision APIs remain disabled, so flagged payments cannot be cleared through the current app.
+- Merchant login hashes passwords with scrypt and issues an HTTP-only SameSite cookie with a signed, expiring token. The database stores the token ID, not the raw cookie token. Each authenticated request checks the active session, tenant membership and current role; login revokes older sessions and logout revokes the current one.
+- State-changing merchant routes enforce same-origin requests. Worker tick requires a separate high-entropy bearer secret.
+- PayPal live mode is rejected. Missing webhook verification configuration fails closed. Checkout and intervention actions are disabled where buyer approval or customer identity is missing.
+- Production database absence or failure does not silently grant access to the memory fallback.
 
-Every payment state transition writes an immutable audit record containing:
-- `paymentId`
-- `eventType`
-- `actor` (`CUSTOMER`, `PAYPAL_SYSTEM`, `SCAM_BRAKE_AI`, `MERCHANT_POLICY`, `SYSTEM_WORKER`)
-- `timestamp`
-- `prevHash` (previous audit record's hash)
-- `immutableHash` ($H_n = \text{SHA256}(P_n : E_n : T_n : A_n : H_{n-1})$)
+## Open risks and limitations
 
-Any retroactive alteration of the audit log invalidates the cryptographic Merkle chain.
+- The tenant tests use the local fallback and a query-predicate helper. PostgreSQL fixtures, tenant-aware HTTP tests, and migration execution have not been run because no database is configured.
+- The `MerchantSession` migration is present but must be applied before login/session checks can operate. MFA, password reset, email verification, account provisioning, and shared rate limiting are not implemented.
+- Payment operation locks and idempotency are not durable or safe across multiple application instances. Provider reconciliation and webhook event claiming are not atomic.
+- No buyer-approved PayPal Sandbox order, capture, void, or webhook has been verified. Do not enable payments.
+- Customer authentication, persistent decisions, intervention conversations, trusted-contact consent/delivery, and source-grounded independent verification are incomplete or disabled.
+- Merchant views still contain sample/mock data and must not be used with real customer data. Some optional integrations are adapters only and have not been externally verified.
+- Login throttling is process-local. Review all outbound requests and rate limits before deployment.
 
----
+## Release rule
 
-## 3. Data Minimization Principles
-- No raw credit card primary account numbers (PAN) or CVVs are ever received, stored, or processed by Scam Brake (handled exclusively within the sandboxed PayPal wallet).
-- Customer conversation logs are retained only for merchant fraud policy compliance and never sold to third parties or used for public foundation model training.
-
+The current disposition is **NO-GO** for live or Sandbox payment handling. Do not represent the prototype as a functioning payment protection service until tenant isolation is verified on PostgreSQL, customer identity and clearance are durable, payment operations are idempotent across instances, and the Sandbox lifecycle and webhook reconciliation pass end-to-end tests.

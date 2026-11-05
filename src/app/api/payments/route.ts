@@ -4,7 +4,7 @@ import { RiskLevel, AuthorizationStatus } from '@/types';
 import { getMerchantSession } from '@/server/auth/session';
 
 export async function GET(req: NextRequest) {
-  const session = getMerchantSession(req);
+  const session = await getMerchantSession(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { searchParams } = new URL(req.url);
   const search = searchParams.get('search') || undefined;

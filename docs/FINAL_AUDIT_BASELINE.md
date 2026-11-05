@@ -24,7 +24,7 @@ Repository baseline: `7750a6e` on `main`; safety branch `backup-final-release-20
 - PayPal adapter methods silently simulated transactions when credentials were absent. Webhook verification accepted the presence of two signature headers when provider configuration was absent.
 - Checkout creation returned random references without persisting an order or checkout record.
 - The repository uses in-memory seeded fallback data. It is not durable, and seed data is visible to all callers unless protected at the API layer.
-- Payment operation locks are process-local. Idempotency and webhook processing are not safe across multiple instances; check-then-write deduplication is not atomic.
+- Payment operation locks remain process-local. Capture and void now make a durable unique-key reservation before calling PayPal when PostgreSQL is available; duplicate and unknown outcomes stop for reconciliation. This path is not yet verified across instances or restarts. Webhook event claiming still needs atomic durable processing.
 - Capture webhook handling looked up the capture resource ID as though it were the authorization ID.
 - Health response inferred sponsor integration status from environment variable presence and reported the in-memory fallback as a healthy data mode.
 - Sponsor connection test endpoint marked a sponsor connected after a randomized fake latency. The Render worker command referenced `dist/server/worker/scheduler.js`, although the repository has no build step producing `dist/`.
@@ -59,7 +59,7 @@ Repository baseline: `7750a6e` on `main`; safety branch `backup-final-release-20
 
 ## Remaining blockers and external dependencies
 
-- A minimal database-backed merchant login now verifies scrypt hashes and issues an expiring signed HTTP-only cookie; local seed credentials require explicit opt-in and a supplied password. Account provisioning, email verification, password reset, MFA, durable session revocation, distributed rate limiting, and a customer identity/session flow remain incomplete. Logout clears the browser cookie, but a stolen signed token remains usable until expiry.
+- Merchant login verifies scrypt hashes and issues an expiring signed HTTP-only cookie backed by a persistent revocable session row. The schema/migration are present; no database was available to apply or exercise them. Account provisioning, email verification, password reset, MFA, distributed rate limiting, and customer identity/session remain incomplete.
 - Checkout is intentionally unavailable: official PayPal JavaScript SDK buyer approval, server order retrieval/validation, checkout persistence and order-to-payment mapping still need implementation.
 - No PayPal Sandbox credentials, buyer/seller test accounts, webhook ID, or externally verified order/authorization/capture/void IDs were supplied.
 - Payment/intervention/operation/audit persistence and atomic idempotency need live PostgreSQL implementation and integration tests. The current repository's Prisma paths are incomplete and the local fallback remains process memory.
@@ -72,16 +72,26 @@ Repository baseline: `7750a6e` on `main`; safety branch `backup-final-release-20
 
 ## Release status
 
-**NO-GO.** This repository is not safe to use for payments or to describe as a functioning protected checkout. Merchant login now exists, but session revocation and stronger account controls are incomplete. Critical blockers include disabled buyer approval, unverified webhook/payment lifecycle, and non-durable or non-atomic persistence. Do not enable live PayPal.
+**NO-GO.** This repository is not safe to use for payments or to describe as a functioning protected checkout. Merchant session revocation is implemented in code but not verified against a deployed database. Critical blockers include disabled buyer approval, unverified webhook/payment lifecycle, and non-durable or non-atomic persistence. Do not enable live PayPal.
+
+## Remediation update: tenant isolation
+
+- Reproduced a PostgreSQL tenant-filter defect in `getPayments()` and a matching unscoped fallback query. Both now apply `merchantId`; dashboard metrics use the required merchant scope.
+- Payment detail, capture, void, and audit handlers now pass the signed merchant ID into repository lookups. PostgreSQL audit retrieval filters through the related payment's merchant ID.
+- Added `tests/unit/tenantIsolation.test.mjs`; list, detail, metrics, and audit isolation pass against the local fallback and tenant predicate builder. This does not substitute for a live PostgreSQL multi-tenant integration test.
+- Capture now rejects all payments with an unresolved intervention status. A state-machine regression test verifies that a merchant policy actor cannot capture an actively reviewed payment.
+- Added persistent merchant-session records with server-side revocation and role/membership revalidation on authenticated requests. Login rotates prior sessions; logout revokes the current session. The migration and session-state unit test are present, but no PostgreSQL integration test could run here.
+- Capture and void now reserve an operation row before contacting PayPal and persist unknown/non-final results as `RECONCILIATION_REQUIRED`. Default API keys are stable by payment and action, so retries cannot silently become new operations. The test covers fallback reservation only; PostgreSQL races and provider timeout recovery remain unverified.
+- See [RELEASE_REMEDIATION_TRACKER.md](RELEASE_REMEDIATION_TRACKER.md) for unresolved release priorities.
 
 ## Final verification after changes
 
 | Check | Result | Evidence and limit |
 |---|---|---|
-| `npm.cmd test` | PASSED, 20/20 | Includes session/password/worker/origin and webhook fail-closed tests. Scenario tests use local mock adapters and label simulated outcomes. No real payment was made. |
+| `npm.cmd test` | PASSED, 26/26 | Includes mocked session checks, logout revocation helper, password/worker/origin, webhook fail-closed, tenant filtering, operation reservation fallback, and unresolved-intervention capture tests. Scenario tests use local mock adapters. No real payment was made. |
 | `npm.cmd run lint` | PASSED with warnings | 0 errors, 94 warnings, primarily unused variables. |
-| `npm.cmd run build` | PASSED | Next.js 16 production build and TypeScript completed; merchant routes are dynamic behind cookie validation. |
-| `npx.cmd prisma validate` | BLOCKED | Prisma schema load requires `DATABASE_URL`, which is unset in this environment. No database connection or migration was run. |
+| `npm.cmd run build` | PASSED after operation reservation changes | Next.js 16 production build and TypeScript completed; merchant routes are dynamic behind cookie validation. |
+| `npx.cmd prisma validate` | PASSED | Validated with a temporary non-connecting placeholder `DATABASE_URL`; no database connection or migration was run. |
 | `npm.cmd audit --omit=dev --audit-level=high` | PASSED, 0 reported | Production dependencies only. |
 | Worker startup | STARTED | `src/server/worker/entry.ts` started in local demo mode and was interrupted before its first 30-second sweep. No database/provider work verified. |
 | Secret scan | PASSED for current tree | No tracked `.env*` files or matching active API/private-key patterns found. Git history contains fixed demo values; rotate if they were ever used outside local demo data. |

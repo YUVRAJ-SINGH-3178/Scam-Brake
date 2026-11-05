@@ -130,3 +130,36 @@ test('Payment State Machine — Idempotent Duplicate Capture Handled Gracefully'
   assert.equal(res2.authorizationStatus, 'CAPTURED');
 });
 
+test('Payment State Machine rejects capture while intervention is unresolved', async () => {
+  const { PaymentStateMachine } = await import('../../src/server/payments/stateMachine.ts');
+  const { dbRepository } = await import('../../src/server/db/repository.ts');
+  const testId = `pay_test_intervention_${Date.now()}`;
+  await dbRepository.savePayment({
+    id: testId,
+    paymentReference: testId,
+    paypalOrderId: `order-${testId}`,
+    paypalAuthorizationId: `auth-${testId}`,
+    merchantId: 'merchant-test-intervention',
+    merchantName: 'Test Merchant',
+    merchantCategory: 'Test',
+    productName: 'Test item',
+    productCategory: 'Test',
+    amount: 50,
+    currency: 'USD',
+    riskScore: 90,
+    riskLevel: 'CRITICAL',
+    authorizationStatus: 'HOLD_ACTIVE',
+    interventionStatus: 'ACTIVE_INTERVENTION',
+    customer: { id: 'customer-test-intervention', name: 'Test', maskedEmail: 't***@example.test', maskedPhone: '', accountAgeMonths: 1, hasTrustedContact: false },
+    createdAt: new Date().toISOString(),
+    authorizedAt: new Date().toISOString(),
+    holdExpiresAt: new Date(Date.now() + 60_000).toISOString(),
+    riskSignals: [],
+    authorizationHoldSecondsRemaining: 60,
+  });
+  await assert.rejects(
+    PaymentStateMachine.executeCapture({ paymentId: testId, actor: 'MERCHANT_POLICY', idempotencyKey: `capture-${testId}` }),
+    /intervention is unresolved/i,
+  );
+});
+

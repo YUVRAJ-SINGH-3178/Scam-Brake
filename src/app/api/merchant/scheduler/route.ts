@@ -4,7 +4,7 @@ import { getMerchantSession, hasMerchantPermission, hasSameOrigin } from '@/serv
 import { errorMessage } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
-  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!await getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const data = bryntumSchedulerManager.getSchedulerData();
   const status = bryntumSchedulerManager.getStatus();
   return NextResponse.json({
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = getMerchantSession(req);
+  const session = await getMerchantSession(req);
   if (!hasSameOrigin(req)) return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 });
   if (!session || !hasMerchantPermission(session, ['OWNER', 'ADMIN', 'RISK_ANALYST'])) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

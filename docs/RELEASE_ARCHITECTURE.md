@@ -52,6 +52,6 @@ Do not record a fake void, capture, authorization, customer consent, or external
 
 **Sponsors:** See `SPONSOR_INTEGRATIONS.md`; no sponsor qualifies as live and verified in this audit.
 
-**Current limitations:** No verified PayPal order/authorization/capture/void IDs; merchant login lacks production provisioning and durable revocation; no verified webhook delivery; no customer-bound intervention or trusted contact workflow; no live PostgreSQL integration test; no deployment evidence.
+**Current limitations:** No verified PayPal order/authorization/capture/void IDs; merchant login lacks production provisioning and MFA; the session-revocation migration has not been applied to a configured database; no verified webhook delivery; no customer-bound intervention or trusted contact workflow; no live PostgreSQL integration test; no deployment evidence.
 
 This draft should not be presented as a functioning payment protection product until the release status changes to GO.
