@@ -3,7 +3,7 @@ import { getMerchantSession } from '@/server/auth/session';
 import { SPONSORS } from '@/data/seedData';
 
 export async function GET(req: NextRequest) {
-  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!await getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const statuses: Record<string, 'UNAVAILABLE' | 'CONFIGURED_NOT_DEPLOYED' | 'IMPLEMENTED_UNVERIFIED' | 'MOCK_ONLY' | 'NOT_USED'> = {
     spon_ag_grid: 'NOT_USED',
     spon_apimatic: 'NOT_USED',
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!await getMerchantSession(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   return NextResponse.json({ error: 'Sponsor status cannot be marked connected by a simulated ping.' }, { status: 501 });
 }
 

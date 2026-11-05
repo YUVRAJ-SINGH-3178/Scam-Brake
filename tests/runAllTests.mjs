@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const files = [
   path.join(__dirname, 'unit', 'auth.test.mjs'),
+  path.join(__dirname, 'unit', 'tenantIsolation.test.mjs'),
   path.join(__dirname, 'unit', 'riskEngine.test.mjs'),
   path.join(__dirname, 'unit', 'paymentStateMachine.test.mjs'),
   path.join(__dirname, 'integration', 'sponsorAdapters.test.mjs'),

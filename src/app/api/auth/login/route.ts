@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { allowLoginAttempt, createSignedToken, hasSameOrigin, merchantSessionCookie, type MerchantRole } from '@/server/auth/session';
+import { allowLoginAttempt, createSignedSession, hasSameOrigin, merchantSessionCookie, type MerchantRole } from '@/server/auth/session';
 import { verifyPassword } from '@/server/auth/password';
 import { prisma } from '@/server/db/client';
 
@@ -32,13 +32,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    const token = createSignedToken({
+    const { token, session } = createSignedSession({
       userId: user.id,
       email: user.email,
       name: user.name,
       role: membership.role as MerchantRole,
       merchantId: membership.merchantId,
     });
+    await prisma.$transaction([
+      prisma.merchantSession.updateMany({
+        where: { userId: user.id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      }),
+      prisma.merchantSession.create({
+        data: {
+          id: session.jti,
+          userId: user.id,
+          merchantId: membership.merchantId,
+          expiresAt: new Date(session.exp * 1000),
+        },
+      }),
+    ]);
     const response = NextResponse.json({
       authenticated: true,
       user: { userId: user.id, email: user.email, name: user.name, role: membership.role, merchantId: membership.merchantId },

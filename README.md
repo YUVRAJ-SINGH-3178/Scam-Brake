@@ -2,7 +2,7 @@
 
 **Stop. Verify. Stay protected.**
 
-Scam Brake is a prototype for merchant-integrated payment checks intended to give customers time to verify a suspicious purchase before a merchant captures a PayPal authorization. The current repository is an engineering prototype. It is **not ready to handle payments**: checkout is disabled, no PayPal Sandbox transaction has been verified, and merchant login is not backed by production account provisioning or session revocation.
+Scam Brake is a prototype for merchant-integrated payment checks intended to give customers time to verify a suspicious purchase before a merchant captures a PayPal authorization. The current repository is an engineering prototype. It is **not ready to handle payments**: checkout is disabled, no PayPal Sandbox transaction has been verified, and merchant login lacks production account provisioning and MFA. Session revocation now uses PostgreSQL, but its migration has not been applied against a configured database.
 
 ## Current release status
 

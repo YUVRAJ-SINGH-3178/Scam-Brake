@@ -161,38 +161,59 @@ export class PaymentStateMachine {
       if (payment.authorizationStatus !== 'HOLD_ACTIVE') {
         throw new Error(`Cannot capture payment ${params.paymentId} unless PayPal confirms an active authorization hold.`);
       }
-
-      // Check idempotency table
-      const alreadyRun = await dbRepository.checkIdempotency(params.idempotencyKey);
-      if (alreadyRun) {
-        return payment;
+      if (payment.interventionStatus !== 'NOT_REQUIRED') {
+        throw new Error(
+          `Cannot capture payment ${params.paymentId} while an intervention is unresolved or lacks a verified customer decision.`
+        );
       }
 
-      // Execute on PayPal
-      const captureResult = await paypalClient.captureAuthorization(
-        payment.paypalAuthorizationId,
-        { currency: payment.currency, value: payment.amount },
-        params.idempotencyKey
-      );
+      const reservation = await dbRepository.reserveOperation({
+        paymentId: payment.id,
+        operationType: 'CAPTURE',
+        idempotencyKey: params.idempotencyKey,
+        executedBy: params.actor,
+      });
+      if (!reservation.reserved) {
+        throw new Error(`Capture operation already exists (${reservation.status || 'unknown'}); reconcile provider status before retrying.`);
+      }
+
+      let captureResult;
+      try {
+        captureResult = await paypalClient.captureAuthorization(
+          payment.paypalAuthorizationId,
+          { currency: payment.currency, value: payment.amount },
+          params.idempotencyKey
+        );
+      } catch (error: unknown) {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'CAPTURE',
+          idempotencyKey: params.idempotencyKey,
+          status: 'RECONCILIATION_REQUIRED',
+          errorMessage: 'Provider outcome is unknown; reconcile before retrying.',
+          executedBy: params.actor,
+        });
+        throw new Error('PayPal capture outcome is unknown; reconcile provider status before retrying.', { cause: error });
+      }
 
       if (captureResult.status !== 'COMPLETED') {
         await dbRepository.recordOperation({
           paymentId: payment.id,
           operationType: 'CAPTURE',
           idempotencyKey: params.idempotencyKey,
-          status: captureResult.status,
+          status: 'RECONCILIATION_REQUIRED',
           responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
           executedBy: params.actor,
         });
         throw new Error(`PayPal capture is not complete (provider status: ${captureResult.status}).`);
       }
 
-      // Record operation
+      // Record confirmed provider success before updating the local payment state.
       await dbRepository.recordOperation({
         paymentId: payment.id,
         operationType: 'CAPTURE',
         idempotencyKey: params.idempotencyKey,
-        status: captureResult.status,
+        status: 'SUCCEEDED',
         responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
         executedBy: params.actor,
       });
@@ -234,18 +255,41 @@ export class PaymentStateMachine {
         throw new Error(`Cannot void payment ${params.paymentId} unless PayPal confirms an active authorization hold.`);
       }
 
-      const alreadyRun = await dbRepository.checkIdempotency(params.idempotencyKey);
-      if (alreadyRun) {
-        return payment;
+      const reservation = await dbRepository.reserveOperation({
+        paymentId: payment.id,
+        operationType: 'VOID',
+        idempotencyKey: params.idempotencyKey,
+        executedBy: params.actor,
+      });
+      if (!reservation.reserved) {
+        throw new Error(`Void operation already exists (${reservation.status || 'unknown'}); reconcile provider status before retrying.`);
       }
 
-      // Execute on PayPal
-      const voidResult = await paypalClient.voidAuthorization(
-        payment.paypalAuthorizationId,
-        params.idempotencyKey
-      );
+      let voidResult;
+      try {
+        voidResult = await paypalClient.voidAuthorization(payment.paypalAuthorizationId, params.idempotencyKey);
+      } catch (error: unknown) {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'VOID',
+          idempotencyKey: params.idempotencyKey,
+          status: 'RECONCILIATION_REQUIRED',
+          errorMessage: 'Provider outcome is unknown; reconcile before retrying.',
+          executedBy: params.actor,
+        });
+        throw new Error('PayPal void outcome is unknown; reconcile provider status before retrying.', { cause: error });
+      }
 
       if (voidResult.status !== 'VOIDED') {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'VOID',
+          idempotencyKey: params.idempotencyKey,
+          status: 'RECONCILIATION_REQUIRED',
+          responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue,
+          errorMessage: `Provider returned non-final status ${voidResult.status}.`,
+          executedBy: params.actor,
+        });
         throw new Error(`PayPal authorization void is not confirmed (provider status: ${voidResult.status}).`);
       }
 
@@ -254,7 +298,7 @@ export class PaymentStateMachine {
         paymentId: payment.id,
         operationType: 'VOID',
         idempotencyKey: params.idempotencyKey,
-        status: voidResult.status,
+        status: 'SUCCEEDED',
         responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue,
         executedBy: params.actor,
       });

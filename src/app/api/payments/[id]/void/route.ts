@@ -15,21 +15,21 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = getMerchantSession(req);
+  const session = await getMerchantSession(req);
   if (!hasSameOrigin(req)) return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 });
   if (!session || !hasMerchantPermission(session, ['OWNER', 'ADMIN', 'RISK_ANALYST', 'OPERATOR'])) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
     const { id } = await params;
-    const payment = await dbRepository.getPaymentById(id);
-    if (!payment || payment.merchantId !== session.merchantId) {
+    const payment = await dbRepository.getPaymentById(id, session.merchantId);
+    if (!payment) {
       return NextResponse.json({ error: 'Payment not found' }, { status: 404 });
     }
     const body = await req.json().catch(() => ({}));
     const validated = VoidSchema.parse(body);
 
-    const idempotencyKey = validated.idempotencyKey || `idem_void_${id}_${Date.now()}`;
+    const idempotencyKey = validated.idempotencyKey || `scambrake_void_${id}`;
 
     const updatedPayment = await PaymentStateMachine.executeVoid({
       paymentId: id,

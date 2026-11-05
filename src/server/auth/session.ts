@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import type { NextRequest } from 'next/server';
+import { prisma } from '../db/client.ts';
 
 const SESSION_COOKIE = 'sb_merchant_session';
 const SESSION_TTL_SECONDS = 8 * 60 * 60;
@@ -22,14 +23,18 @@ function getSessionSecret(): string | null {
   return secret && Buffer.byteLength(secret, 'utf8') >= 32 ? secret : null;
 }
 
-export function createSignedToken(payload: Omit<AuthSession, 'iat' | 'exp' | 'jti'>, ttlSeconds = SESSION_TTL_SECONDS): string {
+export function createSignedSession(payload: Omit<AuthSession, 'iat' | 'exp' | 'jti'>, ttlSeconds = SESSION_TTL_SECONDS): { token: string; session: AuthSession } {
   const secret = getSessionSecret();
   if (!secret) throw new Error('SESSION_SECRET must contain at least 32 bytes.');
   const now = Math.floor(Date.now() / 1000);
   const data: AuthSession = { ...payload, iat: now, exp: now + ttlSeconds, jti: crypto.randomUUID() };
   const encoded = Buffer.from(JSON.stringify(data)).toString('base64url');
   const signature = crypto.createHmac('sha256', secret).update(encoded).digest('base64url');
-  return `${encoded}.${signature}`;
+  return { token: `${encoded}.${signature}`, session: data };
+}
+
+export function createSignedToken(payload: Omit<AuthSession, 'iat' | 'exp' | 'jti'>, ttlSeconds = SESSION_TTL_SECONDS): string {
+  return createSignedSession(payload, ttlSeconds).token;
 }
 
 export function verifySignedToken(token: string): AuthSession | null {
@@ -60,9 +65,43 @@ export function verifySignedToken(token: string): AuthSession | null {
   }
 }
 
-export function getMerchantSession(request: NextRequest): AuthSession | null {
+export async function getActiveMerchantSession(token: string): Promise<AuthSession | null> {
+  const session = verifySignedToken(token);
+  if (!session) return null;
+  try {
+    const stored = await prisma.merchantSession.findUnique({
+      where: { id: session.jti },
+      include: { user: { include: { merchantUsers: { where: { merchantId: session.merchantId } } } } },
+    });
+    const membership = stored?.user.merchantUsers[0];
+    if (!stored || stored.revokedAt || stored.expiresAt.getTime() <= Date.now() ||
+      stored.userId !== session.userId || stored.merchantId !== session.merchantId ||
+      !membership || membership.role !== session.role) return null;
+    return session;
+  } catch {
+    // Authentication fails closed when the session store is unavailable.
+    return null;
+  }
+}
+
+export async function getMerchantSession(request: NextRequest): Promise<AuthSession | null> {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
-  return token ? verifySignedToken(token) : null;
+  return token ? getActiveMerchantSession(token) : null;
+}
+
+export async function revokeMerchantSession(request: NextRequest): Promise<boolean> {
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  const session = token ? verifySignedToken(token) : null;
+  if (!session) return true;
+  try {
+    await prisma.merchantSession.updateMany({
+      where: { id: session.jti, userId: session.userId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function hasMerchantPermission(session: AuthSession, allowed: MerchantRole[]): boolean {

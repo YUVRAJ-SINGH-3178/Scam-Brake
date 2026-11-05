@@ -17,6 +17,48 @@ test('Session tokens reject tampering, expiry and unknown roles', async () => {
   assert.equal(verifySignedToken(unknownRoleToken), null);
 });
 
+test('Merchant sessions are accepted only while the persisted session and membership are active', async () => {
+  const { createSignedSession, getActiveMerchantSession } = await import('../../src/server/auth/session.ts');
+  const { prisma } = await import('../../src/server/db/client.ts');
+  const originalFindUnique = prisma.merchantSession.findUnique;
+  const { token, session } = createSignedSession({ userId: 'session-user', email: 'merchant@example.test', name: 'Merchant', role: 'ADMIN', merchantId: 'merchant-a' }, 300);
+  let storedSession = {
+    id: session.jti,
+    userId: session.userId,
+    merchantId: session.merchantId,
+    expiresAt: new Date(session.exp * 1000),
+    revokedAt: null,
+    user: { merchantUsers: [{ role: 'ADMIN' }] },
+  };
+  prisma.merchantSession.findUnique = async () => storedSession;
+  try {
+    assert.equal((await getActiveMerchantSession(token))?.merchantId, 'merchant-a');
+    storedSession = { ...storedSession, revokedAt: new Date() };
+    assert.equal(await getActiveMerchantSession(token), null);
+    storedSession = { ...storedSession, revokedAt: null, user: { merchantUsers: [{ role: 'VIEWER' }] } };
+    assert.equal(await getActiveMerchantSession(token), null);
+  } finally {
+    prisma.merchantSession.findUnique = originalFindUnique;
+  }
+});
+
+test('Logout revokes the persisted session ID and does not store the raw cookie token', async () => {
+  const { createSignedSession, revokeMerchantSession } = await import('../../src/server/auth/session.ts');
+  const { prisma } = await import('../../src/server/db/client.ts');
+  const originalUpdateMany = prisma.merchantSession.updateMany;
+  const { token, session } = createSignedSession({ userId: 'logout-user', email: 'merchant@example.test', name: 'Merchant', role: 'ADMIN', merchantId: 'merchant-a' });
+  let where;
+  prisma.merchantSession.updateMany = async (query) => { where = query.where; return { count: 1 }; };
+  try {
+    const request = new NextRequest('http://localhost/api/auth/logout', { headers: { cookie: `sb_merchant_session=${token}` } });
+    assert.equal(await revokeMerchantSession(request), true);
+    assert.deepEqual(where, { id: session.jti, userId: session.userId, revokedAt: null });
+    assert.equal(where.id.includes(token), false);
+  } finally {
+    prisma.merchantSession.updateMany = originalUpdateMany;
+  }
+});
+
 test('Password hashes use scrypt and reject incorrect passwords', async () => {
   const { hashPassword, verifyPassword } = await import('../../src/server/auth/password.ts');
   const encoded = await hashPassword('a unique test password 2026');

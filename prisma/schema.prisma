@@ -20,6 +20,7 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   merchantUsers MerchantUser[]
+  sessions     MerchantSession[]
 }
 
 model Merchant {
@@ -32,6 +33,7 @@ model Merchant {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   merchantUsers      MerchantUser[]
+  sessions           MerchantSession[]
   riskPolicy         MerchantRiskPolicy?
   checkoutSessions   CheckoutSession[]
   payments           Payment[]
@@ -50,6 +52,21 @@ model MerchantUser {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([merchantId, userId])
+}
+
+model MerchantSession {
+  id         String    @id // Signed token jti; raw cookie token is never stored.
+  userId     String
+  merchantId String
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt])
+  @@index([merchantId, revokedAt])
+  @@index([expiresAt])
 }
 
 // -------------------------------------------------------------

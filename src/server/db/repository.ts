@@ -59,6 +59,18 @@ class FallbackRepository {
 
 const fallback = new FallbackRepository();
 
+export function buildPaymentWhere(filter?: {
+  riskLevel?: RiskLevel;
+  status?: AuthorizationStatus;
+  merchantId?: string;
+}): Prisma.PaymentWhereInput {
+  const where: Prisma.PaymentWhereInput = {};
+  if (filter?.merchantId) where.merchantId = filter.merchantId;
+  if (filter?.riskLevel) where.riskLevel = filter.riskLevel;
+  if (filter?.status) where.authorizationStatus = filter.status;
+  return where;
+}
+
 function handleDatabaseFailure(error: unknown, message: string): void {
   if (process.env.NODE_ENV === 'production') throw new Error(message, { cause: error });
   console.error(`[DB] ${message}; development fallback is active.`);
@@ -94,6 +106,7 @@ export const dbRepository = {
     if (isPg) {
       try {
         const rows = await prisma.payment.findMany({
+          where: buildPaymentWhere(filter),
           include: {
             customer: true,
             riskAssessments: { include: { signals: true } },
@@ -156,12 +169,6 @@ export const dbRepository = {
               p.customer.name.toLowerCase().includes(q)
           );
         }
-        if (filter?.riskLevel) {
-          results = results.filter((p) => p.riskLevel === filter.riskLevel);
-        }
-        if (filter?.status) {
-          results = results.filter((p) => p.authorizationStatus === filter.status);
-        }
         return results;
       } catch (error: unknown) {
         handleDatabaseFailure(error, 'Unable to query PostgreSQL payments');
@@ -170,6 +177,9 @@ export const dbRepository = {
 
     // Fallback store
     let result = [...fallback.payments];
+    if (filter?.merchantId) {
+      result = result.filter((payment) => payment.merchantId === filter.merchantId);
+    }
     if (filter?.search) {
       const q = filter.search.toLowerCase();
       result = result.filter(
@@ -189,8 +199,10 @@ export const dbRepository = {
     return result;
   },
 
-  async getPaymentById(id: string): Promise<Payment | undefined> {
-    const payments = await this.getPayments();
+  async getPaymentById(id: string, merchantId?: string): Promise<Payment | undefined> {
+    // Pass merchantId for every user initiated lookup. Omitting it is reserved
+    // for trusted system workflows (worker, state machine, verified webhooks).
+    const payments = await this.getPayments(merchantId ? { merchantId } : undefined);
     return payments.find(
       (p) =>
         p.id === id ||
@@ -204,18 +216,29 @@ export const dbRepository = {
     const isPg = await checkDatabaseConnection();
     if (isPg) {
       try {
-        await prisma.payment.upsert({
-          where: { paymentReference: payment.paymentReference },
-          update: {
-            state: payment.authorizationStatus === 'CAPTURED' ? 'CAPTURED' : payment.authorizationStatus === 'VOIDED' ? 'VOIDED' : 'AUTHORIZED',
-            authorizationStatus: payment.authorizationStatus,
-            interventionStatus: payment.interventionStatus,
-            riskScore: payment.riskScore,
-            riskLevel: payment.riskLevel,
-            resolvedAt: payment.resolvedAt ? new Date(payment.resolvedAt) : null,
-            resolutionNotes: payment.resolutionNotes,
-          },
-          create: {
+        const updateData = {
+          state: payment.authorizationStatus === 'CAPTURED' ? 'CAPTURED' : payment.authorizationStatus === 'VOIDED' ? 'VOIDED' : 'AUTHORIZED',
+          authorizationStatus: payment.authorizationStatus,
+          interventionStatus: payment.interventionStatus,
+          riskScore: payment.riskScore,
+          riskLevel: payment.riskLevel,
+          resolvedAt: payment.resolvedAt ? new Date(payment.resolvedAt) : null,
+          resolutionNotes: payment.resolutionNotes,
+        };
+        const existing = await prisma.payment.findFirst({
+          where: { paymentReference: payment.paymentReference, merchantId: payment.merchantId },
+          select: { id: true },
+        });
+        if (existing) {
+          await prisma.payment.update({ where: { id: existing.id }, data: updateData });
+        } else {
+          const conflictingTenant = await prisma.payment.findUnique({
+            where: { paymentReference: payment.paymentReference },
+            select: { id: true },
+          });
+          if (conflictingTenant) throw new Error('Payment reference belongs to another merchant.');
+          await prisma.payment.create({
+            data: {
             id: payment.id,
             paymentReference: payment.paymentReference,
             merchantId: payment.merchantId,
@@ -232,15 +255,23 @@ export const dbRepository = {
             holdExpiresAt: new Date(payment.holdExpiresAt),
             resolvedAt: payment.resolvedAt ? new Date(payment.resolvedAt) : null,
             resolutionNotes: payment.resolutionNotes,
-          },
-        });
+            },
+          });
+        }
       } catch (error: unknown) {
         handleDatabaseFailure(error, 'Unable to save payment to PostgreSQL');
       }
     }
 
+    const conflict = fallback.payments.find(
+      (existing) =>
+        (existing.id === payment.id || existing.paymentReference === payment.paymentReference) &&
+        existing.merchantId !== payment.merchantId
+    );
+    if (conflict) throw new Error('Payment record belongs to another merchant.');
     const idx = fallback.payments.findIndex(
-      (p) => p.id === payment.id || p.paymentReference === payment.paymentReference
+      (p) => p.merchantId === payment.merchantId &&
+        (p.id === payment.id || p.paymentReference === payment.paymentReference)
     );
     if (idx >= 0) {
       fallback.payments[idx] = { ...payment };
@@ -268,6 +299,46 @@ export const dbRepository = {
     return fallback.operations.some((op) => op.idempotencyKey === idempotencyKey);
   },
 
+  async reserveOperation(data: {
+    paymentId: string;
+    operationType: string;
+    idempotencyKey: string;
+    executedBy?: string;
+  }): Promise<{ reserved: boolean; status?: string }> {
+    const isPg = await checkDatabaseConnection();
+    if (isPg) {
+      try {
+        await prisma.paymentOperation.create({
+          data: {
+            paymentId: data.paymentId,
+            operationType: data.operationType,
+            idempotencyKey: data.idempotencyKey,
+            status: 'PROCESSING',
+            executedBy: data.executedBy || 'SYSTEM',
+          },
+        });
+        return { reserved: true, status: 'PROCESSING' };
+      } catch (error: unknown) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+          const existing = await prisma.paymentOperation.findUnique({ where: { idempotencyKey: data.idempotencyKey } });
+          return { reserved: false, status: existing?.status };
+        }
+        handleDatabaseFailure(error, 'Unable to reserve payment operation');
+      }
+    }
+    const existing = fallback.operations.find((op) => op.idempotencyKey === data.idempotencyKey);
+    if (existing) return { reserved: false, status: existing.status };
+    fallback.operations.push({
+      id: `op_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      paymentId: data.paymentId,
+      operationType: data.operationType,
+      idempotencyKey: data.idempotencyKey,
+      status: 'PROCESSING',
+      createdAt: new Date().toISOString(),
+    });
+    return { reserved: true, status: 'PROCESSING' };
+  },
+
   async recordOperation(data: {
     paymentId: string;
     operationType: string;
@@ -281,11 +352,9 @@ export const dbRepository = {
     const isPg = await checkDatabaseConnection();
     if (isPg) {
       try {
-        await prisma.paymentOperation.create({
+        await prisma.paymentOperation.update({
+          where: { idempotencyKey: data.idempotencyKey },
           data: {
-            paymentId: data.paymentId,
-            operationType: data.operationType,
-            idempotencyKey: data.idempotencyKey,
             status: data.status,
             requestPayload: data.requestPayload,
             responsePayload: data.responsePayload,
@@ -297,14 +366,9 @@ export const dbRepository = {
         handleDatabaseFailure(error, 'Unable to persist payment operation');
       }
     }
-    fallback.operations.push({
-      id: `op_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-      paymentId: data.paymentId,
-      operationType: data.operationType,
-      idempotencyKey: data.idempotencyKey,
-      status: data.status,
-      createdAt: new Date().toISOString(),
-    });
+    const existing = fallback.operations.find((op) => op.idempotencyKey === data.idempotencyKey);
+    if (!existing) throw new Error('Payment operation must be reserved before it can be updated.');
+    existing.status = data.status;
   },
 
   // --------------------------------------------------------------------------
@@ -364,11 +428,38 @@ export const dbRepository = {
     return logEntry;
   },
 
-  async getAuditLogs(paymentId?: string): Promise<AuditEvent[]> {
-    if (paymentId) {
-      return fallback.auditLogs.filter((l) => l.paymentId === paymentId);
+  async getAuditLogs(paymentId?: string, merchantId?: string): Promise<AuditEvent[]> {
+    const isPg = await checkDatabaseConnection();
+    if (isPg) {
+      try {
+        const where: Prisma.AuditLogWhereInput = {};
+        if (paymentId) where.paymentId = paymentId;
+        if (merchantId) where.payment = { is: { merchantId } };
+        const rows = await prisma.auditLog.findMany({ where, orderBy: { createdAt: 'desc' } });
+        return rows.map((row) => ({
+          id: row.id,
+          paymentId: row.paymentId || 'global',
+          eventType: row.eventType as AuditEvent['eventType'],
+          actor: row.actor as AuditEvent['actor'],
+          summary: row.summary,
+          timestamp: row.createdAt.toISOString(),
+          details: (row.details as Record<string, unknown> | null) || {},
+          immutableHash: row.immutableHash,
+          sha256Hash: row.immutableHash,
+        }));
+      } catch (error: unknown) {
+        handleDatabaseFailure(error, 'Unable to query PostgreSQL audit events');
+      }
     }
-    return [...fallback.auditLogs];
+    let scoped = fallback.auditLogs;
+    if (merchantId) {
+      const visiblePaymentIds = new Set(
+        fallback.payments.filter((payment) => payment.merchantId === merchantId).map((payment) => payment.id)
+      );
+      scoped = scoped.filter((log) => log.paymentId !== 'global' && visiblePaymentIds.has(log.paymentId));
+    }
+    if (paymentId) scoped = scoped.filter((log) => log.paymentId === paymentId);
+    return [...scoped];
   },
 
   // --------------------------------------------------------------------------
@@ -403,7 +494,7 @@ export const dbRepository = {
   // --------------------------------------------------------------------------
   // METRICS & DASHBOARD
   // --------------------------------------------------------------------------
-  async getMetrics(merchantId?: string): Promise<DashboardMetrics> {
+  async getMetrics(merchantId: string): Promise<DashboardMetrics> {
     const payments = await this.getPayments({ merchantId });
 
     let totalProtectedVolume = 0;
