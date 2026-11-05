@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Scam Brake — Pre-Capture Payment Verification',
+  title: 'Scam Brake | Pre-Capture Payment Verification',
   description: 'AI-assisted verification hold between PayPal authorization and settlement capture.',
   icons: {
     icon: '/images/scambrake-logo.png',

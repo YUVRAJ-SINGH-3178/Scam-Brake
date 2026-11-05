@@ -1,4 +1,4 @@
-# SCAM BRAKE — TEST PLAN & QUALITY ASSURANCE SPECIFICATION
+# SCAM BRAKE: TEST PLAN & QUALITY ASSURANCE SPECIFICATION
 
 This document outlines the testing strategy, test cases, verification matrix, and automated quality gates for Scam Brake Phase 1.
 

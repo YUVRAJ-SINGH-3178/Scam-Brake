@@ -1,4 +1,4 @@
-# SCAM BRAKE — PRODUCTION DEPLOYMENT GUIDE
+# SCAM BRAKE: PRODUCTION DEPLOYMENT GUIDE
 
 Scam Brake is packaged for deployment on **Render** using containerized infrastructure as code (`render.yaml`).
 

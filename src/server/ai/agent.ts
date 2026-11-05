@@ -152,27 +152,27 @@ export class ScamBrakeInterventionAgent {
 
     if (textLower.includes('irs') || textLower.includes('tax') || textLower.includes('sheriff') || textLower.includes('warrant')) {
       reply =
-        'Thank you for telling me. It is very important to know: The IRS, police, and government departments will NEVER demand payment via gift cards or store vouchers. Scammers frequently spoof real phone numbers to make you feel in danger. Would you like to check the official IRS directory number independently right now?';
+        'The IRS, local police, and federal agencies never demand payment through gift cards or retail vouchers. Callers often spoof real phone numbers to create false urgency. Would you like to check the official IRS directory number independently right now?';
       quickReplies = ['Yes, verify official phone', 'They said I will be arrested', 'Cancel payment immediately'];
       nextStep = 'OFFER_KERNEL_VERIFY';
     } else if (textLower.includes('secret') || textLower.includes('tell no one') || textLower.includes('stay on')) {
       reply =
-        'Demanding that you keep a transaction secret is a hallmark tactic used to isolate you from people who care about you. Would you like us to alert a trusted contact so you have someone in your corner before any funds are moved?';
+        'Pressure to keep payments secret is designed to isolate you. Would you like us to alert your registered trusted contact before any funds move?';
       quickReplies = ['Notify trusted contact', 'No, keep private', 'I want to cancel payment'];
       nextStep = 'OFFER_TRUSTED_CONTACT';
     } else if (textLower.includes('cancel') || textLower.includes('stop') || textLower.includes('fake') || textLower.includes('scam')) {
       reply =
-        'You are entirely in control. Because PayPal has placed a temporary authorization hold, no money has left your account yet. You can void this authorization right now with zero fees and complete safety.';
+        'You are in full control. Because this is a temporary hold, no funds have left your account. You can void this authorization right now with zero fees.';
       quickReplies = ['Confirm pre-capture void', 'I want to verify first'];
       nextStep = 'RECOMMEND_VOID';
     } else if (textLower.includes('fine') || textLower.includes('legitimate') || textLower.includes('real') || textLower.includes('gift for')) {
       reply =
-        'Thank you. We ask because scammers frequently coerce people into buying cards under pretexts. If you are entirely certain this is for your own personal use and no caller instructed you to buy this, you can proceed to capture.';
+        'Understood. If this purchase is genuinely for yourself and no outside party directed you to buy it, you can safely confirm and capture the payment.';
       quickReplies = ['I am confident, proceed', 'Let me double check'];
       nextStep = 'PERMIT_CAPTURE';
     } else {
       reply =
-        'I appreciate you sharing that. To protect your funds, can you let me know: did anyone call or message you earlier today instructing you to make this purchase?';
+        'Did anyone call or message you instructing you to make this purchase?';
       quickReplies = ['Yes, someone called me', 'No, this is my own purchase', 'Someone sent me a message'];
       nextStep = 'CONTINUE_INTERVIEW';
     }

@@ -1,4 +1,4 @@
-# SCAM BRAKE — PAYMENT LIFECYCLE SPECIFICATION
+# SCAM BRAKE: PAYMENT LIFECYCLE SPECIFICATION
 
 This document details the exact PayPal two-step authorization hold and settlement lifecycle.
 

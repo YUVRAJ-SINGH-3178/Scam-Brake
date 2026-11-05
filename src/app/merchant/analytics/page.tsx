@@ -27,18 +27,18 @@ const MONTHLY_PROTECTION_DATA = [
 ];
 
 const RISK_SCORE_DISTRIBUTION = [
-  { bucket: '0–20 (Safe)', count: 48, fill: '#1A7A64' },
-  { bucket: '21–40 (Low)', count: 24, fill: '#2B303A' },
-  { bucket: '41–60 (Med)', count: 14, fill: '#784D00' },
-  { bucket: '61–80 (High)', count: 8, fill: '#D97706' },
-  { bucket: '81–100 (Crit)', count: 6, fill: '#C53030' },
+  { bucket: '0-20 (Safe)', count: 48, fill: '#1A7A64' },
+  { bucket: '21-40 (Low)', count: 24, fill: '#2B303A' },
+  { bucket: '41-60 (Med)', count: 14, fill: '#784D00' },
+  { bucket: '61-80 (High)', count: 8, fill: '#D97706' },
+  { bucket: '81-100 (Crit)', count: 6, fill: '#C53030' },
 ];
 
 const RESOLUTION_TIME_DATA = [
   { interval: '< 2 min', count: 32 },
-  { interval: '2–5 min', count: 41 },
-  { interval: '5–10 min', count: 18 },
-  { interval: '10–20 min', count: 7 },
+  { interval: '2-5 min', count: 41 },
+  { interval: '5-10 min', count: 18 },
+  { interval: '10-20 min', count: 7 },
   { interval: '> 20 min', count: 2 },
 ];
 

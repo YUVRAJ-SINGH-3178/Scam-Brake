@@ -1,4 +1,4 @@
-# SCAM BRAKE — DESIGN SYSTEM SPECIFICATION
+# SCAM BRAKE: DESIGN SYSTEM SPECIFICATION
 
 **Design Directions:**
 - **Public Marketing Website:** `editorial-report` (The printed annual, financial gravitas, institutional trust).

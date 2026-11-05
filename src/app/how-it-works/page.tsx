@@ -69,7 +69,7 @@ export default function HowItWorksPage() {
                 PayPal Authorization Hold
               </h3>
               <p className="text-[16px] text-[#171A1F] leading-relaxed max-w-3xl">
-                PayPal places a temporary hold on the approved amount (up to 24–72 hours). No funds have moved to the merchant balance. If fraud is stopped now, no chargeback dispute is needed.
+                PayPal places a temporary hold on the approved amount (up to 24 to 72 hours). No funds have moved to the merchant balance. If fraud is stopped now, no chargeback dispute is needed.
               </p>
             </div>
 

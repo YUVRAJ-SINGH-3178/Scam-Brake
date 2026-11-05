@@ -1,5 +1,5 @@
 /**
- * SCAM BRAKE — PayPal Orders v2 & Payments v2 Client
+ * SCAM BRAKE: PayPal Orders v2 & Payments v2 Client
  *
  * Implements two-step pre-capture authorization holds:
  * - Orders v2: intent = AUTHORIZE

@@ -1,4 +1,4 @@
-# SCAM BRAKE — FRONTEND HANDOFF & ARCHITECTURE SPECIFICATION
+# SCAM BRAKE: FRONTEND HANDOFF & ARCHITECTURE SPECIFICATION
 
 This document outlines the codebase architecture, folder structure, state management patterns, and implementation contracts for Phase 2 engineers.
 

@@ -1,4 +1,4 @@
-# SCAM BRAKE — ARCHITECTURAL & PRODUCT DECISIONS (ADR)
+# SCAM BRAKE: ARCHITECTURAL & PRODUCT DECISIONS (ADR)
 
 This document records the foundational product and technical decisions established for Scam Brake Phase 1.
 

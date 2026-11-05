@@ -1,4 +1,4 @@
-# SCAM BRAKE — SPONSOR & PARTNER INTEGRATION MATRIX
+# SCAM BRAKE: SPONSOR & PARTNER INTEGRATION MATRIX
 
 This document details the exact status, capabilities, and authentication requirements for all 11 hackathon sponsors and technology partners powering Scam Brake.
 

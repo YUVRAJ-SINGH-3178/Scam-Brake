@@ -208,10 +208,10 @@ export default function MerchantPaymentsPage() {
               className="text-[12px] bg-[#FFFFFF] border border-[#DFE2DF] text-[#171A1F] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:border-[#171A1F]"
             >
               <option value="ALL">All Risk Levels</option>
-              <option value="CRITICAL">Critical Risk (80–100)</option>
-              <option value="HIGH">High Risk (60–79)</option>
-              <option value="MEDIUM">Medium Risk (30–59)</option>
-              <option value="LOW">Low Risk (0–29)</option>
+              <option value="CRITICAL">Critical Risk (80-100)</option>
+              <option value="HIGH">High Risk (60-79)</option>
+              <option value="MEDIUM">Medium Risk (30-59)</option>
+              <option value="LOW">Low Risk (0-29)</option>
             </select>
 
             <select

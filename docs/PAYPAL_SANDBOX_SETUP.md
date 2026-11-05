@@ -1,4 +1,4 @@
-# SCAM BRAKE — PAYPAL SANDBOX SETUP GUIDE
+# SCAM BRAKE: PAYPAL SANDBOX SETUP GUIDE
 
 Follow these steps to configure live PayPal Sandbox credentials for testing.
 

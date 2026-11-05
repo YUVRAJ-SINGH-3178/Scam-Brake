@@ -1,4 +1,4 @@
-# SCAM BRAKE — SPONSOR & PARTNER INTEGRATION SPECIFICATION
+# SCAM BRAKE: SPONSOR & PARTNER INTEGRATION SPECIFICATION
 
 This document outlines the architectural role, integration points, API contracts, and runtime interfaces for all 11 technology partners and sponsors powering Scam Brake.
 

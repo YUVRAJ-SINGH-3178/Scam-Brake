@@ -1,4 +1,4 @@
-# SCAM BRAKE — SCREEN & STATE MATRIX
+# SCAM BRAKE: SCREEN & STATE MATRIX
 
 This matrix enumerates all application routes, user states, loading states, empty states, and error handling mechanisms across the three unified experiences.
 

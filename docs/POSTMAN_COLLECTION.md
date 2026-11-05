@@ -1,4 +1,4 @@
-# SCAM BRAKE — POSTMAN API TEST COLLECTION GUIDE
+# SCAM BRAKE: POSTMAN API TEST COLLECTION GUIDE
 
 **Sponsor:** Postman  
 **Classification:** `REAL_INTEGRATION` (Collection files: `docs/postman_collection.json`, `docs/postman_environment.json`).

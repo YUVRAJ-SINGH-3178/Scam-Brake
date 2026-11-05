@@ -1,4 +1,4 @@
-# SCAM BRAKE — API REFERENCE
+# SCAM BRAKE: API REFERENCE
 
 Complete REST endpoint reference for Scam Brake protected checkout, payments, AI interventions, and webhooks.
 

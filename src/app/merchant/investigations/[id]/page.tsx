@@ -132,7 +132,7 @@ function MerchantInvestigationCaseContent() {
                 <span className="text-[12px] text-[#525860]">Created {new Date(payment.createdAt).toLocaleDateString()}</span>
               </div>
               <h1 className="text-2xl font-semibold tracking-tight text-[#171A1F]">
-                {payment.customer.name} — Coercion Risk Assessment
+                {payment.customer.name}: Coercion Risk Assessment
               </h1>
               <p className="text-[13px] text-[#525860] mt-1">
                 Purchasing <span className="text-[#171A1F] font-medium">{payment.productName}</span> for <code className="font-mono">${payment.amount.toFixed(2)}</code> USD via {payment.merchantName}
@@ -269,7 +269,7 @@ function MerchantInvestigationCaseContent() {
                   <div className="relative">
                     <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#784D00]" />
                     <code className="text-[#525860] font-mono text-[12px]">10:32:04 AM</code>
-                    <div className="font-medium text-[#171A1F]">Authorization Created — Hold Placed</div>
+                    <div className="font-medium text-[#171A1F]">Authorization Created: Hold Placed</div>
                     <p className="text-[#525860]">PayPal authorized payment; Scam Brake intercepted capture trigger due to high risk score (88/100).</p>
                   </div>
                   <div className="relative">

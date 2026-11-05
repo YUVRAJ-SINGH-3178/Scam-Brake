@@ -36,7 +36,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="text-[17px] text-[#2B303A] leading-relaxed max-w-xl">
-                  Scam Brake introduces an AI-assisted verification hold between PayPal authorization and capture — stopping social-engineering fraud before irreversible settlement.
+                  Scam Brake introduces a verification hold between PayPal authorization and capture, stopping social-engineering fraud before irreversible settlement.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -149,9 +149,9 @@ export default function HomePage() {
                       <AlertTriangle size={15} />
                       <span className="font-semibold">
                         {heroState === 'VOID'
-                          ? 'Extortion Scam Confirmed — Pre-Capture Void Executed'
+                          ? 'Extortion Scam Confirmed: Pre-Capture Void Executed'
                           : heroState === 'CAPTURE'
-                          ? 'Volition Confirmed — Payment Captured to Merchant'
+                          ? 'Volition Confirmed: Payment Captured to Merchant'
                           : 'Federal Tax Warrant Impersonation Pattern (94% confidence)'}
                       </span>
                     </div>

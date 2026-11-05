@@ -10,7 +10,7 @@ Scam Brake introduces an empathetic verification hold between PayPal payment aut
 
 ## 1. Core Innovation: The Pre-Capture Protection Model
 
-Traditional fraud engines operate post-capture: funds settle into the merchant's balance, and when a manipulated victim realizes the deceit hours later, they face 14–90 day chargeback battles, non-refundable dispute fees ($15–$35), and likely claim denial under the "Authorized Payment Rule."
+Traditional fraud engines operate post-capture: funds settle into the merchant's balance, and when a manipulated victim realizes the deceit hours later, they face 14 to 90 day chargeback battles, non-refundable dispute fees ($15 to $35), and likely claim denial under the "Authorized Payment Rule."
 
 **Scam Brake inverts this model:**
 1. Orders are created with PayPal Orders v2 `intent = 'AUTHORIZE'`.
@@ -45,7 +45,7 @@ Traditional fraud engines operate post-capture: funds settle into the merchant's
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/your-username/scambrake.git
+git clone https://github.com/YUVRAJ-SINGH-3178/Scam-Brake.git
 cd scambrake
 npm install
 ```

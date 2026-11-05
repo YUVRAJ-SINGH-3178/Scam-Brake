@@ -337,7 +337,7 @@ export default function CustomerInterventionPage() {
                   className="w-full text-[13px] text-[#525860] hover:text-[#171A1F]"
                 >
                   <CheckCircle2 size={14} className="text-[#1A7A64]" />
-                  <span>I Am Safe — Capture Payment</span>
+                  <span>Confirm and Capture Payment</span>
                 </Button>
               </div>
             </div>
@@ -365,7 +365,7 @@ export default function CustomerInterventionPage() {
               <code>1-800-829-1040</code>
             </div>
             <div className="text-[#525860]">
-              Official public line. Operating hours: Monday – Friday 7:00 a.m. to 7:00 p.m. local time.
+              Official public line. Operating hours: Monday through Friday, 7:00 a.m. to 7:00 p.m. local time.
             </div>
           </div>
 

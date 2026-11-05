@@ -28,7 +28,7 @@ export default function MerchantIntegrationPage() {
           <div className="px-6 py-3 border-b border-[#DFE2DF] bg-[#F6F6F3] flex items-center justify-between text-[13px] text-[#525860]">
             <div className="flex items-center gap-2">
               <Code2 size={15} className="text-[#171A1F]" />
-              <code className="font-mono text-[#171A1F] font-medium text-xs">checkout.ts — Pre-Capture Integration</code>
+              <code className="font-mono text-[#171A1F] font-medium text-xs">checkout.ts: Pre-Capture Integration</code>
             </div>
             <code className="font-mono text-[11px] text-[#525860]">TypeScript / Node 22</code>
           </div>

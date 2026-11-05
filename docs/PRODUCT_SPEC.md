@@ -1,4 +1,4 @@
-# SCAM BRAKE — PRODUCT SPECIFICATION (PHASE 1)
+# SCAM BRAKE: PRODUCT SPECIFICATION (PHASE 1)
 
 **Product Name:** SCAM BRAKE  
 **Tagline:** Stop. Verify. Stay protected.  

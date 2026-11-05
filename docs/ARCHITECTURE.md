@@ -1,4 +1,4 @@
-# SCAM BRAKE — SYSTEM ARCHITECTURE SPECIFICATION
+# SCAM BRAKE: SYSTEM ARCHITECTURE SPECIFICATION
 
 **Tagline:** Stop. Verify. Stay protected.  
 **Category:** AI-powered, merchant-integrated pre-capture payment protection protocol.

@@ -1,4 +1,4 @@
-# SCAM BRAKE — MASTER COPY DECK & VOICE GUIDELINES
+# SCAM BRAKE: MASTER COPY DECK & VOICE GUIDELINES
 
 **Product Tagline:** Stop. Verify. Stay protected.  
 **Tone of Voice:**
@@ -17,7 +17,7 @@
 
 ### Primary Hero (Homepage `/`)
 - **Headline:** Payment protection before the money leaves.
-- **Sub-headline:** Scam Brake introduces an AI-assisted verification hold between PayPal authorization and capture — stopping social-engineering fraud before irreversible settlement.
+- **Sub-headline:** Scam Brake introduces an AI-assisted verification hold between PayPal authorization and capture: stopping social-engineering fraud before irreversible settlement.
 - **Primary CTA:** Explore Interactive Demo
 - **Secondary CTA:** Read Technical Specification
 
@@ -35,7 +35,7 @@ The customer experiencing an active intervention may be under intense psychologi
 > *"Your payment has not been captured yet. PayPal has temporarily authorized this hold so that you can verify this transaction in complete privacy. No money will leave your account without your explicit confirmation."*
 
 ### AI Dialogue Prompts
-- *"We noticed indicators of urgency or unusual purchase patterns. Take a slow breath — you have plenty of time. Did someone instruct you to make this payment today?"*
+- *"We noticed indicators of urgency or unusual purchase patterns. Take a slow breath: you have plenty of time. Did someone instruct you to make this payment today?"*
 - *"Official agencies (like the IRS, Sheriff's Office, or your bank) will never ask you to purchase store vouchers or gift cards. You are completely safe to hang up the phone right now."*
 - *"Would you like to cancel this payment? There is no charge, no fee, and your funds will remain safe in your PayPal account."*
 

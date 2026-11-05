@@ -255,20 +255,19 @@ class ScamBrakeMockStore {
     };
     session.messages.push(customerMsg);
 
-    // Contextual calm AI response
     let aiContent =
-      'Thank you for sharing that context. We are reviewing the transaction parameters. Remember: official institutions will never ask you to buy gift cards or bypass standard banking channels.';
+      'Official institutions never demand payment through gift cards or outside standard banking channels. Can you confirm if an incoming caller directed you to make this purchase?';
 
     const lower = content.toLowerCase();
     if (lower.includes('irs') || lower.includes('arrest') || lower.includes('tax') || lower.includes('police')) {
       aiContent =
-        'Government agencies such as the IRS or local police never demand gift card payments, never threaten immediate arrest over the phone, and never tell you to stay on the line without speaking to anyone. You are completely safe to hang up. Would you like to void this authorization now?';
+        'Government agencies never demand gift card payments or threaten immediate phone arrests. You can safely hang up. Would you like to void this authorization now?';
     } else if (lower.includes('bank') || lower.includes('chase') || lower.includes('fraud') || lower.includes('wire')) {
       aiContent =
-        'Bank fraud departments will never instruct customers to purchase digital codes, physical tokens, or transfer funds to "safe accounts". We can trigger an independent verification call through Kernel to your bank’s certified phone number.';
+        'Bank fraud desks never instruct customers to purchase digital cards or transfer money to "safe accounts". We can verify your bank’s official phone number directly.';
     } else if (lower.includes('personal') || lower.includes('gift for') || lower.includes('birthday')) {
       aiContent =
-        'Thank you. We have logged this confirmation. If you are entirely certain you are not acting under someone else’s instructions, you can verify and proceed to capture.';
+        'Understood. If you are not acting under third-party instructions, you can safely confirm and capture this payment.';
     }
 
     const aiMsg: InterventionMessage = {

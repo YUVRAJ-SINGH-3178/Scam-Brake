@@ -1,4 +1,4 @@
-# SCAM BRAKE — DESIGN DIRECTION RATIONALE
+# SCAM BRAKE: DESIGN DIRECTION RATIONALE
 
 This document details the selection criteria, design skill tool execution, and compositional rationale behind Scam Brake's visual architecture.
 

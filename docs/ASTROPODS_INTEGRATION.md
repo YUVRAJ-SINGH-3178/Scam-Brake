@@ -1,4 +1,4 @@
-# SCAM BRAKE — ASTROPODS AGENT INTEGRATION SPECIFICATION
+# SCAM BRAKE: ASTROPODS AGENT INTEGRATION SPECIFICATION
 
 **Sponsor:** Astropods  
 **Classification:** `MOCK_MODE` (Fallback Adapter Active; `REAL_INTEGRATION` enabled when `ASTROPODS_API_KEY` is supplied).

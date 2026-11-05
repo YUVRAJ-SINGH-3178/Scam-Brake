@@ -1,4 +1,4 @@
-# SCAM BRAKE — USER EXPERIENCE & INTERACTION FLOWS
+# SCAM BRAKE: USER EXPERIENCE & INTERACTION FLOWS
 
 This document details the complete end-to-end user experience workflows across all customer, merchant, and automated system touchpoints.
 

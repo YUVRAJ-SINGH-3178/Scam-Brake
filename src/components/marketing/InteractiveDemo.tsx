@@ -153,7 +153,7 @@ export const InteractiveDemo: React.FC = () => {
           <div className="space-y-4">
             <div>
               <span className="text-[13px] text-[#171A1F] font-semibold">
-                PHASE 1 — CHECKOUT INITIATION
+                PHASE 1: CHECKOUT INITIATION
               </span>
               <h3 className="text-[18px] font-semibold text-[#171A1F] mt-1">
                 Customer clicks &quot;Pay with PayPal&quot; at {selectedScenario.merchantName}
@@ -200,7 +200,7 @@ export const InteractiveDemo: React.FC = () => {
           <div className="space-y-4">
             <div>
               <span className="text-[13px] text-[#784D00] font-semibold">
-                PHASE 2 — PRE-CAPTURE HOLD ESTABLISHED
+                PHASE 2: PRE-CAPTURE HOLD ESTABLISHED
               </span>
               <h3 className="text-[18px] font-semibold text-[#171A1F] mt-1">
                 PayPal Authorizes Hold (Capture Paused by Scam Brake)
@@ -239,7 +239,7 @@ export const InteractiveDemo: React.FC = () => {
           <div className="space-y-4">
             <div>
               <span className="text-[13px] text-[#171A1F] font-semibold">
-                PHASE 3 — CALM VERIFICATION INQUIRY
+                PHASE 3: CALM VERIFICATION INQUIRY
               </span>
               <h3 className="text-[18px] font-semibold text-[#171A1F] mt-1">
                 Scam Brake checks for urgency, threats, or false authority
@@ -311,7 +311,7 @@ export const InteractiveDemo: React.FC = () => {
                     : 'text-[#1A7A64]'
                 }`}
               >
-                PHASE 4 — DETERMINISTIC RESOLUTION ({selectedScenario.expectedOutcome})
+                PHASE 4: DETERMINISTIC RESOLUTION ({selectedScenario.expectedOutcome})
               </span>
               <h3 className="text-[18px] font-semibold text-[#171A1F] mt-1">
                 {selectedScenario.expectedOutcome === 'VOID'
