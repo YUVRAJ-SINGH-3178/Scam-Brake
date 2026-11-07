@@ -7,10 +7,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const files = [
   path.join(__dirname, 'unit', 'auth.test.mjs'),
+  path.join(__dirname, 'unit', 'customerSession.test.mjs'),
   path.join(__dirname, 'unit', 'tenantIsolation.test.mjs'),
   path.join(__dirname, 'unit', 'riskEngine.test.mjs'),
   path.join(__dirname, 'unit', 'paymentStateMachine.test.mjs'),
   path.join(__dirname, 'integration', 'sponsorAdapters.test.mjs'),
+  path.join(__dirname, 'integration', 'paymentOperationsPostgres.test.mjs'),
   path.join(__dirname, 'e2e', 'primaryDemoTaxScam.test.mjs'),
   path.join(__dirname, 'e2e', 'legitimateCaptureDemo.test.mjs'),
 ];

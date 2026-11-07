@@ -1,6 +1,7 @@
 import type { Payment, AuthorizationStatus } from '../../types/index.ts';
 import { Prisma } from '@prisma/client';
 import { dbRepository } from '../db/repository.ts';
+import { checkDatabaseConnection, prisma } from '../db/client.ts';
 import { paypalClient } from '../paypal/client.ts';
 
 export type PaymentState =
@@ -76,8 +77,9 @@ export class PaymentStateMachine {
     reason: string;
     idempotencyKey?: string;
     details?: Record<string, unknown>;
+    interventionOutcome?: 'ABANDONED' | 'SCAM_CONFIRMED';
   }): Promise<Payment> {
-    const { payment, nextState, actor, reason, idempotencyKey, details } = params;
+    const { payment, nextState, actor, reason, idempotencyKey, details, interventionOutcome } = params;
 
     // Map currentState
     let currentState: PaymentState = 'AUTHORIZED';
@@ -111,7 +113,7 @@ export class PaymentStateMachine {
       payment.resolutionNotes = reason;
       payment.authorizationHoldSecondsRemaining = 0;
     } else if (nextState === 'VOIDED') {
-      payment.interventionStatus = 'SCAM_CONFIRMED';
+      payment.interventionStatus = interventionOutcome || 'ABANDONED';
       payment.resolvedAt = new Date().toISOString();
       payment.resolutionNotes = reason;
       payment.authorizationHoldSecondsRemaining = 0;
@@ -161,7 +163,15 @@ export class PaymentStateMachine {
       if (payment.authorizationStatus !== 'HOLD_ACTIVE') {
         throw new Error(`Cannot capture payment ${params.paymentId} unless PayPal confirms an active authorization hold.`);
       }
-      if (payment.interventionStatus !== 'NOT_REQUIRED') {
+      if (payment.interventionStatus === 'VERIFIED_SAFE') {
+        const decision = await prisma.interventionSession.findUnique({
+          where: { paymentId: payment.id },
+          select: { customerDecision: true, status: true },
+        });
+        if (decision?.customerDecision !== 'PROCEED_PAYMENT' || decision.status !== 'RESOLVED_CAPTURE') {
+          throw new Error('Cannot capture a reviewed payment without a persisted customer continuation decision.');
+        }
+      } else if (payment.interventionStatus !== 'NOT_REQUIRED') {
         throw new Error(
           `Cannot capture payment ${params.paymentId} while an intervention is unresolved or lacks a verified customer decision.`
         );
@@ -196,27 +206,67 @@ export class PaymentStateMachine {
         throw new Error('PayPal capture outcome is unknown; reconcile provider status before retrying.', { cause: error });
       }
 
-      if (captureResult.status !== 'COMPLETED') {
+      const captureMatches = captureResult.amount.currency_code === payment.currency &&
+        Number(captureResult.amount.value).toFixed(2) === Number(payment.amount).toFixed(2) &&
+        captureResult.final_capture === true;
+      if (captureResult.status !== 'COMPLETED' || !captureMatches) {
         await dbRepository.recordOperation({
           paymentId: payment.id,
           operationType: 'CAPTURE',
           idempotencyKey: params.idempotencyKey,
           status: 'RECONCILIATION_REQUIRED',
           responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
+          errorMessage: 'Provider response is non-final or does not match the authorized amount.',
           executedBy: params.actor,
         });
         throw new Error(`PayPal capture is not complete (provider status: ${captureResult.status}).`);
       }
 
-      // Record confirmed provider success before updating the local payment state.
-      await dbRepository.recordOperation({
-        paymentId: payment.id,
-        operationType: 'CAPTURE',
-        idempotencyKey: params.idempotencyKey,
-        status: 'SUCCEEDED',
-        responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
-        executedBy: params.actor,
-      });
+      // Keep the capture, authorization, and idempotency result consistent in PostgreSQL.
+      if (await checkDatabaseConnection()) {
+        try {
+          await prisma.$transaction(async (tx) => {
+            await tx.paymentCapture.create({
+              data: {
+                paymentId: payment.id,
+                paypalCaptureId: captureResult.id,
+                status: captureResult.status,
+                amount: captureResult.amount.value,
+                currency: captureResult.amount.currency_code,
+                finalCapture: captureResult.final_capture,
+                rawResponse: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
+              },
+            });
+            await tx.paymentAuthorization.update({
+              where: { paymentId: payment.id },
+              data: { status: 'CAPTURED' },
+            });
+            await tx.paymentOperation.update({
+              where: { idempotencyKey: params.idempotencyKey },
+              data: { status: 'SUCCEEDED', responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue },
+            });
+          });
+        } catch {
+          await dbRepository.recordOperation({
+            paymentId: payment.id,
+            operationType: 'CAPTURE',
+            idempotencyKey: params.idempotencyKey,
+            status: 'RECONCILIATION_REQUIRED',
+            errorMessage: 'PayPal confirmed capture but database persistence failed.',
+            executedBy: params.actor,
+          });
+          throw new Error('PayPal confirmed capture but local persistence failed; reconciliation is required.');
+        }
+      } else {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'CAPTURE',
+          idempotencyKey: params.idempotencyKey,
+          status: 'SUCCEEDED',
+          responsePayload: JSON.parse(JSON.stringify(captureResult)) as Prisma.InputJsonValue,
+          executedBy: params.actor,
+        });
+      }
 
       // Transition state
       return this.transition({
@@ -238,6 +288,7 @@ export class PaymentStateMachine {
     actor: 'CUSTOMER' | 'MERCHANT_POLICY' | 'SYSTEM_WORKER';
     reason: string;
     idempotencyKey: string;
+    interventionOutcome?: 'ABANDONED' | 'SCAM_CONFIRMED';
   }): Promise<Payment> {
     return this.withLock(params.paymentId, async () => {
       const payment = await dbRepository.getPaymentById(params.paymentId);
@@ -293,15 +344,40 @@ export class PaymentStateMachine {
         throw new Error(`PayPal authorization void is not confirmed (provider status: ${voidResult.status}).`);
       }
 
-      // Record operation
-      await dbRepository.recordOperation({
-        paymentId: payment.id,
-        operationType: 'VOID',
-        idempotencyKey: params.idempotencyKey,
-        status: 'SUCCEEDED',
-        responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue,
-        executedBy: params.actor,
-      });
+      if (await checkDatabaseConnection()) {
+        try {
+          await prisma.$transaction(async (tx) => {
+            await tx.paymentAuthorization.update({
+              where: { paymentId: payment.id },
+              data: { status: 'VOIDED' },
+            });
+            await tx.payPalOrder.updateMany({ where: { paymentId: payment.id }, data: { status: 'VOIDED' } });
+            await tx.paymentOperation.update({
+              where: { idempotencyKey: params.idempotencyKey },
+              data: { status: 'SUCCEEDED', responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue },
+            });
+          });
+        } catch {
+          await dbRepository.recordOperation({
+            paymentId: payment.id,
+            operationType: 'VOID',
+            idempotencyKey: params.idempotencyKey,
+            status: 'RECONCILIATION_REQUIRED',
+            errorMessage: 'PayPal confirmed void but database persistence failed.',
+            executedBy: params.actor,
+          });
+          throw new Error('PayPal confirmed void but local persistence failed; reconciliation is required.');
+        }
+      } else {
+        await dbRepository.recordOperation({
+          paymentId: payment.id,
+          operationType: 'VOID',
+          idempotencyKey: params.idempotencyKey,
+          status: 'SUCCEEDED',
+          responsePayload: JSON.parse(JSON.stringify(voidResult)) as Prisma.InputJsonValue,
+          executedBy: params.actor,
+        });
+      }
 
       // Transition state
       return this.transition({
@@ -310,6 +386,7 @@ export class PaymentStateMachine {
         actor: params.actor,
         reason: params.reason,
         idempotencyKey: params.idempotencyKey,
+        interventionOutcome: params.interventionOutcome || 'ABANDONED',
         details: { voidResult },
       });
     });

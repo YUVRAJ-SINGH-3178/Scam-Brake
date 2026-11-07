@@ -1,10 +1,95 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ShieldCheck, Lock, Info } from 'lucide-react';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    paypal?: {
+      Buttons: (options: {
+        createOrder: () => Promise<string>;
+        onApprove: (data: { orderID: string }) => Promise<void>;
+        onCancel?: () => void;
+        onError?: (error: unknown) => void;
+      }) => {
+        render: (container: HTMLElement) => Promise<void>;
+        close?: () => Promise<void>;
+      };
+    };
+  }
+}
 
 export default function CheckoutPage() {
   const [selectedProduct, setSelectedProduct] = useState<'gift_cards' | 'camera' | 'tokens'>('gift_cards');
+  const [paypalClientId, setPaypalClientId] = useState<string | null>(null);
+  const [sdkReady, setSdkReady] = useState(false);
+  const [checkoutStatus, setCheckoutStatus] = useState('');
+  const buttonContainer = useRef<HTMLDivElement>(null);
+  const selectedSku = useRef(selectedProduct);
+  const requestId = useRef<string | null>(null);
+  const checkoutSessionId = useRef<string | null>(null);
+
+  useEffect(() => {
+    selectedSku.current = selectedProduct;
+    requestId.current = null;
+    checkoutSessionId.current = null;
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/checkout/config', { cache: 'no-store' })
+      .then(async (res) => res.ok ? res.json() : null)
+      .then((config) => {
+        if (active && config?.available && typeof config.clientId === 'string') setPaypalClientId(config.clientId);
+      })
+      .catch(() => {
+        if (active) setCheckoutStatus('PayPal Sandbox checkout is not configured.');
+      });
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!sdkReady || !paypalClientId || !buttonContainer.current || !window.paypal) return;
+    const buttons = window.paypal.Buttons({
+      createOrder: async () => {
+        setCheckoutStatus('Creating secure order…');
+        requestId.current ||= crypto.randomUUID();
+        const res = await fetch('/api/checkout/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sku: selectedSku.current, requestId: requestId.current }),
+        });
+        const data = await res.json();
+        if (!res.ok || typeof data.orderID !== 'string' || typeof data.checkoutSessionId !== 'string') {
+          throw new Error(data.error || 'Unable to create a PayPal order.');
+        }
+        checkoutSessionId.current = data.checkoutSessionId;
+        setCheckoutStatus('PayPal order ready. Continue in the PayPal window.');
+        return data.orderID;
+      },
+      onApprove: async (data) => {
+        if (!checkoutSessionId.current) throw new Error('Checkout session expired. Restart checkout.');
+        setCheckoutStatus('Verifying PayPal approval and placing the authorization hold…');
+        const res = await fetch('/api/checkout/authorize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderID: data.orderID, checkoutSessionId: checkoutSessionId.current }),
+        });
+        const result = await res.json();
+        if (!res.ok || result.authorized !== true) throw new Error(result.error || 'PayPal authorization could not be verified.');
+        if (result.interventionRequired && result.paymentId) {
+          window.location.assign(`/intervention?paymentId=${encodeURIComponent(result.paymentId)}`);
+          return;
+        }
+        setCheckoutStatus('PayPal authorization verified. The payment is on hold pending merchant review.');
+      },
+      onCancel: () => setCheckoutStatus('PayPal checkout was cancelled. No authorization was requested.'),
+      onError: (error) => setCheckoutStatus(error instanceof Error ? error.message : 'PayPal checkout failed. No payment status is assumed.'),
+    });
+    buttons.render(buttonContainer.current).catch(() => setCheckoutStatus('PayPal button could not be loaded.'));
+    return () => { void buttons.close?.(); };
+  }, [sdkReady, paypalClientId]);
 
   const products = {
     gift_cards: {
@@ -59,10 +144,10 @@ export default function CheckoutPage() {
         <div className="md:col-span-7 space-y-6">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold text-[#171A1F] tracking-tight">
-              Checkout Sandbox
+              Protected Checkout
             </h1>
             <p className="text-[14px] text-[#525860]">
-              Preview only. This page does not create a PayPal order or move money.
+              PayPal Sandbox checkout. Buyer approval is verified on the server before an authorization is created.
             </p>
           </div>
 
@@ -139,18 +224,22 @@ export default function CheckoutPage() {
                 Payment Method
               </div>
 
-              <button
-                disabled
-                aria-disabled="true"
-                className="w-full h-11 rounded-[6px] bg-[#DFE2DF] text-[#525860] font-semibold text-[14px] flex items-center justify-center gap-2 cursor-not-allowed"
-              >
+              {paypalClientId && <Script
+                src={`https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(paypalClientId)}&currency=USD&intent=authorize`}
+                strategy="afterInteractive"
+                onReady={() => setSdkReady(true)}
+                onError={() => setCheckoutStatus('PayPal Sandbox SDK could not be loaded.')}
+              />}
+              <div ref={buttonContainer} aria-label="PayPal Sandbox checkout button" />
+              {!paypalClientId && <div className="w-full rounded-[6px] bg-[#DFE2DF] text-[#525860] font-semibold text-[14px] text-center py-3">
                 PayPal Sandbox checkout unavailable
-              </button>
+              </div>}
+              {checkoutStatus && <p role="status" className="text-[12px] text-[#525860] text-center">{checkoutStatus}</p>}
 
               <div className="p-3 rounded-[4px] bg-[#F6F6F3] border border-[#DFE2DF] text-[12px] text-[#525860] flex items-start gap-2">
                 <Lock size={14} className="text-[#1A7A64] shrink-0 mt-0.5" />
                 <span>
-                  A real buyer approval, authorization, and persistent checkout flow are not available in this release. No payment is being attempted.
+                  This checkout only uses PayPal Sandbox. Scam Brake verifies the approved order and amount before requesting an authorization hold.
                 </span>
               </div>
             </div>
