@@ -78,6 +78,7 @@ model Customer {
   name              String
   email             String
   phone             String?
+  paypalPayerId     String?           @unique
   accountAgeMonths  Int               @default(12)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
@@ -89,7 +90,7 @@ model Customer {
 model CustomerSession {
   id               String            @id @default(uuid())
   customerId       String?
-  sessionToken     String            @unique
+  sessionTokenHash String            @unique // SHA-256 of an opaque cookie token; raw bearer token is not persisted.
   ipAddress        String?
   userAgent        String?
   clientTelemetry  Json?
@@ -109,7 +110,7 @@ model CheckoutSession {
   productName       String
   productCategory   String
   isGiftCard        Boolean         @default(false)
-  status            String          @default("INITIALIZED") // INITIALIZED | COMPLETED | ABANDONED | EXPIRED
+  status            String          @default("INITIALIZED") // INITIALIZED | CREATING_ORDER | AWAITING_BUYER_APPROVAL | APPROVAL_VERIFICATION_FAILED | AUTHORIZED | CANCELLED_BY_CUSTOMER | ABANDONED | EXPIRED | RECONCILIATION_REQUIRED
   expiresAt         DateTime
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
@@ -213,7 +214,7 @@ model PaymentOperation {
   paymentId      String
   operationType  String    // CREATE_ORDER | AUTHORIZE | CAPTURE | VOID | RECONCILE | TIMEOUT_VOID
   idempotencyKey String    @unique
-  status         String    // PENDING | SUCCESS | FAILED
+  status         String    // PROCESSING | SUCCEEDED | RECONCILIATION_REQUIRED | FAILED
   requestPayload Json?
   responsePayload Json?
   errorMessage   String?

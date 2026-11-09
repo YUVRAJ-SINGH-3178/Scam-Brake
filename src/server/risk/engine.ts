@@ -37,14 +37,15 @@ export class RiskIntelligenceEngine {
    * Evaluates deterministic and telemetry signals against configured merchant policy
    */
   public static async evaluate(params: {
+    merchantId?: string;
     amount: number;
     productName: string;
     productCategory: string;
     telemetry?: TelemetryContext;
     customerHistory?: { totalPriorTransactions: number };
   }): Promise<RiskEvaluationResult> {
-    const { amount, productName, productCategory, telemetry, customerHistory } = params;
-    const policy = await dbRepository.getRiskPolicy();
+    const { merchantId, amount, productName, productCategory, telemetry, customerHistory } = params;
+    const policy = await dbRepository.getRiskPolicy(merchantId);
 
     let score = 5; // Base clean score
     const signals: RiskSignal[] = [];

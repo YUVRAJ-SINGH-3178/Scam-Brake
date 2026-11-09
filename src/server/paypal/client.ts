@@ -85,6 +85,22 @@ export interface PayPalAuthorizeResponse {
   }>;
 }
 
+export interface PayPalOrderDetails {
+  id: string;
+  status: string;
+  intent: string;
+  payer?: {
+    payer_id?: string;
+    email_address?: string;
+    name?: { given_name?: string; surname?: string };
+    phone?: { phone_number?: { national_number?: string } };
+  };
+  purchase_units: Array<{
+    reference_id?: string;
+    amount?: { currency_code?: string; value?: string };
+  }>;
+}
+
 export interface PayPalCaptureResponse {
   id: string; // Capture ID
   status: 'COMPLETED' | 'DECLINED' | 'PARTIALLY_REFUNDED' | 'PENDING' | 'REFUNDED' | 'FAILED';
@@ -103,6 +119,19 @@ export interface PayPalVoidResponse {
   links?: Array<{ href: string; rel: string; method: string }>;
 }
 
+export interface PayPalAuthorizationDetails {
+  id: string;
+  status: 'CREATED' | 'CAPTURED' | 'DENIED' | 'EXPIRED' | 'PARTIALLY_CAPTURED' | 'VOIDED' | 'PENDING';
+  amount: { currency_code: string; value: string };
+}
+
+export interface PayPalCaptureDetails {
+  id: string;
+  status: 'COMPLETED' | 'DECLINED' | 'PARTIALLY_REFUNDED' | 'PENDING' | 'REFUNDED' | 'FAILED';
+  amount: { currency_code: string; value: string };
+  supplementary_data?: { related_ids?: { authorization_id?: string } };
+}
+
 class PayPalClient {
   private config: PayPalConfig;
   private cachedToken: { token: string; expiresAt: number } | null = null;
@@ -114,10 +143,6 @@ class PayPalClient {
     if (paymentMode !== 'demo' && paymentMode !== 'paypal_sandbox') {
       throw new Error('PAYMENT_MODE must be explicitly set to demo or paypal_sandbox.');
     }
-    if (paymentMode === 'demo' && process.env.NODE_ENV === 'production') {
-      throw new Error('[PAYPAL SECURITY] Demo payment mode is disabled in production.');
-    }
-
     this.config = {
       environment: 'sandbox',
       clientId: process.env.PAYPAL_CLIENT_ID || '',
@@ -130,6 +155,22 @@ class PayPalClient {
 
   public isConfigured(): boolean {
     return Boolean(this.config.clientId && this.config.clientSecret);
+  }
+
+  private shouldUseDemoAdapter(): boolean {
+    if (this.config.paymentMode !== 'demo') return false;
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('[PAYPAL SECURITY] Demo payment mode is disabled in production.');
+    }
+    return true;
+  }
+
+  public isSandboxCheckoutAvailable(): boolean {
+    return this.config.environment === 'sandbox' && this.config.paymentMode === 'paypal_sandbox' && this.isConfigured();
+  }
+
+  public getPublicClientId(): string | null {
+    return this.isSandboxCheckoutAvailable() ? this.config.clientId : null;
   }
 
   public getConfig(): { environment: string; isConfigured: boolean; baseUrl: string; paymentMode: string } {
@@ -185,7 +226,7 @@ class PayPalClient {
    * Creates an order with intent: 'AUTHORIZE'
    */
   async createOrder(params: PayPalCreateOrderParams, idempotencyKey?: string): Promise<PayPalOrderResponse> {
-    if (this.config.paymentMode === 'demo') {
+    if (this.shouldUseDemoAdapter()) {
       return this.simulateCreateOrder(params);
     }
 
@@ -233,11 +274,46 @@ class PayPalClient {
     return (await res.json()) as PayPalOrderResponse;
   }
 
+  /** Fetches the authoritative PayPal order state before server-side authorization. */
+  async getOrder(orderId: string): Promise<PayPalOrderDetails> {
+    if (!this.isSandboxCheckoutAvailable()) throw new Error('PayPal Sandbox checkout is not configured.');
+    if (!/^[A-Za-z0-9_-]{5,64}$/.test(orderId)) throw new Error('Invalid PayPal order ID.');
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.baseUrl}/v2/checkout/orders/${encodeURIComponent(orderId)}`, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      cache: 'no-store',
+    });
+    if (!res.ok) throw new Error(`PayPal getOrder failed [${res.status}].`);
+    return (await res.json()) as PayPalOrderDetails;
+  }
+
+  async getAuthorization(authorizationId: string): Promise<PayPalAuthorizationDetails> {
+    if (!this.isConfigured() || this.shouldUseDemoAdapter()) throw new Error('PayPal Sandbox API is not configured for provider reconciliation.');
+    if (!/^[A-Za-z0-9_-]{5,64}$/.test(authorizationId)) throw new Error('Invalid PayPal authorization ID.');
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.baseUrl}/v2/payments/authorizations/${encodeURIComponent(authorizationId)}`, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, cache: 'no-store',
+    });
+    if (!res.ok) throw new Error(`PayPal getAuthorization failed [${res.status}].`);
+    return (await res.json()) as PayPalAuthorizationDetails;
+  }
+
+  async getCapture(captureId: string): Promise<PayPalCaptureDetails> {
+    if (!this.isConfigured() || this.shouldUseDemoAdapter()) throw new Error('PayPal Sandbox API is not configured for provider reconciliation.');
+    if (!/^[A-Za-z0-9_-]{5,64}$/.test(captureId)) throw new Error('Invalid PayPal capture ID.');
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.baseUrl}/v2/payments/captures/${encodeURIComponent(captureId)}`, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, cache: 'no-store',
+    });
+    if (!res.ok) throw new Error(`PayPal getCapture failed [${res.status}].`);
+    return (await res.json()) as PayPalCaptureDetails;
+  }
+
   /**
    * Authorizes an approved order: POST /v2/checkout/orders/{order_id}/authorize
    */
   async authorizeOrder(orderId: string, idempotencyKey?: string): Promise<PayPalAuthorizeResponse> {
-    if (this.config.paymentMode === 'demo') {
+    if (this.shouldUseDemoAdapter()) {
       return this.simulateAuthorizeOrder(orderId);
     }
 
@@ -271,7 +347,7 @@ class PayPalClient {
     amount?: { currency: string; value: number },
     idempotencyKey?: string
   ): Promise<PayPalCaptureResponse> {
-    if (this.config.paymentMode === 'demo') {
+    if (this.shouldUseDemoAdapter()) {
       return this.simulateCapture(authorizationId, amount);
     }
 
@@ -315,7 +391,7 @@ class PayPalClient {
    * Voids an authorized payment: POST /v2/payments/authorizations/{authorization_id}/void
    */
   async voidAuthorization(authorizationId: string, idempotencyKey?: string): Promise<PayPalVoidResponse> {
-    if (this.config.paymentMode === 'demo') {
+    if (this.shouldUseDemoAdapter()) {
       return this.simulateVoid(authorizationId);
     }
 

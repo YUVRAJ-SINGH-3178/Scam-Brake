@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { PaymentStateMachine } from '@/server/payments/stateMachine';
 import { zapierAutomationRelay } from '@/server/zapier/relay';
@@ -7,7 +8,7 @@ import { dbRepository } from '@/server/db/repository';
 import { errorMessage } from '@/server/errors';
 
 const VoidSchema = z.object({
-  idempotencyKey: z.string().optional(),
+  idempotencyKey: z.string().min(1).max(36).optional(),
   reason: z.string().optional(),
 });
 
@@ -29,7 +30,7 @@ export async function POST(
     const body = await req.json().catch(() => ({}));
     const validated = VoidSchema.parse(body);
 
-    const idempotencyKey = validated.idempotencyKey || `scambrake_void_${id}`;
+    const idempotencyKey = validated.idempotencyKey || createHash('sha256').update(`void:${id}`).digest('hex').slice(0, 36);
 
     const updatedPayment = await PaymentStateMachine.executeVoid({
       paymentId: id,

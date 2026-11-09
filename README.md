@@ -2,24 +2,22 @@
 
 **Stop. Verify. Stay protected.**
 
-Scam Brake is a prototype for merchant-integrated payment checks intended to give customers time to verify a suspicious purchase before a merchant captures a PayPal authorization. The current repository is an engineering prototype. It is **not ready to handle payments**: checkout is disabled, no PayPal Sandbox transaction has been verified, and merchant login lacks production account provisioning and MFA. Session revocation now uses PostgreSQL, but its migration has not been applied against a configured database.
+Scam Brake is a prototype for merchant-integrated payment checks that gives a customer time to review a suspicious purchase before a merchant captures a PayPal authorization. It remains an engineering prototype and is **not ready to handle payments**. Buyer approval, customer decisions, persistence, and webhook handling are implemented locally, but PostgreSQL and PayPal Sandbox verification are incomplete. Merchant account provisioning and MFA are also not production-ready.
 
-## Current release status
+## Release status
 
-**NO-GO for payment use or hackathon claims of a working payment lifecycle.** The adapter has PayPal Sandbox REST calls, but buyer approval, checkout persistence, login/session issuance, complete tenant isolation, and durable idempotency are incomplete. The in-app scenario tests use deterministic simulations and are not PayPal transactions.
-
-See [the final audit baseline](docs/FINAL_AUDIT_BASELINE.md), [security verification matrix](docs/SECURITY_VERIFICATION.md), and [sponsor status](docs/SPONSOR_INTEGRATIONS.md).
+**NO-GO for payment use or claims of a verified payment lifecycle.** Checkout uses the PayPal JavaScript SDK and validates buyer approval against the authoritative order before server-side authorization. No PayPal Sandbox transaction or webhook delivery has been recorded as verified. See the [release tracker](docs/RELEASE_REMEDIATION_TRACKER.md), [security verification matrix](docs/SECURITY_VERIFICATION.md), and [sponsor evidence](docs/SPONSOR_INTEGRATIONS.md).
 
 ## What is present
 
-- Next.js 16 App Router and React 19 interface.
-- Prisma schema and PostgreSQL migration.
-- Risk scoring and AI/provider adapters with local fallbacks.
-- PayPal Orders v2 and Payments v2 adapter methods restricted to Sandbox.
-- Payment state machine, webhook verification adapter, and deterministic tests.
+- Next.js App Router and React interface.
+- Prisma schema and PostgreSQL migrations.
+- Risk scoring, AI/provider adapters, and local fallback data.
+- PayPal Orders v2 and Payments v2 Sandbox adapter.
+- Buyer approval flow, customer-bound intervention, payment state machine, webhook verification, and deterministic tests.
 - Render web and worker configuration.
 
-Several screens still contain prototype content. Do not interpret seeded payments, the interactive demo, or unit-test outcomes as real customer or provider activity.
+Several screens contain prototype content. Seeded payments and local scenario tests do not represent real customers or provider activity.
 
 ## Local setup
 
@@ -30,7 +28,7 @@ npm install
 Copy-Item .env.example .env
 ```
 
-Set a unique random `SESSION_SECRET` and `INTERNAL_WORKER_SECRET` of at least 32 bytes. Use `PAYMENT_MODE=demo` for local-only adapter simulations. `PAYMENT_MODE=paypal_sandbox` requires PayPal Sandbox app credentials and a webhook ID. Live PayPal is rejected.
+Set unique random `SESSION_SECRET` and `INTERNAL_WORKER_SECRET` values of at least 32 bytes. `PAYMENT_MODE=demo` is for local adapter simulation only. `PAYMENT_MODE=paypal_sandbox` requires Sandbox app credentials, `CHECKOUT_MERCHANT_ID`, a configured webhook ID, and a reachable PostgreSQL database. Live PayPal is rejected.
 
 With a local PostgreSQL database configured in `DATABASE_URL`:
 
@@ -40,9 +38,9 @@ npm run prisma:generate
 npm run dev
 ```
 
-For an explicitly opted-in local demo merchant account, set `DEMO_AUTH_ENABLED=true` and provide a unique `DEMO_ADMIN_PASSWORD` of at least 16 characters, then run `npm run prisma:seed`. The seed script refuses production and no default password is embedded in the repository.
+For an explicitly opted-in local demo merchant account, set `DEMO_AUTH_ENABLED=true` and supply a unique `DEMO_ADMIN_PASSWORD` of at least 16 characters, then run `npm run prisma:seed`. The seed refuses production and has no embedded default password.
 
-The application may start without PostgreSQL in local development, but then uses process-memory seed data. That mode is not persistent and cannot validate the payment flows. Production refuses that fallback.
+Without PostgreSQL, development uses process-memory seed data. That mode is not persistent and must not be used for checkout. Production refuses that fallback.
 
 ## Checks
 
@@ -53,25 +51,12 @@ npm run build
 npm.cmd audit --omit=dev --audit-level=high
 ```
 
-Tests currently exercise deterministic adapter simulations. Passing them does not verify PayPal, PostgreSQL, webhooks, AI vendors, or sponsor services. Record each command's actual result when rerunning; see the audit report for the baseline.
+The test suite includes deterministic simulations and a PostgreSQL capture/void integration test gated by `DATABASE_URL`. A skipped database test is not a pass. Local results do not verify PayPal Sandbox, live webhook delivery, AI vendors, or sponsor services. See the release tracker for recorded results.
 
 ## PayPal Sandbox
 
-Configure only Sandbox app credentials. At present, the checkout UI and `/api/checkout/create` and `/api/checkout/authorize` endpoints are intentionally unavailable because the browser-side buyer approval flow and server-side approval validation are not implemented. Do not attempt to bypass these gates or call the payment adapter as though a customer approved a purchase.
+The existing checkout UI loads the PayPal JavaScript SDK with authorization intent. The server checks the approved order, persists the authorization, and starts a customer intervention when policy flags the payment. Use Sandbox buyer/seller accounts only. Do not enable payment handling until the migrations, database-backed capture/void tests, complete Sandbox lifecycle, and verified webhooks pass.
 
-## Deployment
+## Deployment and limitations
 
-`render.yaml` describes a web service, PostgreSQL instance, and worker. Deploy only after completing the release blockers in the final audit. The worker source entry is `src/server/worker/entry.ts`; Render uses `npm run worker`. Migrations, environment validation, authenticated customer/merchant flows, and external provider checks still require deployment verification.
-
-## Security and limitations
-
-- Sandbox only; no live payment mode is supported.
-- No merchant login or customer-bound session issuer is implemented.
-- Protected payment routes fail closed without a signed session, so the UI cannot currently perform merchant operations.
-- Checkout, customer intervention, trusted-contact consent, and notifications return unavailable until identity and payment verification are implemented.
-- Development fallback storage is in-memory. Durable, cross-instance locks and idempotency are incomplete.
-- No security certification or guarantee of scam detection is claimed.
-
-## Submission materials
-
-The release audit records the current demo limitations and sponsor evidence. No verified payment screenshots or video exist yet. Do not publish as a functioning payment product until the release recommendation changes from NO-GO.
+`render.yaml` describes a web service, PostgreSQL instance, and worker. Deploy only after release gates pass. No security certification or scam-detection guarantee is claimed. No verified payment screenshots or demonstration video exist yet. A public license also remains to be selected by the rights holder.

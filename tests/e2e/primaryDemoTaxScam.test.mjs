@@ -100,6 +100,18 @@ test('Local mock scenario: tax impersonation risk signals and simulated void tra
   });
 
   // Step 6: Customer voluntarily shares context in the calm intervention check-in
+  await dbRepository.saveIntervention({
+    id: `int_${orderRef}`,
+    paymentId: orderRef,
+    status: 'AWAITING_CUSTOMER',
+    scamHypothesis: 'Potential impersonation scam',
+    coercionIndicators: [],
+    confidenceScore: 0,
+    messages: [],
+    independentVerification: { enabled: false, provider: 'KERNEL_VERIFY', targetOrganization: '', officialPhone: '', status: 'PENDING', notes: '' },
+    trustedContact: { registered: false, name: '', relationship: '', maskedPhone: '', consentGranted: false, notificationSent: false },
+    startedAt: new Date().toISOString(),
+  });
   const customerReply = 'An officer from the IRS named Agent Miller told me I have an active arrest warrant and must pay $2,000 in Apple cards immediately.';
   const aiAnalysis = await ScamBrakeInterventionAgent.processCustomerMessage({
     paymentId: orderRef,
@@ -123,6 +135,7 @@ test('Local mock scenario: tax impersonation risk signals and simulated void tra
     actor: 'CUSTOMER',
     reason: 'Customer identified IRS impersonation coercion during intervention and chose to cancel.',
     idempotencyKey: `idem_void_demo_${orderRef}`,
+    interventionOutcome: 'SCAM_CONFIRMED',
   });
 
   assert.equal(voidResult.authorizationStatus, 'VOIDED');

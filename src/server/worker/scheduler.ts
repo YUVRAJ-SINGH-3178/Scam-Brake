@@ -1,6 +1,6 @@
+import { createHash } from 'node:crypto';
 import { dbRepository } from '../db/repository.ts';
 import { PaymentStateMachine } from '../payments/stateMachine.ts';
-import { zapierAutomationRelay } from '../zapier/relay.ts';
 
 export class BackgroundWorker {
   private isRunning = false;
@@ -16,47 +16,60 @@ export class BackgroundWorker {
   }> {
     const now = new Date();
     const payments = await dbRepository.getPayments();
-    const policy = await dbRepository.getRiskPolicy();
 
     let processedHolds = 0;
     let voidedTimeouts = 0;
     const errors: string[] = [];
 
     for (const payment of payments) {
-      if (payment.authorizationStatus === 'HOLD_ACTIVE' || payment.authorizationStatus === 'PENDING_REVIEW') {
+      if (payment.authorizationStatus === 'HOLD_ACTIVE' && payment.interventionStatus === 'ACTIVE_INTERVENTION') {
         processedHolds++;
-
+        const policy = await dbRepository.getRiskPolicy(payment.merchantId);
         const holdExpiry = new Date(payment.holdExpiresAt);
-        const authorizedAt = new Date(payment.authorizedAt);
-        const maxHoldMs = policy.interventionTimeoutMinutes * 60 * 1000;
-        const policyDeadline = new Date(authorizedAt.getTime() + maxHoldMs);
-
-        // Check if either PayPal hold expired or policy deadline passed
-        const isExpired = now >= holdExpiry || now >= policyDeadline;
-
-        if (isExpired && payment.interventionStatus === 'ACTIVE_INTERVENTION') {
+        const intervention = await dbRepository.getInterventionByPaymentId(payment.id);
+        if (!intervention) {
+          errors.push(`${payment.id}: active intervention is missing its persisted start time.`);
+          continue;
+        }
+        const policyDeadline = new Date(new Date(intervention.startedAt).getTime() + policy.interventionTimeoutMinutes * 60 * 1000);
+        const timeoutReached = now >= policyDeadline;
+        const providerHoldExpired = now >= holdExpiry;
+        if (timeoutReached || providerHoldExpired) {
+          if (!timeoutReached || policy.timeoutAction !== 'VOID' || providerHoldExpired) {
+            const status = providerHoldExpired ? 'RECONCILIATION_REQUIRED' : policy.timeoutAction === 'ESCALATE' ? 'TIMED_OUT_ESCALATED' : 'TIMED_OUT_MANUAL_REVIEW';
+            await dbRepository.updateInterventionStatus({
+              paymentId: payment.id,
+              status,
+              customerDecision: 'TIMED_OUT',
+            });
+            await dbRepository.recordAuditLog({
+              paymentId: payment.id,
+              eventType: 'HOLD_EXPIRED',
+              actor: 'SYSTEM_WORKER',
+              summary: providerHoldExpired ? 'Provider hold expiry requires reconciliation.' : `Intervention timed out; policy action is ${policy.timeoutAction}.`,
+              details: { interventionStartedAt: intervention.startedAt, timeoutMinutes: policy.interventionTimeoutMinutes, timeoutAction: policy.timeoutAction },
+            });
+            continue;
+          }
           try {
             await PaymentStateMachine.executeVoid({
               paymentId: payment.id,
               actor: 'SYSTEM_WORKER',
               reason: `Automated intervention timeout reached (${policy.interventionTimeoutMinutes}m). Merchant policy pre-capture void executed to preserve customer balance.`,
-              idempotencyKey: `timeout_void_${payment.id}_${Math.floor(now.getTime() / 60000)}`,
+              idempotencyKey: createHash('sha256').update(`timeout-void:${payment.id}`).digest('hex').slice(0, 36),
+              interventionOutcome: 'ABANDONED',
             });
-
             voidedTimeouts++;
-
-            await zapierAutomationRelay.triggerEvent({
-              eventType: 'AUTHORIZATION_VOIDED',
+            await dbRepository.updateInterventionStatus({
               paymentId: payment.id,
-              payload: {
-                paymentReference: payment.paymentReference,
-                amount: payment.amount,
-                reason: 'INTERVENTION_TIMEOUT_EXPIRED',
-              },
+              status: 'RESOLVED_VOID',
+              customerDecision: 'TIMED_OUT',
+              completedAt: now,
             });
           } catch (error: unknown) {
             const message = error instanceof Error ? error.message : 'Unknown worker error';
             console.error(`[WORKER] Failed to execute timeout void on ${payment.id}.`);
+            await dbRepository.updateInterventionStatus({ paymentId: payment.id, status: 'RECONCILIATION_REQUIRED' });
             errors.push(`${payment.id}: ${message}`);
           }
         }

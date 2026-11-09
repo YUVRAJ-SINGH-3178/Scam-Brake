@@ -110,6 +110,11 @@ export interface InterventionSession {
     | 'IN_CONVERSATION'
     | 'VERIFICATION_PENDING'
     | 'TRUSTED_CONTACT_NOTIFIED'
+    | 'RESOLVING_VOID'
+    | 'RESOLVING_CAPTURE'
+    | 'TIMED_OUT_MANUAL_REVIEW'
+    | 'TIMED_OUT_ESCALATED'
+    | 'RECONCILIATION_REQUIRED'
     | 'RESOLVED_VOID'
     | 'RESOLVED_CAPTURE';
   scamHypothesis: string;
