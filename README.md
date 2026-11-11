@@ -8,6 +8,8 @@ Scam Brake is a prototype for merchant-integrated payment checks that gives a cu
 
 **NO-GO for payment use or claims of a verified payment lifecycle.** Checkout uses the PayPal JavaScript SDK and validates buyer approval against the authoritative order before server-side authorization. No PayPal Sandbox transaction or webhook delivery has been recorded as verified. See the [release tracker](docs/RELEASE_REMEDIATION_TRACKER.md), [security verification matrix](docs/SECURITY_VERIFICATION.md), and [sponsor evidence](docs/SPONSOR_INTEGRATIONS.md).
 
+For judge setup, tools used, and submission limitations, see the [PayPal AI Hackathon guide](docs/HACKATHON_SUBMISSION.md). This repository is licensed under the [MIT License](LICENSE).
+
 ## What is present
 
 - Next.js App Router and React interface.
@@ -57,8 +59,6 @@ The test suite includes deterministic simulations and a PostgreSQL capture/void 
 
 The existing checkout UI loads the PayPal JavaScript SDK with authorization intent. The server checks the approved order, persists the authorization, and starts a customer intervention when policy flags the payment. Use Sandbox buyer/seller accounts only. Do not enable payment handling until the migrations, database-backed capture/void tests, complete Sandbox lifecycle, and verified webhooks pass.
 
-## Deployment and limitations
+## Submission and limitations
 
-`render.yaml` describes a web service, PostgreSQL instance, and worker. Deploy only after release gates pass. No security certification or scam-detection guarantee is claimed. No verified payment screenshots or demonstration video exist yet. A public license also remains to be selected by the rights holder.
-# derrr
-# derrr
+`render.yaml` describes a web service, PostgreSQL instance, and worker. Deploy only after release gates pass. No security certification or scam-detection guarantee is claimed. No verified PayPal payment screenshots or provider evidence are recorded. See [release architecture and demo notes](docs/RELEASE_ARCHITECTURE.md) before recording; label local simulations accurately.
