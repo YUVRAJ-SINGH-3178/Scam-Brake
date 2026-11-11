@@ -60,3 +60,5 @@ The existing checkout UI loads the PayPal JavaScript SDK with authorization inte
 ## Deployment and limitations
 
 `render.yaml` describes a web service, PostgreSQL instance, and worker. Deploy only after release gates pass. No security certification or scam-detection guarantee is claimed. No verified payment screenshots or demonstration video exist yet. A public license also remains to be selected by the rights holder.
+# derrr
+# derrr

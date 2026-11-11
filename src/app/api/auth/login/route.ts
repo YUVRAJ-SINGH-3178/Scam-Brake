@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { allowLoginAttempt, createSignedSession, hasSameOrigin, merchantSessionCookie, type MerchantRole } from '@/server/auth/session';
+import {
+  allowLoginAttempt,
+  createSignedSession,
+  hasSameOrigin,
+  merchantSessionCookie,
+  recordFallbackSession,
+  type MerchantRole,
+} from '@/server/auth/session';
 import { verifyPassword } from '@/server/auth/password';
-import { prisma } from '@/server/db/client';
+import { prisma, checkDatabaseConnection } from '@/server/db/client';
 
 const LoginSchema = z.object({
   email: z.string().email().max(254).transform((email) => email.toLowerCase()),
@@ -19,43 +26,85 @@ export async function POST(request: NextRequest) {
   const parsed = LoginSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Invalid email or password' }, { status: 400 });
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { email: parsed.data.email },
-      include: { merchantUsers: true },
-    });
-    const validPassword = user
-      ? await verifyPassword(parsed.data.password, user.passwordHash)
-      : (await verifyPassword(parsed.data.password, 'invalid$hash'));
-    const membership = user?.merchantUsers[0];
-    if (!user || !validPassword || !membership || !validRoles.includes(membership.role as MerchantRole)) {
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
-    }
+  const isDemoAuth = process.env.NODE_ENV !== 'production' && process.env.DEMO_AUTH_ENABLED === 'true';
+  const demoEmail = (process.env.DEMO_ADMIN_EMAIL || 'admin@scambrake.local').toLowerCase();
+  const demoPassword = process.env.DEMO_ADMIN_PASSWORD || 'DemoAdminPass2026!';
+  const isDemoCredential = isDemoAuth && parsed.data.email === demoEmail && parsed.data.password === demoPassword;
 
-    const { token, session } = createSignedSession({
-      userId: user.id,
-      email: user.email,
-      name: user.name,
-      role: membership.role as MerchantRole,
-      merchantId: membership.merchantId,
-    });
-    await prisma.$transaction([
-      prisma.merchantSession.updateMany({
-        where: { userId: user.id, revokedAt: null },
-        data: { revokedAt: new Date() },
-      }),
-      prisma.merchantSession.create({
-        data: {
-          id: session.jti,
+  const isPg = await checkDatabaseConnection();
+
+  if (isPg) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email: parsed.data.email },
+        include: { merchantUsers: true },
+      });
+      const validPassword = user
+        ? await verifyPassword(parsed.data.password, user.passwordHash)
+        : (await verifyPassword(parsed.data.password, 'invalid$hash'));
+      const membership = user?.merchantUsers[0];
+      if (!user || !validPassword || !membership || !validRoles.includes(membership.role as MerchantRole)) {
+        if (!isDemoCredential) {
+          return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+        }
+      } else {
+        const { token, session } = createSignedSession({
           userId: user.id,
+          email: user.email,
+          name: user.name,
+          role: membership.role as MerchantRole,
           merchantId: membership.merchantId,
-          expiresAt: new Date(session.exp * 1000),
-        },
-      }),
-    ]);
+        });
+        await prisma.$transaction([
+          prisma.merchantSession.updateMany({
+            where: { userId: user.id, revokedAt: null },
+            data: { revokedAt: new Date() },
+          }),
+          prisma.merchantSession.create({
+            data: {
+              id: session.jti,
+              userId: user.id,
+              merchantId: membership.merchantId,
+              expiresAt: new Date(session.exp * 1000),
+            },
+          }),
+        ]);
+        const response = NextResponse.json({
+          authenticated: true,
+          user: { userId: user.id, email: user.email, name: user.name, role: membership.role, merchantId: membership.merchantId },
+        });
+        response.cookies.set(merchantSessionCookie.name, token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: merchantSessionCookie.maxAge,
+        });
+        return response;
+      }
+    } catch (dbError) {
+      console.warn('[AUTH] Database query error, checking demo authentication fallback:', dbError);
+      if (!isDemoCredential) {
+        return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
+      }
+    }
+  }
+
+  // Local demo fallback authentication
+  if (isDemoCredential) {
+    const demoUser = {
+      userId: 'usr_demo_admin_001',
+      email: demoEmail,
+      name: 'Local Demo Administrator',
+      role: 'ADMIN' as MerchantRole,
+      merchantId: process.env.CHECKOUT_MERCHANT_ID || 'merch_apex_9812',
+    };
+    const { token, session } = createSignedSession(demoUser);
+    recordFallbackSession(session);
+
     const response = NextResponse.json({
       authenticated: true,
-      user: { userId: user.id, email: user.email, name: user.name, role: membership.role, merchantId: membership.merchantId },
+      user: demoUser,
     });
     response.cookies.set(merchantSessionCookie.name, token, {
       httpOnly: true,
@@ -65,7 +114,8 @@ export async function POST(request: NextRequest) {
       maxAge: merchantSessionCookie.maxAge,
     });
     return response;
-  } catch {
-    return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
   }
+
+  return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
 }
+

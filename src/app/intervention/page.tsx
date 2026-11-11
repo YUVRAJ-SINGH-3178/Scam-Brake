@@ -41,6 +41,8 @@ export default function CustomerInterventionPage() {
   const [busy, setBusy] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
+  const [now, setNow] = useState<number | null>(null);
+
   const refresh = useCallback(async (paymentId: string) => {
     const res = await fetch(`/api/intervention/${encodeURIComponent(paymentId)}`, { cache: 'no-store' });
     const data = await res.json();
@@ -50,15 +52,49 @@ export default function CustomerInterventionPage() {
   }, []);
 
   useEffect(() => {
+    const initial = setTimeout(() => {
+      setNow(Date.now());
+    }, 0);
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => {
+      clearTimeout(initial);
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
     const paymentId = new URLSearchParams(window.location.search).get('paymentId');
     if (!paymentId) {
-      setStatusMessage('Payment reference is missing. Return to checkout and start again.');
+      queueMicrotask(() => {
+        if (!ignore) {
+          setStatusMessage('Payment reference is missing. Return to checkout and start again.');
+        }
+      });
       return;
     }
-    refresh(paymentId).catch((error: unknown) => {
-      setStatusMessage(error instanceof Error ? error.message : 'Unable to load this customer session.');
-    });
-  }, [refresh]);
+
+    void fetch(`/api/intervention/${encodeURIComponent(paymentId)}`, { cache: 'no-store' })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Unable to load the protected payment.');
+        if (!ignore) {
+          setPayment(data.payment);
+          setSession(data.intervention);
+        }
+      })
+      .catch((error: unknown) => {
+        if (!ignore) {
+          setStatusMessage(error instanceof Error ? error.message : 'Unable to load this customer session.');
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend ?? inputValue).trim();
@@ -117,8 +153,8 @@ export default function CustomerInterventionPage() {
     );
   }
 
-  const holdSecondsRemaining = payment.holdExpiresAt
-    ? Math.max(0, Math.floor((new Date(payment.holdExpiresAt).getTime() - Date.now()) / 1000))
+  const holdSecondsRemaining = payment.holdExpiresAt && now !== null
+    ? Math.max(0, Math.floor((new Date(payment.holdExpiresAt).getTime() - now) / 1000))
     : 0;
   const decisionResolved = Boolean(session.customerDecision);
 

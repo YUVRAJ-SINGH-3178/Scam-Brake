@@ -13,8 +13,6 @@ interface PayPalWebhookEvent {
   };
 }
 
-export const dynamic = 'force-dynamic';
-
 export async function POST(req: NextRequest) {
   let claimedEventId: string | undefined;
   try {

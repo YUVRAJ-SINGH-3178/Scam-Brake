@@ -50,7 +50,7 @@ export const MarketingNav: React.FC = () => {
         {/* Right: Sign in & Restrained Rectangular Workspace Button */}
         <div className="hidden md:flex items-center gap-4 text-[13px]">
           <Link
-            href="/merchant"
+            href="/login"
             className="text-[#697078] hover:text-[#171A1F] font-medium transition-colors"
           >
             Sign in
@@ -60,6 +60,7 @@ export const MarketingNav: React.FC = () => {
 
           <Link
             href="/merchant"
+            prefetch={false}
             className="inline-flex items-center justify-center h-9 px-3.5 bg-[#171A1F] hover:bg-[#2B303A] text-white text-[13px] font-medium rounded-[6px] transition-colors"
           >
             Merchant Workspace
